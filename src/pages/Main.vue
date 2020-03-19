@@ -567,10 +567,11 @@ footer {
 
 .card-list {
 	display: flex;
+	flex-wrap: wrap;
 }
 
 .card {
-	margin: 0 1em;
+	margin: 0.25em 1em;
 	padding: 0.5em;
 	width: 14em;
 	background: white;
