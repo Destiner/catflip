@@ -16,6 +16,7 @@ export default {};
 
 body {
 	font-family: 'Roboto Condensed', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', Helvetica, Arial, sans-serif;
-	background: #eeeff3;
+	background: #f7fafc;
+	color: #333;
 }
 </style>
