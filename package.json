@@ -1,0 +1,44 @@
+{
+  "name": "catflip",
+  "version": "1.0.0",
+  "description": "MakerDAO system parameters",
+  "license": "UNLICENSED",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/Destiner/catflip.git"
+  },
+  "scripts": {
+    "serve": "DEV=true webpack-dev-server",
+    "lint": "npm run eslint && npm run stylelint",
+    "eslint": "eslint \"src/**/*.{js,vue}\"",
+    "stylelint": "stylelint \"src/**/*.vue\""
+  },
+  "dependencies": {
+    "@babel/runtime": "^7.6.3",
+    "bignumber.js": "^9.0.0",
+    "ethcall": "^1.0.1",
+    "ethers": "^4.0.46",
+    "vue": "^2.6.10",
+    "vue-router": "^3.1.3"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.6.4",
+    "@babel/plugin-transform-runtime": "^7.6.2",
+    "@babel/preset-env": "^7.6.3",
+    "babel-loader": "^8.0.6",
+    "clean-webpack-plugin": "^3.0.0",
+    "css-loader": "^3.2.0",
+    "eslint": "^6.6.0",
+    "eslint-plugin-vue": "^5.2.3",
+    "file-loader": "^4.2.0",
+    "html-webpack-plugin": "^3.2.0",
+    "style-loader": "^1.0.0",
+    "stylelint": "^12.0.1",
+    "stylelint-config-standard": "^19.0.0",
+    "vue-loader": "^15.7.1",
+    "vue-template-compiler": "^2.6.10",
+    "webpack": "^4.41.2",
+    "webpack-cli": "^3.3.9",
+    "webpack-dev-server": "^3.9.0"
+  }
+}
