@@ -3,27 +3,27 @@
 		<h1>MakerDAO system params</h1>
 		<h2>Basic 
 			<span class="term">
-				Vat <a :href="getEtherscanLink('vat')" target="_blank"><img :src="etherscanLogo" class="logo"></a>,
+				(Vat <a :href="getEtherscanLink('vat')" target="_blank"><img :src="etherscanLogo" class="logo"></a>,
 				Jug <a :href="getEtherscanLink('jug')" target="_blank"><img :src="etherscanLogo" class="logo"></a>,
 				Pot <a :href="getEtherscanLink('pot')" target="_blank"><img :src="etherscanLogo" class="logo"></a>,
-				Spot <a :href="getEtherscanLink('spot')" target="_blank"><img :src="etherscanLogo" class="logo"></a>
+				Spot <a :href="getEtherscanLink('spot')" target="_blank"><img :src="etherscanLogo" class="logo"></a>)
 			</span>
 		</h2>
 		<div class="card">
 			<div class="row">
-				<div>Ceiling <span class="term">Vat_Line</span></div>
+				<div>Ceiling <span class="term">(Vat_Line)</span></div>
 				<div>{{ formatAmount(vatLine) }} DAI</div>
 			</div>
 			<div class="row">
-				<div>Base stabitily fee <span class="term">Jug_base</span></div>
+				<div>Base stabitily fee <span class="term">(Jug_base)</span></div>
 				<div>{{ formatFee(jugBase) }}</div>
 			</div>
 			<div class="row">
-				<div>Savings rate <span class="term">Pot_dsr</span></div>
+				<div>Savings rate <span class="term">(Pot_dsr)</span></div>
 				<div>{{ formatFee(potDsr) }}</div>
 			</div>
 		</div>
-		<h2>Collateral <span class="term">Ilk</span></h2>
+		<h2>Collateral <span class="term">(Ilk)</span></h2>
 		<div class="card-list">
 			<div
 				v-for="ilk in ilks"
@@ -32,22 +32,22 @@
 			>
 				<div><span class="asset">{{ ilk.asset }}</span></div>
 				<div class="row">
-					<div>Ceiling <span class="term">Vat_line</span></div>
+					<div>Ceiling <span class="term">(Vat_line)</span></div>
 					<div>{{ formatAmount(ilk.line) }} DAI</div>
 				</div>
 				<div class="row">
-					<div>Stability fee <span class="term">Vat_duty</span></div>
+					<div>Stability fee <span class="term">(Vat_duty)</span></div>
 					<div>{{ formatFee(ilk.duty) }}</div>
 				</div>
 				<div class="row">
-					<div>Col. ratio <span class="term">Spot_mat</span></div>
+					<div>Col. ratio <span class="term">(Spot_mat)</span></div>
 					<div>{{ formatRatio(ilk.mat) }}</div>
 				</div>
 			</div>
 		</div>
 		<h2>Liquidation
 			<span class="term">
-				Cat <a :href="getEtherscanLink('cat')" target="_blank"><img :src="etherscanLogo" class="logo"></a>
+				(Cat <a :href="getEtherscanLink('cat')" target="_blank"><img :src="etherscanLogo" class="logo"></a>)
 			</span>
 		</h2>
 		<div class="card-list">
@@ -58,16 +58,16 @@
 			>
 				<div><span class="asset">{{ cat.asset }}</span></div>
 				<div class="row">
-					<div>Penalty <span class="term">chop</span></div>
+					<div>Penalty <span class="term">(chop)</span></div>
 					<div>{{ formatRate(cat.chop) }}</div>
 				</div>
 				<div class="row">
-					<div>Lot size <span class="term">lump</span></div>
+					<div>Lot size <span class="term">(lump)</span></div>
 					<div>{{ formatAmount(cat.lump) }}</div>
 				</div>
 			</div>
 		</div>
-		<h2>Collateral auction <span class="term">Flip</span></h2>
+		<h2>Collateral auction <span class="term">(Flip)</span></h2>
 		<div class="card-list">
 			<div
 				v-for="flip in flips"
@@ -76,106 +76,106 @@
 			>
 				<div><span class="asset">{{ flip.asset }}</span></div>
 				<div class="row">
-					<div>Minimal bid increase <span class="term">beg</span></div>
+					<div>Minimal bid increase <span class="term">(beg)</span></div>
 					<div>{{ formatRate(flip.beg) }}</div>
 				</div>
 				<div class="row">
-					<div>Bid duration <span class="term">ttl</span></div>
+					<div>Bid duration <span class="term">(ttl)</span></div>
 					<div>{{ formatDuration(flip.ttl) }}</div>
 				</div>
 				<div class="row">
-					<div>Auction length <span class="term">tau</span></div>
+					<div>Auction length <span class="term">(tau)</span></div>
 					<div>{{ formatDuration(flip.tau) }}</div>
 				</div>
 			</div>
 		</div>
 		<h2>Surplus auction
 			<span class="term">
-				Flap <a :href="getEtherscanLink('flap')" target="_blank"><img :src="etherscanLogo" class="logo"></a>
+				(Flap <a :href="getEtherscanLink('flap')" target="_blank"><img :src="etherscanLogo" class="logo"></a>)
 			</span>
 		</h2>
 		<div class="card">
 			<div class="row">
-				<div>Minimal bid increase <span class="term">beg</span></div>
+				<div>Minimal bid increase <span class="term">(beg)</span></div>
 				<div>{{ formatRate(flapBeg) }}</div>
 			</div>
 			<div class="row">
-				<div>Bid duration <span class="term">ttl</span></div>
+				<div>Bid duration <span class="term">(ttl)</span></div>
 				<div>{{ formatDuration(flapTtl) }}</div>
 			</div>
 			<div class="row">
-				<div>Auction duration <span class="term">tau</span></div>
+				<div>Auction duration <span class="term">(tau)</span></div>
 				<div>{{ formatDuration(flapTau) }}</div>
 			</div>
 		</div>
 		<h2>Debt auction
 			<span class="term">
-				Flop <a :href="getEtherscanLink('flop')" target="_blank"><img :src="etherscanLogo" class="logo"></a>
+				(Flop <a :href="getEtherscanLink('flop')" target="_blank"><img :src="etherscanLogo" class="logo"></a>)
 			</span>
 		</h2>
 		<div class="card">
 			<div class="row">
-				<div>Minimal bid increase <span class="term">beg</span></div>
+				<div>Minimal bid increase <span class="term">(beg)</span></div>
 				<div>{{ formatRate(flopBeg) }}</div>
 			</div>
 			<div class="row">
-				<div>Bid duration <span class="term">ttl</span></div>
+				<div>Bid duration <span class="term">(ttl)</span></div>
 				<div>{{ formatDuration(flopTtl) }}</div>
 			</div>
 			<div class="row">
-				<div>Auction duration <span class="term">tau</span></div>
+				<div>Auction duration <span class="term">(tau)</span></div>
 				<div>{{ formatDuration(flopTau) }}</div>
 			</div>
 			<div class="row">
-				<div>Lot size increase <span class="term">pad</span></div>
+				<div>Lot size increase <span class="term">(pad)</span></div>
 				<div>{{ formatRate(flopPad) }}</div>
 			</div>
 		</div>
 		<h2>Accounting
 			<span class="term">
-				Vow <a :href="getEtherscanLink('vow')" target="_blank"><img :src="etherscanLogo" class="logo"></a>
+				(Vow <a :href="getEtherscanLink('vow')" target="_blank"><img :src="etherscanLogo" class="logo"></a>)
 			</span>
 		</h2>
 		<div class="card card-big">
 			<div class="row">
-				<div>Surplus auction buffer <span class="term">hump</span></div>
+				<div>Surplus auction buffer <span class="term">(hump)</span></div>
 				<div>{{ formatAmount(hump) }} DAI</div>
 			</div>
 			<div class="row">
-				<div>Surplus lot size <span class="term">bump</span></div>
+				<div>Surplus lot size <span class="term">(bump)</span></div>
 				<div>{{ formatAmount(bump) }} DAI</div>
 			</div>
 			<div class="row">
-				<div>Debt auction bid size <span class="term">sump</span></div>
+				<div>Debt auction bid size <span class="term">(sump)</span></div>
 				<div>{{ formatAmount(sump) }} DAI</div>
 			</div>
 			<div class="row">
-				<div>Debt auction initial lot size <span class="term">dump</span></div>
+				<div>Debt auction initial lot size <span class="term">(dump)</span></div>
 				<div>{{ formatAmount(dump) }} MKR</div>
 			</div>
 			<div class="row">
-				<div>Debt auction delay <span class="term">wait</span></div>
+				<div>Debt auction delay <span class="term">(wait)</span></div>
 				<div>{{ formatDuration(wait) }}</div>
 			</div>
 		</div>
 		<h2>
 			Misc
 			<span class="term">
-				Pause <a :href="getEtherscanLink('pause')" target="_blank"><img :src="etherscanLogo" class="logo"></a>,
+				(Pause <a :href="getEtherscanLink('pause')" target="_blank"><img :src="etherscanLogo" class="logo"></a>,
 				ESM <a :href="getEtherscanLink('esm')" target="_blank"><img :src="etherscanLogo" class="logo"></a>,
-				End <a :href="getEtherscanLink('end')" target="_blank"><img :src="etherscanLogo" class="logo"></a>
+				End <a :href="getEtherscanLink('end')" target="_blank"><img :src="etherscanLogo" class="logo"></a>)
 			</span>
 		</h2>
 		<div class="card">
 			<div class="row">
-				<div>Timelock <span class="term">Pause_delay</span></div>
+				<div>Timelock <span class="term">(Pause_delay)</span></div>
 				<div>{{ formatDuration(pauseDelay) }}</div>
 			</div>
 			<div class="row">
-				<div>ES amount <span class="term">Esm_min</span></div>
+				<div>ES amount <span class="term">(Esm_min)</span></div>
 				<div>{{ formatAmount(esmMin) }} MKR</div></div>
 			<div class="row">
-				<div>ES delay <span class="term">End_wait</span></div>
+				<div>ES delay <span class="term">(End_wait)</span></div>
 				<div>{{ formatDuration(endWait) }}</div>
 			</div>
 		</div>
