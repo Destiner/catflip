@@ -1,6 +1,14 @@
 <template>
 	<div>
 		<h1>MakerDAO system params</h1>
+		<h2>Basic 
+			<span class="term">
+				Vat <a :href="getEtherscanLink('vat')" target="_blank"><img :src="etherscanLogo" class="logo"></a>,
+				Jug <a :href="getEtherscanLink('jug')" target="_blank"><img :src="etherscanLogo" class="logo"></a>,
+				Pot <a :href="getEtherscanLink('pot')" target="_blank"><img :src="etherscanLogo" class="logo"></a>,
+				Spot <a :href="getEtherscanLink('spot')" target="_blank"><img :src="etherscanLogo" class="logo"></a>
+			</span>
+		</h2>
 		<div class="card">
 			<div class="row">
 				<div>Ceiling <span class="term">Vat_Line</span></div>
@@ -37,7 +45,11 @@
 				</div>
 			</div>
 		</div>
-		<h2>Liquidation <span class="term">Cat</span></h2>
+		<h2>Liquidation
+			<span class="term">
+				Cat <a :href="getEtherscanLink('cat')" target="_blank"><img :src="etherscanLogo" class="logo"></a>
+			</span>
+		</h2>
 		<div class="card-list">
 			<div
 				v-for="cat in cats"
@@ -77,7 +89,11 @@
 				</div>
 			</div>
 		</div>
-		<h2>Surplus auction <span class="term">Flap</span></h2>
+		<h2>Surplus auction
+			<span class="term">
+				Flap <a :href="getEtherscanLink('flap')" target="_blank"><img :src="etherscanLogo" class="logo"></a>
+			</span>
+		</h2>
 		<div class="card">
 			<div class="row">
 				<div>Minimal bid increase <span class="term">beg</span></div>
@@ -92,7 +108,11 @@
 				<div>{{ formatDuration(flapTau) }}</div>
 			</div>
 		</div>
-		<h2>Debt auction <span class="term">Flop</span></h2>
+		<h2>Debt auction
+			<span class="term">
+				Flop <a :href="getEtherscanLink('flop')" target="_blank"><img :src="etherscanLogo" class="logo"></a>
+			</span>
+		</h2>
 		<div class="card">
 			<div class="row">
 				<div>Minimal bid increase <span class="term">beg</span></div>
@@ -111,7 +131,11 @@
 				<div>{{ formatRate(flopPad) }}</div>
 			</div>
 		</div>
-		<h2>Accounting <span class="term">Vow</span></h2>
+		<h2>Accounting
+			<span class="term">
+				Vow <a :href="getEtherscanLink('vow')" target="_blank"><img :src="etherscanLogo" class="logo"></a>
+			</span>
+		</h2>
 		<div class="card card-big">
 			<div class="row">
 				<div>Surplus auction buffer <span class="term">hump</span></div>
@@ -134,7 +158,14 @@
 				<div>{{ formatDuration(wait) }}</div>
 			</div>
 		</div>
-		<h2>Misc</h2>
+		<h2>
+			Misc
+			<span class="term">
+				Pause <a :href="getEtherscanLink('pause')" target="_blank"><img :src="etherscanLogo" class="logo"></a>,
+				ESM <a :href="getEtherscanLink('esm')" target="_blank"><img :src="etherscanLogo" class="logo"></a>,
+				End <a :href="getEtherscanLink('end')" target="_blank"><img :src="etherscanLogo" class="logo"></a>
+			</span>
+		</h2>
 		<div class="card">
 			<div class="row">
 				<div>Timelock <span class="term">Pause_delay</span></div>
@@ -162,6 +193,8 @@ import BigNumber from 'bignumber.js';
 import { ethers } from 'ethers';
 import ethcall from 'ethcall';
 
+import etherscanLogo from '../../public/etherscan.svg';
+
 import vatAbi from '../abi/vat.json';
 import jugAbi from '../abi/jug.json';
 import spotAbi from '../abi/spot.json';
@@ -185,35 +218,37 @@ const ilkIds = [
 	'SAI',
 ];
 
-const vatAddress = '0x35D1b3F3D7966A1DFe207aa4514C12a259A0492B';
-const jugAddress = '0x19c0976f590D67707E62397C87829d896Dc0f1F1';
-const spotAddress = '0x65C79fcB50Ca1594B025960e539eD7A9a6D434A3';
-const potAddress = '0x197E90f9FAD81970bA7976f33CbD77088E5D7cf7';
-const catAddress = '0x78F2c2AF65126834c51822F56Be0d7469D7A523E';
-const flipAddresses = {
-	'ETH-A': '0xd8a04F5412223F513DC55F839574430f5EC15531',
-	'BAT-A': '0xaA745404d55f88C108A28c86abE7b5A1E7817c07',
-	'USDC-A': '0xE6ed1d09a19Bd335f051d78D5d22dF3bfF2c28B1',
-	'SAI': '0x5432b2f3c0DFf95AA191C45E5cbd539E2820aE72',
+const addresses = {
+	vat: '0x35D1b3F3D7966A1DFe207aa4514C12a259A0492B',
+	jug: '0x19c0976f590D67707E62397C87829d896Dc0f1F1',
+	spot: '0x65C79fcB50Ca1594B025960e539eD7A9a6D434A3',
+	pot: '0x197E90f9FAD81970bA7976f33CbD77088E5D7cf7',
+	cat: '0x78F2c2AF65126834c51822F56Be0d7469D7A523E',
+	flip: {
+		'ETH-A': '0xd8a04F5412223F513DC55F839574430f5EC15531',
+		'BAT-A': '0xaA745404d55f88C108A28c86abE7b5A1E7817c07',
+		'USDC-A': '0xE6ed1d09a19Bd335f051d78D5d22dF3bfF2c28B1',
+		'SAI': '0x5432b2f3c0DFf95AA191C45E5cbd539E2820aE72',
+	},
+	flap: '0xdfE0fb1bE2a52CDBf8FB962D5701d7fd0902db9f',
+	flop: '0x4D95A049d5B0b7d32058cd3F2163015747522e99',
+	vow: '0xA950524441892A31ebddF91d3cEEFa04Bf454466',
+	pause: '0xbE286431454714F511008713973d3B053A2d38f3',
+	esm: '0x0581A0AbE32AAe9B5f0f68deFab77C6759100085',
+	end: '0xaB14d3CE3F733CACB76eC2AbE7d2fcb00c99F3d5',
 };
-const flapAddress = '0xdfE0fb1bE2a52CDBf8FB962D5701d7fd0902db9f';
-const flopAddress = '0x4D95A049d5B0b7d32058cd3F2163015747522e99';
-const vowAddress = '0xA950524441892A31ebddF91d3cEEFa04Bf454466';
-const pauseAddress = '0xbE286431454714F511008713973d3B053A2d38f3';
-const esmAddress = '0x0581A0AbE32AAe9B5f0f68deFab77C6759100085';
-const endAddress = '0xaB14d3CE3F733CACB76eC2AbE7d2fcb00c99F3d5';
 
-const vatContract = new ethcall.Contract(vatAddress, vatAbi);
-const jugContract = new ethcall.Contract(jugAddress, jugAbi);
-const spotContract = new ethcall.Contract(spotAddress, spotAbi);
-const potContract = new ethcall.Contract(potAddress, potAbi);
-const catContract = new ethcall.Contract(catAddress, catAbi);
-const flapContract = new ethcall.Contract(flapAddress, flapAbi);
-const flopContract = new ethcall.Contract(flopAddress, flopAbi);
-const vowContract = new ethcall.Contract(vowAddress, vowAbi);
-const pauseContract = new ethcall.Contract(pauseAddress, pauseAbi);
-const esmContract = new ethcall.Contract(esmAddress, esmAbi);
-const endContract = new ethcall.Contract(endAddress, endAbi);
+const vatContract = new ethcall.Contract(addresses.vat, vatAbi);
+const jugContract = new ethcall.Contract(addresses.jug, jugAbi);
+const spotContract = new ethcall.Contract(addresses.spot, spotAbi);
+const potContract = new ethcall.Contract(addresses.pot, potAbi);
+const catContract = new ethcall.Contract(addresses.cat, catAbi);
+const flapContract = new ethcall.Contract(addresses.flap, flapAbi);
+const flopContract = new ethcall.Contract(addresses.flop, flopAbi);
+const vowContract = new ethcall.Contract(addresses.vow, vowAbi);
+const pauseContract = new ethcall.Contract(addresses.pause, pauseAbi);
+const esmContract = new ethcall.Contract(addresses.esm, esmAbi);
+const endContract = new ethcall.Contract(addresses.end, endAbi);
 
 const TEN = new BigNumber(10);
 const WAD = TEN.pow(18);
@@ -244,6 +279,11 @@ export default {
 			esmMin: 0,
 			endWait: 0,
 		};
+	},
+	computed: {
+		etherscanLogo() {
+			return etherscanLogo;
+		},
 	},
 	mounted() {
 		this._loadBase();
@@ -287,6 +327,10 @@ export default {
 				maximumFractionDigits: 0,
 			};
 			return amountNumber.toLocaleString(undefined, options);
+		},
+		getEtherscanLink(contract) {
+			const contractAddress = addresses[contract];
+			return `https://etherscan.io/address/${contractAddress}`;
 		},
 		async _loadBase() {
 			const vatLineCall = vatContract.Line();
@@ -370,10 +414,10 @@ export default {
 			});
 		},
 		async _loadFlips() {
-			const flipIds = Object.keys(flipAddresses);
+			const flipIds = Object.keys(addresses.flip);
 			const count = flipIds.length;
 			const flipContracts = flipIds.map(flipId => {
-				const flipAddress = flipAddresses[flipId];
+				const flipAddress = addresses.flip[flipId];
 				const flipContract = new ethcall.Contract(flipAddress, flipAbi);
 				return flipContract;
 			});
@@ -544,11 +588,15 @@ footer {
 }
 
 .term {
-	color: grey;
+	color: #888;
 }
 
 .asset {
 	font-weight: bold;
+}
+
+.logo {
+	height: 16px;
 }
 
 #links {
