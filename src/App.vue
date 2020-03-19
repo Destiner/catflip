@@ -12,7 +12,10 @@ export default {};
 </script>
 
 <style>
+@import url('https://fonts.googleapis.com/css?family=Roboto+Condensed&display=swap');
+
 body {
-	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', Helvetica, Arial, sans-serif;
+	font-family: 'Roboto Condensed', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', Helvetica, Arial, sans-serif;
+	background: #eeeff3;
 }
 </style>
