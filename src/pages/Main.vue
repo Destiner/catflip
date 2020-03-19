@@ -30,7 +30,9 @@
 				:key="ilk.id"
 				class="card"
 			>
-				<div><span class="asset">{{ ilk.asset }}</span></div>
+				<div class="card-header">
+					<span class="asset">{{ ilk.asset }}</span>
+				</div>
 				<div class="row">
 					<div>Ceiling <span class="term">(Vat_line)</span></div>
 					<div>{{ formatAmount(ilk.line) }} DAI</div>
@@ -56,7 +58,9 @@
 				:key="cat.id"
 				class="card"
 			>
-				<div><span class="asset">{{ cat.asset }}</span></div>
+				<div class="card-header">
+					<span class="asset">{{ cat.asset }}</span>
+				</div>
 				<div class="row">
 					<div>Penalty <span class="term">(chop)</span></div>
 					<div>{{ formatRate(cat.chop) }}</div>
@@ -74,7 +78,9 @@
 				:key="flip.id"
 				class="card"
 			>
-				<div><span class="asset">{{ flip.asset }}</span></div>
+				<div class="card-header">
+					<span class="asset">{{ flip.asset }}</span>
+				</div>
 				<div class="row">
 					<div>Minimal bid increase <span class="term">(beg)</span></div>
 					<div>{{ formatRate(flip.beg) }}</div>
@@ -590,6 +596,11 @@ footer {
 
 .term {
 	color: #888;
+}
+
+.card-header {
+	display: flex;
+	justify-content: center;
 }
 
 .asset {
