@@ -148,9 +148,12 @@
 				<div>{{ formatDuration(endWait) }}</div>
 			</div>
 		</div>
-		<h2>Links</h2>
-		<div><a href="https://docs.makerdao.com/other-documentation/system-glossary" target="_blank">Glossary</a></div>
-		<div><a href="https://changelog.makerdao.com/releases/mainnet/1.0.4/contracts.json" target="_blank">Contracts</a></div>
+		<footer>
+			<div id="links">
+				<div><a href="https://docs.makerdao.com/other-documentation/system-glossary" target="_blank">Glossary</a></div>
+				<div><a href="https://changelog.makerdao.com/releases/mainnet/1.0.4/contracts.json" target="_blank">Contracts</a></div>
+			</div>
+		</footer>
 	</div>
 </template>
 
@@ -514,6 +517,10 @@ export default {
 </script>
 
 <style scoped>
+footer {
+	margin-top: 1em;
+}
+
 .card-list {
 	display: flex;
 }
@@ -542,5 +549,14 @@ export default {
 
 .asset {
 	font-weight: bold;
+}
+
+#links {
+	display: flex;
+	justify-content: center;
+}
+
+#links > div {
+	margin-left: 1em;
 }
 </style>
