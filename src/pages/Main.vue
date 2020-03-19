@@ -208,7 +208,7 @@ import pauseAbi from '../abi/pause.json';
 import esmAbi from '../abi/esm.json';
 import endAbi from '../abi/end.json';
 
-const infuraKey = '93e3393c76ed4e1f940d0266e2fdbda2';
+const infuraKey = '2c010c2fdb8b4ef1a7617571553fc982';
 const provider = new ethers.providers.InfuraProvider('mainnet', infuraKey);
 
 const ilkIds = [
