@@ -2,74 +2,74 @@
 	<div>
 		<h1>MakerDAO system params</h1>
 		<div class="box">
-			<div>Ceiling <span>Vat_Line</span>: {{ formatAmount(vatLine) }} DAI</div>
-			<div>Base stabitily fee <span>Jug_base</span>: {{ formatFee(jugBase) }}</div>
-			<div>Savings rate <span>Pot_dsr</span>: {{ formatFee(potDsr) }}</div>
+			<div>Ceiling <span class="term">Vat_Line</span>: {{ formatAmount(vatLine) }} DAI</div>
+			<div>Base stabitily fee <span class="term">Jug_base</span>: {{ formatFee(jugBase) }}</div>
+			<div>Savings rate <span class="term">Pot_dsr</span>: {{ formatFee(potDsr) }}</div>
 		</div>
-		<h2>Collateral <span>Ilk</span></h2>
+		<h2>Collateral <span class="term">Ilk</span></h2>
 		<div class="flex">
 			<div
 				v-for="ilk in ilks"
 				:key="ilk.id"
 				class="box"
 			>
-				<div>{{ ilk.asset }}</div>
-				<div>Ceiling <span>Vat_line</span>: {{ formatAmount(ilk.line) }} DAI</div>
-				<div>Stability fee <span>Vat_duty</span>: {{ formatFee(ilk.duty) }}</div>
-				<div>Col. ratio <span>Spot_mat</span>: {{ formatRatio(ilk.mat) }}</div>
+				<div><span class="asset">{{ ilk.asset }}</span></div>
+				<div>Ceiling <span class="term">Vat_line</span>: {{ formatAmount(ilk.line) }} DAI</div>
+				<div>Stability fee <span class="term">Vat_duty</span>: {{ formatFee(ilk.duty) }}</div>
+				<div>Col. ratio <span class="term">Spot_mat</span>: {{ formatRatio(ilk.mat) }}</div>
 			</div>
 		</div>
-		<h2>Liquidation <span>Cat</span></h2>
+		<h2>Liquidation <span class="term">Cat</span></h2>
 		<div class="flex">
 			<div
 				v-for="cat in cats"
 				:key="cat.id"
 				class="box"
 			>
-				<div>{{ cat.asset }}</div>
-				<div>Penalty <span>chop</span>: {{ formatRate(cat.chop) }}</div>
-				<div>Lot size <span>lump</span>: {{ formatAmount(cat.lump) }}</div>
+				<div><span class="asset">{{ cat.asset }}</span></div>
+				<div>Penalty <span class="term">chop</span>: {{ formatRate(cat.chop) }}</div>
+				<div>Lot size <span class="term">lump</span>: {{ formatAmount(cat.lump) }}</div>
 			</div>
 		</div>
-		<h2>Collateral auction <span>Flip</span></h2>
+		<h2>Collateral auction <span class="term">Flip</span></h2>
 		<div class="flex">
 			<div
 				v-for="flip in flips"
 				:key="flip.id"
 				class="box"
 			>
-				<div>{{ flip.asset }}</div>
-				<div>Minimal bid increase <span>beg</span>: {{ formatRate(flip.beg) }}</div>
-				<div>Bid duration <span>ttl</span>: {{ formatDuration(flip.ttl) }}</div>
-				<div>Auction lenght <span>tau</span>: {{ formatDuration(flip.tau) }}</div>
+				<div><span class="asset">{{ flip.asset }}</span></div>
+				<div>Minimal bid increase <span class="term">beg</span>: {{ formatRate(flip.beg) }}</div>
+				<div>Bid duration <span class="term">ttl</span>: {{ formatDuration(flip.ttl) }}</div>
+				<div>Auction lenght <span class="term">tau</span>: {{ formatDuration(flip.tau) }}</div>
 			</div>
 		</div>
-		<h2>Surplus auction <span>Flap</span></h2>
+		<h2>Surplus auction <span class="term">Flap</span></h2>
 		<div class="box">
-			<div>Minimal bid increase <span>beg</span>: {{ formatRate(flapBeg) }}</div>
-			<div>Bid duration <span>ttl</span>: {{ formatDuration(flapTtl) }}</div>
-			<div>Auction duration <span>tau</span>: {{ formatDuration(flapTau) }}</div>
+			<div>Minimal bid increase <span class="term">beg</span>: {{ formatRate(flapBeg) }}</div>
+			<div>Bid duration <span class="term">ttl</span>: {{ formatDuration(flapTtl) }}</div>
+			<div>Auction duration <span class="term">tau</span>: {{ formatDuration(flapTau) }}</div>
 		</div>
-		<h2>Debt auction <span>Flop</span></h2>
+		<h2>Debt auction <span class="term">Flop</span></h2>
 		<div class="box">
-			<div>Minimal bid increase <span>beg</span>: {{ formatRate(flopBeg) }}</div>
-			<div>Bid duration <span>ttl</span>: {{ formatDuration(flopTtl) }}</div>
-			<div>Auction duration <span>tau</span>: {{ formatDuration(flopTau) }}</div>
-			<div>Lot size increase <span>pad</span>: {{ formatRate(flopPad) }}</div>
+			<div>Minimal bid increase <span class="term">beg</span>: {{ formatRate(flopBeg) }}</div>
+			<div>Bid duration <span class="term">ttl</span>: {{ formatDuration(flopTtl) }}</div>
+			<div>Auction duration <span class="term">tau</span>: {{ formatDuration(flopTau) }}</div>
+			<div>Lot size increase <span class="term">pad</span>: {{ formatRate(flopPad) }}</div>
 		</div>
-		<h2>Accounting <span>Vow</span></h2>
+		<h2>Accounting <span class="term">Vow</span></h2>
 		<div class="box box-big">
-			<div>Surplus auction buffer <span>hump</span>: {{ formatAmount(hump) }} DAI</div>
-			<div>Surplus lot size <span>bump</span>: {{ formatAmount(bump) }} DAI</div>
-			<div>Debt auction bid size <span>sump</span>: {{ formatAmount(sump) }} DAI</div>
-			<div>Debt auction initial lot size <span>dump</span>: {{ formatAmount(dump) }} MKR</div>
-			<div>Debt auction delay <span>wait</span>: {{ formatDuration(wait) }}</div>
+			<div>Surplus auction buffer <span class="term">hump</span>: {{ formatAmount(hump) }} DAI</div>
+			<div>Surplus lot size <span class="term">bump</span>: {{ formatAmount(bump) }} DAI</div>
+			<div>Debt auction bid size <span class="term">sump</span>: {{ formatAmount(sump) }} DAI</div>
+			<div>Debt auction initial lot size <span class="term">dump</span>: {{ formatAmount(dump) }} MKR</div>
+			<div>Debt auction delay <span class="term">wait</span>: {{ formatDuration(wait) }}</div>
 		</div>
 		<h2>Misc</h2>
 		<div class="box">
-			<div>Timelock <span>Pause_delay</span>: {{ formatDuration(pauseDelay) }}</div>
-			<div>ES amount <span>Esm_min</span>: {{ formatAmount(esmMin) }} MKR</div>
-			<div>ES delay <span>End_wait</span>: {{ formatDuration(endWait) }}</div>
+			<div>Timelock <span class="term">Pause_delay</span>: {{ formatDuration(pauseDelay) }}</div>
+			<div>ES amount <span class="term">Esm_min</span>: {{ formatAmount(esmMin) }} MKR</div>
+			<div>ES delay <span class="term">End_wait</span>: {{ formatDuration(endWait) }}</div>
 		</div>
 		<h2>Links</h2>
 		<div><a href="https://docs.makerdao.com/other-documentation/system-glossary" target="_blank">Glossary</a></div>
@@ -452,8 +452,12 @@ export default {
 	width: 20em;
 }
 
-span {
+.term {
 	color: grey;
 	font-style: italic;
+}
+
+.asset {
+	font-weight: bold;
 }
 </style>
