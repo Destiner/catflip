@@ -601,6 +601,7 @@ footer {
 .card-header {
 	display: flex;
 	justify-content: center;
+	margin-bottom: 0.5em;
 }
 
 .asset {
