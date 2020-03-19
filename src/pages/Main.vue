@@ -1,75 +1,152 @@
 <template>
 	<div>
 		<h1>MakerDAO system params</h1>
-		<div class="box">
-			<div>Ceiling <span class="term">Vat_Line</span>: {{ formatAmount(vatLine) }} DAI</div>
-			<div>Base stabitily fee <span class="term">Jug_base</span>: {{ formatFee(jugBase) }}</div>
-			<div>Savings rate <span class="term">Pot_dsr</span>: {{ formatFee(potDsr) }}</div>
+		<div class="card">
+			<div class="row">
+				<div>Ceiling <span class="term">Vat_Line</span></div>
+				<div>{{ formatAmount(vatLine) }} DAI</div>
+			</div>
+			<div class="row">
+				<div>Base stabitily fee <span class="term">Jug_base</span></div>
+				<div>{{ formatFee(jugBase) }}</div>
+			</div>
+			<div class="row">
+				<div>Savings rate <span class="term">Pot_dsr</span></div>
+				<div>{{ formatFee(potDsr) }}</div>
+			</div>
 		</div>
 		<h2>Collateral <span class="term">Ilk</span></h2>
-		<div class="flex">
+		<div class="card-list">
 			<div
 				v-for="ilk in ilks"
 				:key="ilk.id"
-				class="box"
+				class="card"
 			>
 				<div><span class="asset">{{ ilk.asset }}</span></div>
-				<div>Ceiling <span class="term">Vat_line</span>: {{ formatAmount(ilk.line) }} DAI</div>
-				<div>Stability fee <span class="term">Vat_duty</span>: {{ formatFee(ilk.duty) }}</div>
-				<div>Col. ratio <span class="term">Spot_mat</span>: {{ formatRatio(ilk.mat) }}</div>
+				<div class="row">
+					<div>Ceiling <span class="term">Vat_line</span></div>
+					<div>{{ formatAmount(ilk.line) }} DAI</div>
+				</div>
+				<div class="row">
+					<div>Stability fee <span class="term">Vat_duty</span></div>
+					<div>{{ formatFee(ilk.duty) }}</div>
+				</div>
+				<div class="row">
+					<div>Col. ratio <span class="term">Spot_mat</span></div>
+					<div>{{ formatRatio(ilk.mat) }}</div>
+				</div>
 			</div>
 		</div>
 		<h2>Liquidation <span class="term">Cat</span></h2>
-		<div class="flex">
+		<div class="card-list">
 			<div
 				v-for="cat in cats"
 				:key="cat.id"
-				class="box"
+				class="card"
 			>
 				<div><span class="asset">{{ cat.asset }}</span></div>
-				<div>Penalty <span class="term">chop</span>: {{ formatRate(cat.chop) }}</div>
-				<div>Lot size <span class="term">lump</span>: {{ formatAmount(cat.lump) }}</div>
+				<div class="row">
+					<div>Penalty <span class="term">chop</span></div>
+					<div>{{ formatRate(cat.chop) }}</div>
+				</div>
+				<div class="row">
+					<div>Lot size <span class="term">lump</span></div>
+					<div>{{ formatAmount(cat.lump) }}</div>
+				</div>
 			</div>
 		</div>
 		<h2>Collateral auction <span class="term">Flip</span></h2>
-		<div class="flex">
+		<div class="card-list">
 			<div
 				v-for="flip in flips"
 				:key="flip.id"
-				class="box"
+				class="card"
 			>
 				<div><span class="asset">{{ flip.asset }}</span></div>
-				<div>Minimal bid increase <span class="term">beg</span>: {{ formatRate(flip.beg) }}</div>
-				<div>Bid duration <span class="term">ttl</span>: {{ formatDuration(flip.ttl) }}</div>
-				<div>Auction lenght <span class="term">tau</span>: {{ formatDuration(flip.tau) }}</div>
+				<div class="row">
+					<div>Minimal bid increase <span class="term">beg</span></div>
+					<div>{{ formatRate(flip.beg) }}</div>
+				</div>
+				<div class="row">
+					<div>Bid duration <span class="term">ttl</span></div>
+					<div>{{ formatDuration(flip.ttl) }}</div>
+				</div>
+				<div class="row">
+					<div>Auction lenght <span class="term">tau</span></div>
+					<div>{{ formatDuration(flip.tau) }}</div>
+				</div>
 			</div>
 		</div>
 		<h2>Surplus auction <span class="term">Flap</span></h2>
-		<div class="box">
-			<div>Minimal bid increase <span class="term">beg</span>: {{ formatRate(flapBeg) }}</div>
-			<div>Bid duration <span class="term">ttl</span>: {{ formatDuration(flapTtl) }}</div>
-			<div>Auction duration <span class="term">tau</span>: {{ formatDuration(flapTau) }}</div>
+		<div class="card">
+			<div class="row">
+				<div>Minimal bid increase <span class="term">beg</span></div>
+				<div>{{ formatRate(flapBeg) }}</div>
+			</div>
+			<div class="row">
+				<div>Bid duration <span class="term">ttl</span></div>
+				<div>{{ formatDuration(flapTtl) }}</div>
+			</div>
+			<div class="row">
+				<div>Auction duration <span class="term">tau</span></div>
+				<div>{{ formatDuration(flapTau) }}</div>
+			</div>
 		</div>
 		<h2>Debt auction <span class="term">Flop</span></h2>
-		<div class="box">
-			<div>Minimal bid increase <span class="term">beg</span>: {{ formatRate(flopBeg) }}</div>
-			<div>Bid duration <span class="term">ttl</span>: {{ formatDuration(flopTtl) }}</div>
-			<div>Auction duration <span class="term">tau</span>: {{ formatDuration(flopTau) }}</div>
-			<div>Lot size increase <span class="term">pad</span>: {{ formatRate(flopPad) }}</div>
+		<div class="card">
+			<div class="row">
+				<div>Minimal bid increase <span class="term">beg</span></div>
+				<div>{{ formatRate(flopBeg) }}</div>
+			</div>
+			<div class="row">
+				<div>Bid duration <span class="term">ttl</span></div>
+				<div>{{ formatDuration(flopTtl) }}</div>
+			</div>
+			<div class="row">
+				<div>Auction duration <span class="term">tau</span></div>
+				<div>{{ formatDuration(flopTau) }}</div>
+			</div>
+			<div class="row">
+				<div>Lot size increase <span class="term">pad</span></div>
+				<div>{{ formatRate(flopPad) }}</div>
+			</div>
 		</div>
 		<h2>Accounting <span class="term">Vow</span></h2>
-		<div class="box box-big">
-			<div>Surplus auction buffer <span class="term">hump</span>: {{ formatAmount(hump) }} DAI</div>
-			<div>Surplus lot size <span class="term">bump</span>: {{ formatAmount(bump) }} DAI</div>
-			<div>Debt auction bid size <span class="term">sump</span>: {{ formatAmount(sump) }} DAI</div>
-			<div>Debt auction initial lot size <span class="term">dump</span>: {{ formatAmount(dump) }} MKR</div>
-			<div>Debt auction delay <span class="term">wait</span>: {{ formatDuration(wait) }}</div>
+		<div class="card card-big">
+			<div class="row">
+				<div>Surplus auction buffer <span class="term">hump</span></div>
+				<div>{{ formatAmount(hump) }} DAI</div>
+			</div>
+			<div class="row">
+				<div>Surplus lot size <span class="term">bump</span></div>
+				<div>{{ formatAmount(bump) }} DAI</div>
+			</div>
+			<div class="row">
+				<div>Debt auction bid size <span class="term">sump</span></div>
+				<div>{{ formatAmount(sump) }} DAI</div>
+			</div>
+			<div class="row">
+				<div>Debt auction initial lot size <span class="term">dump</span></div>
+				<div>{{ formatAmount(dump) }} MKR</div>
+			</div>
+			<div class="row">
+				<div>Debt auction delay <span class="term">wait</span></div>
+				<div>{{ formatDuration(wait) }}</div>
+			</div>
 		</div>
 		<h2>Misc</h2>
-		<div class="box">
-			<div>Timelock <span class="term">Pause_delay</span>: {{ formatDuration(pauseDelay) }}</div>
-			<div>ES amount <span class="term">Esm_min</span>: {{ formatAmount(esmMin) }} MKR</div>
-			<div>ES delay <span class="term">End_wait</span>: {{ formatDuration(endWait) }}</div>
+		<div class="card">
+			<div class="row">
+				<div>Timelock <span class="term">Pause_delay</span></div>
+				<div>{{ formatDuration(pauseDelay) }}</div>
+			</div>
+			<div class="row">
+				<div>ES amount <span class="term">Esm_min</span></div>
+				<div>{{ formatAmount(esmMin) }} MKR</div></div>
+			<div class="row">
+				<div>ES delay <span class="term">End_wait</span></div>
+				<div>{{ formatDuration(endWait) }}</div>
+			</div>
 		</div>
 		<h2>Links</h2>
 		<div><a href="https://docs.makerdao.com/other-documentation/system-glossary" target="_blank">Glossary</a></div>
@@ -437,19 +514,25 @@ export default {
 </script>
 
 <style scoped>
-.flex {
+.card-list {
 	display: flex;
 }
 
-.box {
-	border: 1px solid gray;
+.card {
 	margin: 0 1em;
 	padding: 0.5em;
-	width: 16em;
+	width: 14em;
+	background: white;
+	border-radius: 0.5em;
 }
 
-.box-big {
-	width: 20em;
+.card-big {
+	width: 18em;
+}
+
+.row {
+	display: flex;
+	justify-content: space-between;
 }
 
 .term {
