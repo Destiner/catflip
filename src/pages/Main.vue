@@ -316,15 +316,15 @@ export default {
 		},
 		formatDuration(duration) {
 			const mins = duration / 60;
-			if (duration < 60 * 60) {
-				return `${mins.toFixed(2)} mins`;
+			if (duration % (60 * 60) != 0) {
+				return `${mins} mins`;
 			}
 			const hours = mins / 60;
-			if (duration < 24 * 60 * 60) {
-				return `${hours.toFixed(2)} hrs`;
+			if (duration % (24 * 60 * 60) != 0) {
+				return `${hours} hrs`;
 			}
 			const days = hours / 24;
-			return `${days.toFixed(2)} days`;
+			return `${days} days`;
 		},
 		formatAmount(amount) {
 			const amountNumber = new Number(amount.toString());
