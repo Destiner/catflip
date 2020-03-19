@@ -530,6 +530,7 @@ footer {
 	padding: 0.5em;
 	width: 14em;
 	background: white;
+	border: 1px solid #eceef0;
 	border-radius: 0.5em;
 }
 
@@ -544,7 +545,6 @@ footer {
 
 .term {
 	color: grey;
-	font-style: italic;
 }
 
 .asset {
