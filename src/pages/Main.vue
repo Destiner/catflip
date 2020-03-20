@@ -38,7 +38,7 @@
 					<div>{{ formatAmount(ilk.line) }} DAI</div>
 				</div>
 				<div class="row">
-					<div>Stability fee <span class="term">(Vat_duty)</span></div>
+					<div>Stability fee <span class="term">(Jug_duty)</span></div>
 					<div>{{ formatFee(ilk.duty) }}</div>
 				</div>
 				<div class="row">
