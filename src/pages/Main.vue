@@ -90,7 +90,7 @@
 					<div>{{ formatDuration(flip.ttl) }}</div>
 				</div>
 				<div class="row">
-					<div>Auction length <span class="term">(tau)</span></div>
+					<div>Auction duration <span class="term">(tau)</span></div>
 					<div>{{ formatDuration(flip.tau) }}</div>
 				</div>
 			</div>
