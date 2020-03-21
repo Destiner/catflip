@@ -38,6 +38,10 @@
 					<div>{{ formatAmount(ilk.line) }} DAI</div>
 				</div>
 				<div class="row">
+					<div>Min. per Vault <span class="term">(Vat_dust)</span></div>
+					<div>{{ formatAmount(ilk.dust) }} DAI</div>
+				</div>
+				<div class="row">
 					<div>Stability fee <span class="term">(Jug_duty)</span></div>
 					<div>{{ formatFee(ilk.duty) }}</div>
 				</div>
@@ -378,10 +382,12 @@ export default {
 				const index = ilkIds.indexOf(id);
 				const duty = data[index].duty;
 				const line = data[count + index].line;
+				const dust = data[count + index].dust;
 				const mat = data[2 * count + index].mat;
 
 				const dutyNumber = new BigNumber(duty);
 				const lineNumber = new BigNumber(line);
+				const dustNumber = new BigNumber(dust);
 				const matNumber = new BigNumber(mat);
 
 				const ilk = {
@@ -389,6 +395,7 @@ export default {
 					asset: id,
 					duty: dutyNumber.div(RAY).toNumber(),
 					line: lineNumber.div(RAY).div(WAD).toNumber(),
+					dust: dustNumber.div(RAY).div(WAD).toNumber(),
 					mat: matNumber.div(RAY).toNumber(),
 				};
 				return ilk;
