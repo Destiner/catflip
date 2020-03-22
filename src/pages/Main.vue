@@ -331,12 +331,13 @@ export default {
 			return `${days} days`;
 		},
 		formatAmount(amount) {
-			const amountNumber = new Number(amount.toString());
-			const options = {
-				minimumFractionDigits: 0,
-				maximumFractionDigits: 0,
-			};
-			return amountNumber.toLocaleString(undefined, options);
+			if (amount > 1e6) {
+				return `${amount/1e6}M`;
+			}
+			if (amount > 1e3) {
+				return `${amount/1e3}K`;
+			}
+			return amount;
 		},
 		getEtherscanLink(contract) {
 			const contractAddress = addresses[contract];
