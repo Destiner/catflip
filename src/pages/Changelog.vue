@@ -1,36 +1,35 @@
 <template>
 	<div>
-		<h1>MakerDAO params changelog</h1>
-		<div
-			v-for="spell in spells"
-			:key="spell.txHash"
-			class="spell"
-		>
-			<div class="date">
-				{{ formatTimestamp(spell.timestamp) }}
-			</div>
-			<div class="hash">
-				{{ formatHash(spell.txHash) }}
-			</div>
-			<div class="changes">
-				<div
-					v-for="change in spell.changes"
-					:key="change.id"
-					class="change"
-				>
-					<div class="param">
-						{{ change.param }}
+		<h1>Changelog</h1>
+		<div id="spells">
+			<div
+				v-for="spell in spells"
+				:key="spell.txHash"
+				class="spell"
+			>
+				<div class="header">
+					<div>
+						{{ formatTimestamp(spell.timestamp) }}
 					</div>
-					<div class="term">
-						{{ change.term }}
+					<div>
+						{{ formatHash(spell.txHash) }}
 					</div>
-					<div class="value">
-						<span v-if="change.oldValue">
-							{{ change.oldValue }} → {{ change.newValue }}
-						</span>
-						<span v-else>
-							{{ change.newValue }}
-						</span>
+				</div>
+				<div class="changes">
+					<div
+						v-for="change in spell.changes"
+						:key="change.id"
+						class="change"
+					>
+						<div class="param">{{ change.param }} <span class="term">({{ change.term }})</span></div>
+						<div class="value">
+							<span v-if="change.oldValue">
+								{{ change.oldValue }} → {{ change.newValue }}
+							</span>
+							<span v-else>
+								{{ change.newValue }}
+							</span>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -301,28 +300,43 @@ export default {
 </script>
 
 <style scoped>
+h1 {
+	text-align: center;
+}
+
+#spells {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	margin: 1rem 0;
+}
+
 .spell {
-	margin-top: 1em;
+	width: 80%;
+	border: 1px solid #dedede;
+	background: white;
+	padding: 0.5rem;
+	margin-top: 1rem;
+}
+
+.header {
+	display: flex;
+	justify-content: space-between;
+	font-size: 18px;
+}
+
+.changes {
+	margin-top: 1rem;
 }
 
 .change {
-	margin-top: 0.5em;
-}
-
-.date {
-	width: 200px;
-}
-
-.param {
-	width: 250px;
+	margin-top: 0.5rem;
+	display: flex;
+	justify-content: space-between;
+	font-size: 14px;
 }
 
 .term {
-	width: 150px;
+	color: #818da4;
 }
-
-.value {
-	width: 300px;
-}
-
 </style>

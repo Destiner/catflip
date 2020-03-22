@@ -1,200 +1,274 @@
 <template>
 	<div>
-		<h1>MakerDAO system params</h1>
-		<h2>Basic 
-			<span class="term">
-				(Vat <a :href="getEtherscanLink('vat')" target="_blank"><img :src="etherscanLogo" class="logo"></a>,
-				Jug <a :href="getEtherscanLink('jug')" target="_blank"><img :src="etherscanLogo" class="logo"></a>,
-				Pot <a :href="getEtherscanLink('pot')" target="_blank"><img :src="etherscanLogo" class="logo"></a>,
-				Spot <a :href="getEtherscanLink('spot')" target="_blank"><img :src="etherscanLogo" class="logo"></a>)
-			</span>
-		</h2>
-		<div class="card">
-			<div class="row">
-				<div>Ceiling <span class="term">(Vat_Line)</span></div>
-				<div>{{ formatAmount(vatLine) }} DAI</div>
+		<h1>System parameters</h1>
+		<div id="sections">
+			<div class="section">
+				<h2>Basic 
+					<span class="term">
+						(Vat <a :href="getEtherscanLink('vat')" target="_blank"><img :src="etherscanLogo" class="logo"></a>,
+						Jug <a :href="getEtherscanLink('jug')" target="_blank"><img :src="etherscanLogo" class="logo"></a>,
+						Pot <a :href="getEtherscanLink('pot')" target="_blank"><img :src="etherscanLogo" class="logo"></a>,
+						Spot <a :href="getEtherscanLink('spot')" target="_blank"><img :src="etherscanLogo" class="logo"></a>)
+					</span>
+				</h2>
+				<div class="stats">
+					<div class="stat">
+						<div class="value">{{ formatAmount(vatLine) }} DAI</div>
+						<div class="param">
+							<div>Ceiling</div>
+							<div class="term">Vat_Line</div>
+						</div>
+					</div>
+					<div class="stat">
+						<div class="value">{{ formatFee(jugBase) }}</div>
+						<div class="param">
+							<div>Base stabitily fee</div>
+							<div class="term">Jug_base</div>
+						</div>
+					</div>
+					<div class="stat">
+						<div class="value">{{ formatFee(potDsr) }}</div>
+						<div class="param">
+							<div>Savings rate</div>
+							<div class="term">Pot_dsr</div>
+						</div>
+					</div>
+				</div>
 			</div>
-			<div class="row">
-				<div>Base stabitily fee <span class="term">(Jug_base)</span></div>
-				<div>{{ formatFee(jugBase) }}</div>
+
+			<div class="section">
+				<h2>Collateral <span class="term">(Ilk)</span></h2>
+				<div class="cards">
+					<div
+						v-for="ilk in ilks"
+						:key="ilk.id"
+						class="card"
+					>
+						<div class="card-header">
+							<span>{{ ilk.asset }}</span>
+						</div>
+						<div class="row">
+							<div class="row-number">{{ formatAmount(ilk.line) }} DAI</div>
+							<div class="row-label">Ceiling <span class="term">(Vat_line)</span></div>
+						</div>
+						<div class="row">
+							<div class="row-number">{{ formatAmount(ilk.dust) }} DAI</div>
+							<div class="row-label">Min. per Vault <span class="term">(Vat_dust)</span></div>
+						</div>
+						<div class="row">
+							<div class="row-number">{{ formatFee(ilk.duty) }}</div>
+							<div class="row-label">Stability fee <span class="term">(Jug_duty)</span></div>
+						</div>
+						<div class="row">
+							<div class="row-number">{{ formatRatio(ilk.mat) }}</div>
+							<div class="row-label">Col. ratio <span class="term">(Spot_mat)</span></div>
+						</div>
+					</div>
+				</div>
 			</div>
-			<div class="row">
-				<div>Savings rate <span class="term">(Pot_dsr)</span></div>
-				<div>{{ formatFee(potDsr) }}</div>
+
+			<div class="section">
+				<h2>Liquidation
+					<span class="term">
+						(Cat <a :href="getEtherscanLink('cat')" target="_blank"><img :src="etherscanLogo" class="logo"></a>)
+					</span>
+				</h2>
+				<div class="cards">
+					<div
+						v-for="cat in cats"
+						:key="cat.id"
+						class="card"
+					>
+						<div class="card-header">
+							<span>{{ cat.asset }}</span>
+						</div>
+						<div class="row">
+							<div class="row-number">{{ formatRate(cat.chop) }}</div>
+							<div class="row-label">Penalty <span class="term">(chop)</span></div>
+						</div>
+						<div class="row">
+							<div class="row-number">{{ formatAmount(cat.lump) }}</div>
+							<div class="row-label">Lot size <span class="term">(lump)</span></div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="section">
+				<h2>Collateral auction <span class="term">(Flip)</span></h2>
+				<div class="cards">
+					<div
+						v-for="flip in flips"
+						:key="flip.id"
+						class="card"
+					>
+						<div class="card-header">
+							<span>{{ flip.asset }}</span>
+						</div>
+						<div class="row">
+							<div class="row-number">{{ formatRate(flip.beg) }}</div>
+							<div class="row-label">Min. bid increase <span class="term">(beg)</span></div>
+						</div>
+						<div class="row">
+							<div class="row-number">{{ formatDuration(flip.ttl) }}</div>
+							<div class="row-label">Bid duration <span class="term">(ttl)</span></div>
+						</div>
+						<div class="row">
+							<div class="row-number">{{ formatDuration(flip.tau) }}</div>
+							<div class="row-label">Auction duration <span class="term">(tau)</span></div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="section">
+				<h2>Surplus auction
+					<span class="term">
+						(Flap <a :href="getEtherscanLink('flap')" target="_blank"><img :src="etherscanLogo" class="logo"></a>)
+					</span>
+				</h2>
+				<div class="stats">
+					<div class="stat">
+						<div class="value">{{ formatRate(flapBeg) }}</div>
+						<div class="param">
+							<div>Minimal bid increase</div>
+							<div class="term">beg</div>
+						</div>
+					</div>
+					<div class="stat">
+						<div class="value">{{ formatDuration(flapTtl) }}</div>
+						<div class="param">
+							<div>Bid duration</div>
+							<div class="term">ttl</div>
+						</div>
+					</div>
+					<div class="stat">
+						<div class="value">{{ formatDuration(flapTau) }}</div>
+						<div class="param">
+							<div>Auction duration</div>
+							<div class="term">tau</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="section">
+				<h2>Debt auction
+					<span class="term">
+						(Flop <a :href="getEtherscanLink('flop')" target="_blank"><img :src="etherscanLogo" class="logo"></a>)
+					</span>
+				</h2>
+				<div class="stats">
+					<div class="stat">
+						<div class="value">{{ formatRate(flopBeg) }}</div>
+						<div class="param">
+							<div>Minimal bid increase</div>
+							<div class="term">beg</div>
+						</div>
+					</div>
+					<div class="stat">
+						<div class="value">{{ formatDuration(flopTtl) }}</div>
+						<div class="param">
+							<div>Bid duration</div>
+							<div class="term">ttl</div>
+						</div>
+					</div>
+					<div class="stat">
+						<div class="value">{{ formatDuration(flopTau) }}</div>
+						<div class="param">
+							<div>Auction duration</div>
+							<div class="term">tau</div>
+						</div>
+					</div>
+					<div class="stat">
+						<div class="value">{{ formatRate(flopPad) }}</div>
+						<div class="param">
+							<div>Lot size increase</div>
+							<div class="term">pad</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="section">
+				<h2>Accounting
+					<span class="term">
+						(Vow <a :href="getEtherscanLink('vow')" target="_blank"><img :src="etherscanLogo" class="logo"></a>)
+					</span>
+				</h2>
+				<div class="stats">
+					<div class="stat">
+						<div class="value">{{ formatAmount(hump) }} DAI</div>
+						<div class="param">
+							<div>Surplus auction buffer</div>
+							<div class="term">hump</div>
+						</div>
+					</div>
+					<div class="stat">
+						<div class="value">{{ formatAmount(bump) }} DAI</div>
+						<div class="param">
+							<div>Surplus lot size</div>
+							<div class="term">bump</div>
+						</div>
+					</div>
+					<div class="stat">
+						<div class="value">{{ formatAmount(sump) }} DAI</div>
+						<div class="param">
+							<div>Debt auction bid size</div>
+							<div class="term">sump</div>
+						</div>
+					</div>
+					<div class="stat">
+						<div class="value">{{ formatAmount(dump) }} MKR</div>
+						<div class="param">
+							<div>Debt auction initial lot size</div>
+							<div class="term">dump</div>
+						</div>
+					</div>
+					<div class="stat">
+						<div class="value">{{ formatDuration(wait) }}</div>
+						<div class="param">
+							<div>Debt auction delay</div>
+							<div class="term">wait</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="section">
+				<h2>
+					Misc
+					<span class="term">
+						(Pause <a :href="getEtherscanLink('pause')" target="_blank"><img :src="etherscanLogo" class="logo"></a>,
+						ESM <a :href="getEtherscanLink('esm')" target="_blank"><img :src="etherscanLogo" class="logo"></a>,
+						End <a :href="getEtherscanLink('end')" target="_blank"><img :src="etherscanLogo" class="logo"></a>)
+					</span>
+				</h2>
+				<div class="stats">
+					<div class="stat">
+						<div class="value">{{ formatDuration(pauseDelay) }}</div>
+						<div class="param">
+							<div>Timelock</div>
+							<div class="term">Pause_delay</div>
+						</div>
+					</div>
+					<div class="stat">
+						<div class="value">{{ formatAmount(esmMin) }} MKR</div>
+						<div class="param">
+							<div>ES amount</div>
+							<div class="term">Esm_min</div>
+						</div>
+					</div>
+					<div class="stat">
+						<div class="value">{{ formatDuration(endWait) }}</div>
+						<div class="param">
+							<div>ES delay</div>
+							<div class="term">End_wait</div>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
-		<h2>Collateral <span class="term">(Ilk)</span></h2>
-		<div class="card-list">
-			<div
-				v-for="ilk in ilks"
-				:key="ilk.id"
-				class="card"
-			>
-				<div class="card-header">
-					<span class="asset">{{ ilk.asset }}</span>
-				</div>
-				<div class="row">
-					<div>Ceiling <span class="term">(Vat_line)</span></div>
-					<div>{{ formatAmount(ilk.line) }} DAI</div>
-				</div>
-				<div class="row">
-					<div>Min. per Vault <span class="term">(Vat_dust)</span></div>
-					<div>{{ formatAmount(ilk.dust) }} DAI</div>
-				</div>
-				<div class="row">
-					<div>Stability fee <span class="term">(Jug_duty)</span></div>
-					<div>{{ formatFee(ilk.duty) }}</div>
-				</div>
-				<div class="row">
-					<div>Col. ratio <span class="term">(Spot_mat)</span></div>
-					<div>{{ formatRatio(ilk.mat) }}</div>
-				</div>
-			</div>
-		</div>
-		<h2>Liquidation
-			<span class="term">
-				(Cat <a :href="getEtherscanLink('cat')" target="_blank"><img :src="etherscanLogo" class="logo"></a>)
-			</span>
-		</h2>
-		<div class="card-list">
-			<div
-				v-for="cat in cats"
-				:key="cat.id"
-				class="card"
-			>
-				<div class="card-header">
-					<span class="asset">{{ cat.asset }}</span>
-				</div>
-				<div class="row">
-					<div>Penalty <span class="term">(chop)</span></div>
-					<div>{{ formatRate(cat.chop) }}</div>
-				</div>
-				<div class="row">
-					<div>Lot size <span class="term">(lump)</span></div>
-					<div>{{ formatAmount(cat.lump) }}</div>
-				</div>
-			</div>
-		</div>
-		<h2>Collateral auction <span class="term">(Flip)</span></h2>
-		<div class="card-list">
-			<div
-				v-for="flip in flips"
-				:key="flip.id"
-				class="card"
-			>
-				<div class="card-header">
-					<span class="asset">{{ flip.asset }}</span>
-				</div>
-				<div class="row">
-					<div>Minimal bid increase <span class="term">(beg)</span></div>
-					<div>{{ formatRate(flip.beg) }}</div>
-				</div>
-				<div class="row">
-					<div>Bid duration <span class="term">(ttl)</span></div>
-					<div>{{ formatDuration(flip.ttl) }}</div>
-				</div>
-				<div class="row">
-					<div>Auction duration <span class="term">(tau)</span></div>
-					<div>{{ formatDuration(flip.tau) }}</div>
-				</div>
-			</div>
-		</div>
-		<h2>Surplus auction
-			<span class="term">
-				(Flap <a :href="getEtherscanLink('flap')" target="_blank"><img :src="etherscanLogo" class="logo"></a>)
-			</span>
-		</h2>
-		<div class="card">
-			<div class="row">
-				<div>Minimal bid increase <span class="term">(beg)</span></div>
-				<div>{{ formatRate(flapBeg) }}</div>
-			</div>
-			<div class="row">
-				<div>Bid duration <span class="term">(ttl)</span></div>
-				<div>{{ formatDuration(flapTtl) }}</div>
-			</div>
-			<div class="row">
-				<div>Auction duration <span class="term">(tau)</span></div>
-				<div>{{ formatDuration(flapTau) }}</div>
-			</div>
-		</div>
-		<h2>Debt auction
-			<span class="term">
-				(Flop <a :href="getEtherscanLink('flop')" target="_blank"><img :src="etherscanLogo" class="logo"></a>)
-			</span>
-		</h2>
-		<div class="card">
-			<div class="row">
-				<div>Minimal bid increase <span class="term">(beg)</span></div>
-				<div>{{ formatRate(flopBeg) }}</div>
-			</div>
-			<div class="row">
-				<div>Bid duration <span class="term">(ttl)</span></div>
-				<div>{{ formatDuration(flopTtl) }}</div>
-			</div>
-			<div class="row">
-				<div>Auction duration <span class="term">(tau)</span></div>
-				<div>{{ formatDuration(flopTau) }}</div>
-			</div>
-			<div class="row">
-				<div>Lot size increase <span class="term">(pad)</span></div>
-				<div>{{ formatRate(flopPad) }}</div>
-			</div>
-		</div>
-		<h2>Accounting
-			<span class="term">
-				(Vow <a :href="getEtherscanLink('vow')" target="_blank"><img :src="etherscanLogo" class="logo"></a>)
-			</span>
-		</h2>
-		<div class="card card-big">
-			<div class="row">
-				<div>Surplus auction buffer <span class="term">(hump)</span></div>
-				<div>{{ formatAmount(hump) }} DAI</div>
-			</div>
-			<div class="row">
-				<div>Surplus lot size <span class="term">(bump)</span></div>
-				<div>{{ formatAmount(bump) }} DAI</div>
-			</div>
-			<div class="row">
-				<div>Debt auction bid size <span class="term">(sump)</span></div>
-				<div>{{ formatAmount(sump) }} DAI</div>
-			</div>
-			<div class="row">
-				<div>Debt auction initial lot size <span class="term">(dump)</span></div>
-				<div>{{ formatAmount(dump) }} MKR</div>
-			</div>
-			<div class="row">
-				<div>Debt auction delay <span class="term">(wait)</span></div>
-				<div>{{ formatDuration(wait) }}</div>
-			</div>
-		</div>
-		<h2>
-			Misc
-			<span class="term">
-				(Pause <a :href="getEtherscanLink('pause')" target="_blank"><img :src="etherscanLogo" class="logo"></a>,
-				ESM <a :href="getEtherscanLink('esm')" target="_blank"><img :src="etherscanLogo" class="logo"></a>,
-				End <a :href="getEtherscanLink('end')" target="_blank"><img :src="etherscanLogo" class="logo"></a>)
-			</span>
-		</h2>
-		<div class="card">
-			<div class="row">
-				<div>Timelock <span class="term">(Pause_delay)</span></div>
-				<div>{{ formatDuration(pauseDelay) }}</div>
-			</div>
-			<div class="row">
-				<div>ES amount <span class="term">(Esm_min)</span></div>
-				<div>{{ formatAmount(esmMin) }} MKR</div></div>
-			<div class="row">
-				<div>ES delay <span class="term">(End_wait)</span></div>
-				<div>{{ formatDuration(endWait) }}</div>
-			</div>
-		</div>
-		<footer>
-			<div id="links">
-				<div><a href="https://docs.makerdao.com/other-documentation/system-glossary" target="_blank">Glossary</a></div>
-				<div><a href="https://changelog.makerdao.com/releases/mainnet/1.0.4/contracts.json" target="_blank">Contracts</a></div>
-			</div>
-		</footer>
 	</div>
 </template>
 
@@ -575,57 +649,87 @@ export default {
 </script>
 
 <style scoped>
-footer {
-	margin-top: 1em;
+h1 {
+	text-align: center;
 }
 
-.card-list {
+h2 {
+	font-size: 18px;
+	margin: 0.5rem 0 0 0.5rem;
+}
+
+#sections {
 	display: flex;
+	flex-direction: column;
+	align-items: center;
+	margin: 1rem 0;
+}
+
+.section {
+	width: 90%;
+	background: white;
+	border: 1px solid #dedede;
+	margin-top: 1rem;
+}
+
+.stats {
+	display: flex;
+	margin: 1rem 0 1rem 0;
 	flex-wrap: wrap;
 }
 
-.card {
-	margin: 0.25em 1em;
-	padding: 0.5em;
-	width: 14em;
-	background: white;
-	border: 1px solid #eceef0;
-	border-radius: 0.5em;
-}
-
-.card-big {
-	width: 18em;
-}
-
-.row {
+.stat {
 	display: flex;
-	justify-content: space-between;
+	margin: 1rem 0 0 1.5rem;
+}
+
+.value {
+	font-size: 24px;
+}
+
+.param {
+	font-size: 12px;
+	margin-left: 0.5rem;
 }
 
 .term {
-	color: #888;
+	color: #818da4;
+}
+
+.cards {
+	display: flex;
+	margin: 1em 0;
+	justify-content: space-evenly;
+}
+
+.card {
+	width: 240px;
+	border: 1px solid #dedede;
+	padding: 0.25em 0.5em;
+	flex-wrap: wrap;
 }
 
 .card-header {
 	display: flex;
 	justify-content: center;
 	margin-bottom: 0.5em;
+	font-size: 16px;
 }
 
-.asset {
-	font-weight: bold;
+.row {
+	display: flex;
+	font-size: 14px;
+}
+
+.row-number {
+	flex: 1;
+}
+
+.row-label {
+	flex: 2;
 }
 
 .logo {
 	height: 16px;
-}
-
-#links {
-	display: flex;
-	justify-content: center;
-}
-
-#links > div {
-	margin-left: 1em;
 }
 </style>
