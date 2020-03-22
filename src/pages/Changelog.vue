@@ -94,7 +94,7 @@ export default {
 		_getParamName(param) {
 			const paramMap = {
 				'Vat-Line': 'Ceiling',
-				'Vat-BAT-A-dust': 'BAT ',
+				'Vat-BAT-A-dust': 'Min DAI in BAT Vault',
 				'Vat-BAT-A-line': 'BAT Ceiling',
 				'Vat-ETH-A-dust': 'Min DAI in ETH Vault',
 				'Vat-ETH-A-line': 'ETH Ceiling',
