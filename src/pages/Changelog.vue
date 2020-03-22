@@ -13,6 +13,7 @@
 					</div>
 					<div>
 						{{ formatHash(spell.txHash) }}
+						<a :href="getEtherscanLink(spell.txHash)" target="_blank"><img :src="etherscanLogo" class="logo"></a>
 					</div>
 				</div>
 				<div class="changes">
@@ -41,6 +42,8 @@
 
 <script>
 import BigNumber from 'bignumber.js';
+
+import etherscanLogo from '../../public/etherscan.svg';
 
 const TEN = new BigNumber(10);
 const WAD = TEN.pow(18);
@@ -86,6 +89,9 @@ export default {
 			spells.reverse();
 			return spells;
 		},
+		etherscanLogo() {
+			return etherscanLogo
+		},
 	},
 	mounted() {
 		this._loadChanges();
@@ -98,6 +104,9 @@ export default {
 		},
 		formatHash(hash) {
 			return `tx ${hash.substr(0, 6)}…${hash.substr(66 - 6)}`;
+		},
+		getEtherscanLink(txHash) {
+			return `https://etherscan.io/tx/${txHash}`;
 		},
 		async _loadChanges() {
 			const url = 'https://api.thegraph.com/subgraphs/id/Qmbvxsbr4e3xmuAqh3SzS3u4ZA912TyPoseVYKecFnMtAk';
@@ -340,5 +349,9 @@ h1 {
 
 .term {
 	color: #818da4;
+}
+
+.logo {
+	height: 16px;
 }
 </style>
