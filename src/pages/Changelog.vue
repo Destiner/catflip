@@ -107,12 +107,24 @@ export default {
 				'Jug-USDC-A-duty': 'USDC stability fee',
 				'Jug-SAI-duty': 'SAI stability fee',
 				'Pot-dsr': 'Savings rate',
+				'Cat-BAT-A-chop': 'BAT liquidation penalty',
+				'Cat-BAT-A-lump': 'BAT liquidation lot size',
+				'Cat-ETH-A-chop': 'ETH liquidation penalty',
+				'Cat-ETH-A-lump': 'ETH liquidation lot size',
+				'Flip-BAT-A-beg': 'BAT auction min. bid increase',
+				'Flip-BAT-A-tau': 'BAT auction duration',
+				'Flip-BAT-A-ttl': 'BAT auction bid duration',
+				'Flip-ETH-A-beg': 'ETH auction min. bid increase',
+				'Flip-ETH-A-tau': 'ETH auction duration',
+				'Flip-ETH-A-ttl': 'ETH auction bid duration',
 				'Flap-beg': 'Surplus auction min bid increase',
 				'Flap-tau': 'Surplus auction duration',
 				'Flap-ttl': 'Surplus auction bid duration',
 				'Flop-beg': 'Debt auction min bid increase',
 				'Flop-tau': 'Debt auction duration',
 				'Flop-ttl': 'Debt auction bid duration',
+				'Flop-pad': 'Debt auction lot size increase',
+				'Pause-delay': 'Timelock',
 			};
 			const paramName = paramMap[param];
 			return paramName;
@@ -133,13 +145,24 @@ export default {
 				'Jug-USDC-A-duty': 'Jug[USDC-A]_duty',
 				'Jug-SAI-duty': 'Jug[SAI]_duty',
 				'Pot-dsr': 'Pot_dsr',
+				'Cat-BAT-A-chop': 'Cat[BAT-A]_chop',
+				'Cat-BAT-A-lump': 'Cat[BAT-A]_lump',
+				'Cat-ETH-A-chop': 'Cat[ETH-A]_chop',
+				'Cat-ETH-A-lump': 'Cat[ETH-A]_lump',
+				'Flip-BAT-A-beg': 'Flip[BAT-A]_beg',
+				'Flip-BAT-A-tau': 'Flip[BAT-A]_tau',
+				'Flip-BAT-A-ttl': 'Flip[BAT-A]_ttl',
+				'Flip-ETH-A-beg': 'Flip[ETH-A]_beg',
+				'Flip-ETH-A-tau': 'Flip[ETH-A]_tau',
+				'Flip-ETH-A-ttl': 'Flip[ETH-A]_ttl',
 				'Flap-beg': 'Flap_beg',
 				'Flap-tau': 'Flap_tau',
 				'Flap-ttl': 'Flap_ttl',
 				'Flop-beg': 'Flop_beg',
 				'Flop-tau': 'Flop_tau',
 				'Flop-ttl': 'Flop_ttl',
-
+				'Flop-pad': 'Flop_pad',
+				'Pause-delay': 'Pause_delay',
 			};
 			const termName = termMap[param];
 			return termName;
@@ -157,18 +180,30 @@ export default {
 				'Vat-USDC-A-dust': this._formatDaiAmount,
 				'Vat-USDC-A-line': this._formatDaiAmount,
 				'Vat-SAI-line': this._formatDaiAmount,
-				'Jug-base': this._formatFee,
+				'Jug-base': this._formatWadRate,
 				'Jug-BAT-A-duty': this._formatFee,
 				'Jug-ETH-A-duty': this._formatFee,
 				'Jug-USDC-A-duty': this._formatFee,
 				'Jug-SAI-duty': this._formatFee,
 				'Pot-dsr': this._formatFee,
-				'Flap-beg': this._formatRate,
+				'Cat-BAT-A-chop': this._formatRayRate,
+				'Cat-BAT-A-lump': this._formatAmount,
+				'Cat-ETH-A-chop': this._formatRayRate,
+				'Cat-ETH-A-lump': this._formatAmount,
+				'Flip-BAT-A-beg': this._formatWadRate,
+				'Flip-BAT-A-tau': this._formatDuration,
+				'Flip-BAT-A-ttl': this._formatDuration,
+				'Flip-ETH-A-beg': this._formatWadRate,
+				'Flip-ETH-A-tau': this._formatDuration,
+				'Flip-ETH-A-ttl': this._formatDuration,
+				'Flap-beg': this._formatWadRate,
 				'Flap-tau': this._formatDuration,
 				'Flap-ttl': this._formatDuration,
-				'Flop-beg': this._formatRate,
+				'Flop-beg': this._formatWadRate,
 				'Flop-tau': this._formatDuration,
 				'Flop-ttl': this._formatDuration,
+				'Flop-pad': this._formatWadRate,
+				'Pause-delay': this._formatDuration,
 			};
 			const formatFunc = formatFuncMap[param] || this._noFormat;
 			return formatFunc(value);
@@ -182,9 +217,17 @@ export default {
 			const apy = fee ** (60*60*24*365) - 1;
 			return `${apy.toFixed(6) * 100}%`;
 		},
-		_formatRate(rawRate) {
+		_formatWadRate(rawRate) {
 			const rawRateNumber = new BigNumber(rawRate);
 			const rate = rawRateNumber.div(WAD).toNumber();
+			const percentage = rate == 0
+				? 100 * rate
+				: 100 * (rate - 1);
+			return `${percentage.toFixed(2)}%`;
+		},
+		_formatRayRate(rawRate) {
+			const rawRateNumber = new BigNumber(rawRate);
+			const rate = rawRateNumber.div(RAY).toNumber();
 			const percentage = rate == 0
 				? 100 * rate
 				: 100 * (rate - 1);
@@ -201,6 +244,16 @@ export default {
 			}
 			const days = hours / 24;
 			return `${days} days`;
+		},
+		_formatAmount(rawAmount) {
+			const rawAmountNumber = new BigNumber(rawAmount);
+			const amount = rawAmountNumber.div(WAD).toNumber();
+			const amountNumber = new Number(amount.toString());
+			const options = {
+				minimumFractionDigits: 0,
+				maximumFractionDigits: 0,
+			};
+			return `${amountNumber.toLocaleString(undefined, options)}`;
 		},
 		_formatDaiAmount(rawAmount) {
 			const rawAmountNumber = new BigNumber(rawAmount);
