@@ -70,7 +70,8 @@ h1 {
 	margin: 1rem 0 0 0;
 }
 
-h1, h2 {
+h1,
+h2 {
 	font-weight: normal;
 }
 

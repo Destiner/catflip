@@ -3,7 +3,8 @@
 		<h1>System parameters</h1>
 		<div id="sections">
 			<div class="section">
-				<h2>Basic 
+				<h2>
+					Basic 
 					<span class="term">
 						(Vat <a :href="getEtherscanLink('vat')" target="_blank"><img :src="etherscanLogo" class="logo"></a>,
 						Jug <a :href="getEtherscanLink('jug')" target="_blank"><img :src="etherscanLogo" class="logo"></a>,
@@ -13,24 +14,36 @@
 				</h2>
 				<div class="stats">
 					<div class="stat">
-						<div class="value">{{ formatAmount(vatLine) }} DAI</div>
+						<div class="value">
+							{{ formatAmount(vatLine) }} DAI
+						</div>
 						<div class="param">
 							<div>Ceiling</div>
-							<div class="term">Vat_Line</div>
+							<div class="term">
+								Vat_Line
+							</div>
 						</div>
 					</div>
 					<div class="stat">
-						<div class="value">{{ formatFee(jugBase) }}</div>
+						<div class="value">
+							{{ formatFee(jugBase) }}
+						</div>
 						<div class="param">
 							<div>Base stabitily fee</div>
-							<div class="term">Jug_base</div>
+							<div class="term">
+								Jug_base
+							</div>
 						</div>
 					</div>
 					<div class="stat">
-						<div class="value">{{ formatFee(potDsr) }}</div>
+						<div class="value">
+							{{ formatFee(potDsr) }}
+						</div>
 						<div class="param">
 							<div>Savings rate</div>
-							<div class="term">Pot_dsr</div>
+							<div class="term">
+								Pot_dsr
+							</div>
 						</div>
 					</div>
 				</div>
@@ -48,27 +61,44 @@
 							<span>{{ ilk.asset }}</span>
 						</div>
 						<div class="row">
-							<div class="row-number">{{ formatAmount(ilk.line) }} DAI</div>
-							<div class="row-label">Ceiling <span class="term">(Vat_line)</span></div>
+							<div class="row-number">
+								{{ formatAmount(ilk.line) }} DAI
+							</div>
+							<div class="row-label">
+								Ceiling <span class="term">(Vat_line)</span>
+							</div>
 						</div>
 						<div class="row">
-							<div class="row-number">{{ formatAmount(ilk.dust) }} DAI</div>
-							<div class="row-label">Min. per Vault <span class="term">(Vat_dust)</span></div>
+							<div class="row-number">
+								{{ formatAmount(ilk.dust) }} DAI
+							</div>
+							<div class="row-label">
+								Min. per Vault <span class="term">(Vat_dust)</span>
+							</div>
 						</div>
 						<div class="row">
-							<div class="row-number">{{ formatFee(ilk.duty) }}</div>
-							<div class="row-label">Stability fee <span class="term">(Jug_duty)</span></div>
+							<div class="row-number">
+								{{ formatFee(ilk.duty) }}
+							</div>
+							<div class="row-label">
+								Stability fee <span class="term">(Jug_duty)</span>
+							</div>
 						</div>
 						<div class="row">
-							<div class="row-number">{{ formatRatio(ilk.mat) }}</div>
-							<div class="row-label">Col. ratio <span class="term">(Spot_mat)</span></div>
+							<div class="row-number">
+								{{ formatRatio(ilk.mat) }}
+							</div>
+							<div class="row-label">
+								Col. ratio <span class="term">(Spot_mat)</span>
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
 
 			<div class="section">
-				<h2>Liquidation
+				<h2>
+					Liquidation
 					<span class="term">
 						(Cat <a :href="getEtherscanLink('cat')" target="_blank"><img :src="etherscanLogo" class="logo"></a>)
 					</span>
@@ -83,12 +113,20 @@
 							<span>{{ cat.asset }}</span>
 						</div>
 						<div class="row">
-							<div class="row-number">{{ formatRate(cat.chop) }}</div>
-							<div class="row-label">Penalty <span class="term">(chop)</span></div>
+							<div class="row-number">
+								{{ formatRate(cat.chop) }}
+							</div>
+							<div class="row-label">
+								Penalty <span class="term">(chop)</span>
+							</div>
 						</div>
 						<div class="row">
-							<div class="row-number">{{ formatAmount(cat.lump) }}</div>
-							<div class="row-label">Lot size <span class="term">(lump)</span></div>
+							<div class="row-number">
+								{{ formatAmount(cat.lump) }}
+							</div>
+							<div class="row-label">
+								Lot size <span class="term">(lump)</span>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -106,130 +144,193 @@
 							<span>{{ flip.asset }}</span>
 						</div>
 						<div class="row">
-							<div class="row-number">{{ formatRate(flip.beg) }}</div>
-							<div class="row-label">Min. bid increase <span class="term">(beg)</span></div>
+							<div class="row-number">
+								{{ formatRate(flip.beg) }}
+							</div>
+							<div class="row-label">
+								Min. bid increase <span class="term">(beg)</span>
+							</div>
 						</div>
 						<div class="row">
-							<div class="row-number">{{ formatDuration(flip.ttl) }}</div>
-							<div class="row-label">Bid duration <span class="term">(ttl)</span></div>
+							<div class="row-number">
+								{{ formatDuration(flip.ttl) }}
+							</div>
+							<div class="row-label">
+								Bid duration <span class="term">(ttl)</span>
+							</div>
 						</div>
 						<div class="row">
-							<div class="row-number">{{ formatDuration(flip.tau) }}</div>
-							<div class="row-label">Auction duration <span class="term">(tau)</span></div>
+							<div class="row-number">
+								{{ formatDuration(flip.tau) }}
+							</div>
+							<div class="row-label">
+								Auction duration <span class="term">(tau)</span>
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
 
 			<div class="section">
-				<h2>Surplus auction
+				<h2>
+					Surplus auction
 					<span class="term">
 						(Flap <a :href="getEtherscanLink('flap')" target="_blank"><img :src="etherscanLogo" class="logo"></a>)
 					</span>
 				</h2>
 				<div class="stats">
 					<div class="stat">
-						<div class="value">{{ formatRate(flapBeg) }}</div>
+						<div class="value">
+							{{ formatRate(flapBeg) }}
+						</div>
 						<div class="param">
 							<div>Minimal bid increase</div>
-							<div class="term">beg</div>
+							<div class="term">
+								beg
+							</div>
 						</div>
 					</div>
 					<div class="stat">
-						<div class="value">{{ formatDuration(flapTtl) }}</div>
+						<div class="value">
+							{{ formatDuration(flapTtl) }}
+						</div>
 						<div class="param">
 							<div>Bid duration</div>
-							<div class="term">ttl</div>
+							<div class="term">
+								ttl
+							</div>
 						</div>
 					</div>
 					<div class="stat">
-						<div class="value">{{ formatDuration(flapTau) }}</div>
+						<div class="value">
+							{{ formatDuration(flapTau) }}
+						</div>
 						<div class="param">
 							<div>Auction duration</div>
-							<div class="term">tau</div>
+							<div class="term">
+								tau
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
 
 			<div class="section">
-				<h2>Debt auction
+				<h2>
+					Debt auction
 					<span class="term">
 						(Flop <a :href="getEtherscanLink('flop')" target="_blank"><img :src="etherscanLogo" class="logo"></a>)
 					</span>
 				</h2>
 				<div class="stats">
 					<div class="stat">
-						<div class="value">{{ formatRate(flopBeg) }}</div>
+						<div class="value">
+							{{ formatRate(flopBeg) }}
+						</div>
 						<div class="param">
 							<div>Minimal bid increase</div>
-							<div class="term">beg</div>
+							<div class="term">
+								beg
+							</div>
 						</div>
 					</div>
 					<div class="stat">
-						<div class="value">{{ formatDuration(flopTtl) }}</div>
+						<div class="value">
+							{{ formatDuration(flopTtl) }}
+						</div>
 						<div class="param">
 							<div>Bid duration</div>
-							<div class="term">ttl</div>
+							<div class="term">
+								ttl
+							</div>
 						</div>
 					</div>
 					<div class="stat">
-						<div class="value">{{ formatDuration(flopTau) }}</div>
+						<div class="value">
+							{{ formatDuration(flopTau) }}
+						</div>
 						<div class="param">
 							<div>Auction duration</div>
-							<div class="term">tau</div>
+							<div class="term">
+								tau
+							</div>
 						</div>
 					</div>
 					<div class="stat">
-						<div class="value">{{ formatRate(flopPad) }}</div>
+						<div class="value">
+							{{ formatRate(flopPad) }}
+						</div>
 						<div class="param">
 							<div>Lot size increase</div>
-							<div class="term">pad</div>
+							<div class="term">
+								pad
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
 
 			<div class="section">
-				<h2>Accounting
+				<h2>
+					Accounting
 					<span class="term">
 						(Vow <a :href="getEtherscanLink('vow')" target="_blank"><img :src="etherscanLogo" class="logo"></a>)
 					</span>
 				</h2>
 				<div class="stats">
 					<div class="stat">
-						<div class="value">{{ formatAmount(hump) }} DAI</div>
+						<div class="value">
+							{{ formatAmount(hump) }} DAI
+						</div>
 						<div class="param">
 							<div>Surplus auction buffer</div>
-							<div class="term">hump</div>
+							<div class="term">
+								hump
+							</div>
 						</div>
 					</div>
 					<div class="stat">
-						<div class="value">{{ formatAmount(bump) }} DAI</div>
+						<div class="value">
+							{{ formatAmount(bump) }} DAI
+						</div>
 						<div class="param">
 							<div>Surplus lot size</div>
-							<div class="term">bump</div>
+							<div class="term">
+								bump
+							</div>
 						</div>
 					</div>
 					<div class="stat">
-						<div class="value">{{ formatAmount(sump) }} DAI</div>
+						<div class="value">
+							{{ formatAmount(sump) }} DAI
+						</div>
 						<div class="param">
 							<div>Debt auction bid size</div>
-							<div class="term">sump</div>
+							<div class="term">
+								sump
+							</div>
 						</div>
 					</div>
 					<div class="stat">
-						<div class="value">{{ formatAmount(dump) }} MKR</div>
+						<div class="value">
+							{{ formatAmount(dump) }} MKR
+						</div>
 						<div class="param">
 							<div>Debt auction initial lot size</div>
-							<div class="term">dump</div>
+							<div class="term">
+								dump
+							</div>
 						</div>
 					</div>
 					<div class="stat">
-						<div class="value">{{ formatDuration(wait) }}</div>
+						<div class="value">
+							{{ formatDuration(wait) }}
+						</div>
 						<div class="param">
 							<div>Debt auction delay</div>
-							<div class="term">wait</div>
+							<div class="term">
+								wait
+							</div>
 						</div>
 					</div>
 				</div>
@@ -246,24 +347,36 @@
 				</h2>
 				<div class="stats">
 					<div class="stat">
-						<div class="value">{{ formatDuration(pauseDelay) }}</div>
+						<div class="value">
+							{{ formatDuration(pauseDelay) }}
+						</div>
 						<div class="param">
 							<div>Timelock</div>
-							<div class="term">Pause_delay</div>
+							<div class="term">
+								Pause_delay
+							</div>
 						</div>
 					</div>
 					<div class="stat">
-						<div class="value">{{ formatAmount(esmMin) }} MKR</div>
+						<div class="value">
+							{{ formatAmount(esmMin) }} MKR
+						</div>
 						<div class="param">
 							<div>ES amount</div>
-							<div class="term">Esm_min</div>
+							<div class="term">
+								Esm_min
+							</div>
 						</div>
 					</div>
 					<div class="stat">
-						<div class="value">{{ formatDuration(endWait) }}</div>
+						<div class="value">
+							{{ formatDuration(endWait) }}
+						</div>
 						<div class="param">
 							<div>ES delay</div>
-							<div class="term">End_wait</div>
+							<div class="term">
+								End_wait
+							</div>
 						</div>
 					</div>
 				</div>

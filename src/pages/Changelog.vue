@@ -21,7 +21,9 @@
 						:key="change.id"
 						class="change"
 					>
-						<div class="param">{{ change.param }} <span class="term">({{ change.term }})</span></div>
+						<div class="param">
+							{{ change.param }} <span class="term">({{ change.term }})</span>
+						</div>
 						<div class="value">
 							<span v-if="change.oldValue">
 								{{ change.oldValue }} → {{ change.newValue }}
@@ -49,9 +51,6 @@ export default {
 		return {
 			changes: [],
 		};
-	},
-	mounted() {
-		this._loadChanges();
 	},
 	computed: {
 		spells() {
@@ -88,6 +87,9 @@ export default {
 			return spells;
 		},
 	},
+	mounted() {
+		this._loadChanges();
+	},
 	methods: {
 		formatTimestamp(timestamp) {
 			const date = new Date(timestamp * 1000);
@@ -98,7 +100,7 @@ export default {
 			return `tx ${hash.substr(0, 6)}…${hash.substr(66 - 6)}`;
 		},
 		async _loadChanges() {
-			const url = 'https://api.thegraph.com/subgraphs/name/destiner/maker';
+			const url = 'https://api.thegraph.com/subgraphs/id/Qmbvxsbr4e3xmuAqh3SzS3u4ZA912TyPoseVYKecFnMtAk';
 			const query = `
 				query {
 					changes(
