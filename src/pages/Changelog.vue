@@ -61,7 +61,6 @@ export default {
 			const spellMap = {};
 			for (let change of this.changes) {
 				const { id, timestamp, param, value, txHash } = change;
-				values[param] = value;
 				timestamps[txHash] = timestamp;
 				if (!(txHash in spellMap)) {
 					spellMap[txHash] = [];
@@ -74,6 +73,7 @@ export default {
 					oldValue: this._getValue(param, values[param]),
 					newValue: this._getValue(param, value),
 				});
+				values[param] = value;
 			}
 			const txHashes = Object.keys(spellMap);
 			const spells = txHashes.map(txHash => {
