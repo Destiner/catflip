@@ -92,7 +92,8 @@ export default {
 	methods: {
 		formatTimestamp(timestamp) {
 			const date = new Date(timestamp * 1000);
-			return date.toLocaleString('en-US');
+			const options = { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' };
+			return date.toLocaleString('en-US', options);
 		},
 		formatHash(hash) {
 			return `tx ${hash.substr(0, 6)}…${hash.substr(66 - 6)}`;
