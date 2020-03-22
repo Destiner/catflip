@@ -2,25 +2,37 @@
 	<div>
 		<h1>MakerDAO params changelog</h1>
 		<div
-			v-for="change in changes"
-			class="change"
+			v-for="spell in spells"
+			:key="spell.txHash"
+			class="spell"
 		>
 			<div class="date">
-				{{ formatTimestamp(change.timestamp) }}
+				{{ formatTimestamp(spell.timestamp) }}
 			</div>
-			<div class="param">
-				{{ change.param }}
+			<div class="hash">
+				{{ formatHash(spell.txHash) }}
 			</div>
-			<div class="term">
-				{{ change.term }}
-			</div>
-			<div class="value">
-				<span v-if="change.oldValue">
-					{{ change.oldValue }} → {{ change.newValue }}
-				</span>
-				<span v-else>
-					{{ change.newValue }}
-				</span>
+			<div class="changes">
+				<div
+					v-for="change in spell.changes"
+					:key="change.id"
+					class="change"
+				>
+					<div class="param">
+						{{ change.param }}
+					</div>
+					<div class="term">
+						{{ change.term }}
+					</div>
+					<div class="value">
+						<span v-if="change.oldValue">
+							{{ change.oldValue }} → {{ change.newValue }}
+						</span>
+						<span v-else>
+							{{ change.newValue }}
+						</span>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -36,37 +48,54 @@ const RAY = TEN.pow(27);
 export default {
 	data() {
 		return {
-			rawChanges: [],
+			changes: [],
 		};
 	},
 	mounted() {
 		this._loadChanges();
 	},
 	computed: {
-		changes() {
-			const changes = [];
+		spells() {
 			const values = {};
-			for (let rawChange of this.rawChanges) {
-				const { id, timestamp, param, value } = rawChange;
-				const change = {
+			const timestamps = {};
+			const spellMap = {};
+			for (let change of this.changes) {
+				const { id, timestamp, param, value, txHash } = change;
+				values[param] = value;
+				timestamps[txHash] = timestamp;
+				if (!(txHash in spellMap)) {
+					spellMap[txHash] = [];
+				}
+				spellMap[txHash].push({
 					id,
 					timestamp,
 					param: this._getParamName(param),
 					term: this._getTermName(param),
 					oldValue: this._getValue(param, values[param]),
 					newValue: this._getValue(param, value),
-				};
-				values[param] = value;
-				changes.push(change);
+				});
 			}
-			changes.reverse();
-			return changes;
+			const txHashes = Object.keys(spellMap);
+			const spells = txHashes.map(txHash => {
+				const timestamp = timestamps[txHash];
+				const changes = spellMap[txHash];
+				return {
+					timestamp,
+					txHash,
+					changes,
+				};
+			});
+			spells.reverse();
+			return spells;
 		},
 	},
 	methods: {
 		formatTimestamp(timestamp) {
 			const date = new Date(timestamp * 1000);
 			return date.toLocaleString('en-US');
+		},
+		formatHash(hash) {
+			return `tx ${hash.substr(0, 6)}…${hash.substr(66 - 6)}`;
 		},
 		async _loadChanges() {
 			const url = 'https://api.thegraph.com/subgraphs/name/destiner/maker';
@@ -80,6 +109,7 @@ export default {
 						param
 						value
 						timestamp
+						txHash
 					}
 				}`;
 			const opts = {
@@ -89,7 +119,7 @@ export default {
 			};
 			const response = await fetch(url, opts);
 			const json = await response.json();
-			this.rawChanges = json.data.changes;
+			this.changes = json.data.changes;
 		},
 		_getParamName(param) {
 			const paramMap = {
@@ -270,8 +300,12 @@ export default {
 </script>
 
 <style scoped>
+.spell {
+	margin-top: 1em;
+}
+
 .change {
-	display: flex;
+	margin-top: 0.5em;
 }
 
 .date {
