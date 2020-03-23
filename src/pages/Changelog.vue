@@ -143,6 +143,10 @@ export default {
 				'Vat-USDC-A-line': 'USDC Ceiling',
 				'Vat-SAI-dust': 'Min DAI in SAI Vault',
 				'Vat-SAI-line': 'SAI Ceiling',
+				'Spot-BAT-A-mat': 'BAT col. ratio',
+				'Spot-ETH-A-mat': 'ETH col. ratio',
+				'Spot-USDC-A-mat': 'USDC col. ratio',
+				'Spot-SAI-mat': 'SAI col. ratio',
 				'Jug-base': 'Base stability fee',
 				'Jug-BAT-A-duty': 'BAT stability fee',
 				'Jug-ETH-A-duty': 'ETH stability fee',
@@ -197,6 +201,10 @@ export default {
 				'Vat-USDC-A-line': 'Vat[USDC-A]_line',
 				'Vat-SAI-dust': 'Vat[SAI]_dust',
 				'Vat-SAI-line': 'Vat[SAI]_line',
+				'Spot-BAT-A-mat': 'Spot[BAT-A]_mat',
+				'Spot-ETH-A-mat': 'Spot[ETH-A]_mat',
+				'Spot-USDC-A-mat': 'Spot[USDC-A]_mat',
+				'Spot-SAI-mat': 'Spot[SAI]_mat',
 				'Jug-base': 'Jug_base',
 				'Jug-BAT-A-duty': 'Jug[BAT-A]_duty',
 				'Jug-ETH-A-duty': 'Jug[ETH-A]_duty',
@@ -254,6 +262,10 @@ export default {
 				'Vat-USDC-A-line': this._formatDaiAmount,
 				'Vat-SAI-dust': this._formatDaiAmount,
 				'Vat-SAI-line': this._formatDaiAmount,
+				'Spot-BAT-A-mat': this._formatRatio,
+				'Spot-ETH-A-mat': this._formatRatio,
+				'Spot-USDC-A-mat': this._formatRatio,
+				'Spot-SAI-mat': this._formatRatio,
 				'Jug-base': this._formatWadRate,
 				'Jug-BAT-A-duty': this._formatFee,
 				'Jug-ETH-A-duty': this._formatFee,
@@ -305,6 +317,12 @@ export default {
 			const fee = rawFeeNumber.div(RAY).toNumber();
 			const apy = fee ** (60*60*24*365) - 1;
 			return `${apy.toFixed(6) * 100}%`;
+		},
+		_formatRatio(rawRatio) {
+			const rawRatioNumber = new BigNumber(rawRatio);
+			const ratio = rawRatioNumber.div(RAY).toNumber();
+			const percentage = 100 * ratio;
+			return `${percentage.toFixed(2)}%`;
 		},
 		_formatWadRate(rawRate) {
 			const rawRateNumber = new BigNumber(rawRate);
