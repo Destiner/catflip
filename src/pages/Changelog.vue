@@ -170,6 +170,11 @@ export default {
 				'Flop-tau': 'Debt auction duration',
 				'Flop-ttl': 'Debt auction bid duration',
 				'Flop-pad': 'Debt auction lot size increase',
+				'Vow-hump': 'Surplus auction buffer',
+				'Vow-bump': 'Surplus lot size',
+				'Vow-sump': 'Debt auction bid size',
+				'Vow-dump': 'Debt auction initial lot size',
+				'Vow-wait': 'Debt auction delay',
 				'Pause-delay': 'Timelock',
 			};
 			const paramName = paramMap[param];
@@ -213,6 +218,11 @@ export default {
 				'Flop-tau': 'Flop_tau',
 				'Flop-ttl': 'Flop_ttl',
 				'Flop-pad': 'Flop_pad',
+				'Vow-hump': 'Vow_hump',
+				'Vow-bump': 'Vow_bump',
+				'Vow-sump': 'Vow_sump',
+				'Vow-dump': 'Vow_dump',
+				'Vow-wait': 'Vow_wait',
 				'Pause-delay': 'Pause_delay',
 			};
 			const termName = termMap[param];
@@ -259,6 +269,11 @@ export default {
 				'Flop-tau': this._formatDuration,
 				'Flop-ttl': this._formatDuration,
 				'Flop-pad': this._formatWadRate,
+				'Vow-hump': this._formatDaiAmount,
+				'Vow-bump': this._formatDaiAmount,
+				'Vow-sump': this._formatDaiAmount,
+				'Vow-dump': this._formatAmount,
+				'Vow-wait': this._formatDuration,
 				'Pause-delay': this._formatDuration,
 			};
 			const formatFunc = formatFuncMap[param] || this._noFormat;
