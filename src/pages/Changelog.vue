@@ -109,7 +109,7 @@ export default {
 			return `https://etherscan.io/tx/${txHash}`;
 		},
 		async _loadChanges() {
-			const url = 'https://api.thegraph.com/subgraphs/id/Qmbvxsbr4e3xmuAqh3SzS3u4ZA912TyPoseVYKecFnMtAk';
+			const url = 'https://api.thegraph.com/subgraphs/name/destiner/maker';
 			const query = `
 				query {
 					changes(
