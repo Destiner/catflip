@@ -392,7 +392,6 @@ h1 {
 	width: 80%;
 	border: 1px solid #dedede;
 	background: white;
-	padding: 0.5rem;
 	margin-top: 1rem;
 }
 
@@ -400,6 +399,7 @@ h1 {
 	display: flex;
 	justify-content: space-between;
 	font-size: 18px;
+	padding: 0.5rem 0.5rem 0 0.5rem;
 }
 
 .changes {
@@ -407,10 +407,14 @@ h1 {
 }
 
 .change {
-	margin-top: 0.5rem;
+	padding: 0.5rem;
 	display: flex;
 	justify-content: space-between;
 	font-size: 14px;
+}
+
+.change:nth-child(even) {
+	background: #eceff1;
 }
 
 .term {
