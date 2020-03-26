@@ -38,6 +38,12 @@
 						>
 							Glossary
 						</a>
+						<a
+							href="https://mkrgov.science/"
+							target="_blank"
+						>
+							Governance dashboard
+						</a>
 					</div>
 				</div>
 			</div>
