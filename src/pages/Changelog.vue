@@ -13,7 +13,7 @@
 					</div>
 					<div>
 						{{ formatHash(spell.txHash) }}
-						<a :href="getEtherscanLink(spell.txHash)" target="_blank"><img :src="etherscanLogo" class="logo"></a>
+						<EtherscanIcon :link="getEtherscanLink(spell.txHash)" />
 					</div>
 				</div>
 				<div class="changes">
@@ -41,12 +41,15 @@
 </template>
 
 <script>
-import etherscanLogo from '../../public/etherscan.svg';
-
 import Converter from '../utils/converter.js';
 import Formatter from '../utils/formatter.js';
 
+import EtherscanIcon from '../components/EtherscanIcon.vue';
+
 export default {
+	components: {
+		EtherscanIcon,
+	},
 	data() {
 		return {
 			changes: [],
@@ -85,9 +88,6 @@ export default {
 			});
 			spells.reverse();
 			return spells;
-		},
-		etherscanLogo() {
-			return etherscanLogo
 		},
 	},
 	mounted() {
@@ -377,9 +377,5 @@ h1 {
 
 .term {
 	color: #818da4;
-}
-
-.logo {
-	height: 16px;
 }
 </style>

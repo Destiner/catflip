@@ -6,10 +6,10 @@
 				<h2>
 					Basic 
 					<span class="term">
-						(Vat <a :href="getEtherscanLink('vat')" target="_blank"><img :src="etherscanLogo" class="logo"></a>,
-						Jug <a :href="getEtherscanLink('jug')" target="_blank"><img :src="etherscanLogo" class="logo"></a>,
-						Pot <a :href="getEtherscanLink('pot')" target="_blank"><img :src="etherscanLogo" class="logo"></a>,
-						Spot <a :href="getEtherscanLink('spot')" target="_blank"><img :src="etherscanLogo" class="logo"></a>)
+						(Vat <EtherscanIcon :link="getEtherscanLink('vat')" />,
+						Jug <EtherscanIcon :link="getEtherscanLink('jug')" />,
+						Pot <EtherscanIcon :link="getEtherscanLink('pot')" />,
+						Spot <EtherscanIcon :link="getEtherscanLink('spot')" />)
 					</span>
 				</h2>
 				<div class="stats">
@@ -100,7 +100,7 @@
 				<h2>
 					Liquidation
 					<span class="term">
-						(Cat <a :href="getEtherscanLink('cat')" target="_blank"><img :src="etherscanLogo" class="logo"></a>)
+						(Cat <EtherscanIcon :link="getEtherscanLink('cat')" />)
 					</span>
 				</h2>
 				<div class="cards">
@@ -175,7 +175,7 @@
 				<h2>
 					Surplus auction
 					<span class="term">
-						(Flap <a :href="getEtherscanLink('flap')" target="_blank"><img :src="etherscanLogo" class="logo"></a>)
+						(Flap <EtherscanIcon :link="getEtherscanLink('flap')" />)
 					</span>
 				</h2>
 				<div class="stats">
@@ -219,7 +219,7 @@
 				<h2>
 					Debt auction
 					<span class="term">
-						(Flop <a :href="getEtherscanLink('flop')" target="_blank"><img :src="etherscanLogo" class="logo"></a>)
+						(Flop <EtherscanIcon :link="getEtherscanLink('flop')" />)
 					</span>
 				</h2>
 				<div class="stats">
@@ -274,7 +274,7 @@
 				<h2>
 					Accounting
 					<span class="term">
-						(Vow <a :href="getEtherscanLink('vow')" target="_blank"><img :src="etherscanLogo" class="logo"></a>)
+						(Vow <EtherscanIcon :link="getEtherscanLink('vow')" />)
 					</span>
 				</h2>
 				<div class="stats">
@@ -340,9 +340,9 @@
 				<h2>
 					Misc
 					<span class="term">
-						(Pause <a :href="getEtherscanLink('pause')" target="_blank"><img :src="etherscanLogo" class="logo"></a>,
-						ESM <a :href="getEtherscanLink('esm')" target="_blank"><img :src="etherscanLogo" class="logo"></a>,
-						End <a :href="getEtherscanLink('end')" target="_blank"><img :src="etherscanLogo" class="logo"></a>)
+						(Pause <EtherscanIcon :link="getEtherscanLink('pause')" />,
+						ESM <EtherscanIcon :link="getEtherscanLink('esm')" />,
+						End <EtherscanIcon :link="getEtherscanLink('end')" />)
 					</span>
 				</h2>
 				<div class="stats">
@@ -389,7 +389,7 @@
 import { ethers } from 'ethers';
 import ethcall from 'ethcall';
 
-import etherscanLogo from '../../public/etherscan.svg';
+import etherscanIcon from '../../public/etherscan.svg';
 
 import vatAbi from '../abi/vat.json';
 import jugAbi from '../abi/jug.json';
@@ -406,6 +406,8 @@ import endAbi from '../abi/end.json';
 
 import Formatter from '../utils/formatter.js';
 import Converter from '../utils/converter.js';
+
+import EtherscanIcon from '../components/EtherscanIcon.vue';
 
 const infuraKey = '2c010c2fdb8b4ef1a7617571553fc982';
 const provider = new ethers.providers.InfuraProvider('mainnet', infuraKey);
@@ -450,6 +452,9 @@ const esmContract = new ethcall.Contract(addresses.esm, esmAbi);
 const endContract = new ethcall.Contract(addresses.end, endAbi);
 
 export default {
+	components: {
+		EtherscanIcon,
+	},
 	data() {
 		return {
 			vatLine: 0,
@@ -476,8 +481,8 @@ export default {
 		};
 	},
 	computed: {
-		etherscanLogo() {
-			return etherscanLogo;
+		etherscanIcon() {
+			return etherscanIcon;
 		},
 	},
 	mounted() {
@@ -791,9 +796,5 @@ h2 {
 
 .row-label {
 	flex: 2;
-}
-
-.logo {
-	height: 16px;
 }
 </style>
