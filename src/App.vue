@@ -6,12 +6,12 @@
 				<div class="nav-section">
 					<div class="nav-links">
 						<router-link
-							:to='"/"'
+							:to="'/'"
 						>
 							System parameters
 						</router-link>
 						<router-link
-							:to='"/changelog"'
+							:to="'/changelog'"
 						>
 							Changelog
 						</router-link>
