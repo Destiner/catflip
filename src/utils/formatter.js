@@ -1,5 +1,3 @@
-import BigNumber from 'bignumber.js';
-
 class Formatter {
 	static formatFee(fee) {
 		const apy = fee ** (60*60*24*365) - 1;
