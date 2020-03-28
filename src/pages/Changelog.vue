@@ -41,13 +41,10 @@
 </template>
 
 <script>
-import BigNumber from 'bignumber.js';
-
 import etherscanLogo from '../../public/etherscan.svg';
 
-const TEN = new BigNumber(10);
-const WAD = TEN.pow(18);
-const RAY = TEN.pow(27);
+import Converter from '../utils/converter.js';
+import Formatter from '../utils/formatter.js';
 
 export default {
 	data() {
@@ -312,65 +309,26 @@ export default {
 		_noFormat(value) {
 			return value;
 		},
-		_formatFee(rawFee) {
-			const rawFeeNumber = new BigNumber(rawFee);
-			const fee = rawFeeNumber.div(RAY).toNumber();
-			const apy = fee ** (60*60*24*365) - 1;
-			return `${apy.toFixed(6) * 100}%`;
+		_formatAmount(value) {
+			return Formatter.formatAmount(Converter.fromWad(value));
 		},
-		_formatRatio(rawRatio) {
-			const rawRatioNumber = new BigNumber(rawRatio);
-			const ratio = rawRatioNumber.div(RAY).toNumber();
-			const percentage = 100 * ratio;
-			return `${percentage.toFixed(2)}%`;
+		_formatDaiAmount(value) {
+			return `${ Formatter.formatAmount(Converter.fromWad(Converter.fromRay(value))) } DAI`;
 		},
-		_formatWadRate(rawRate) {
-			const rawRateNumber = new BigNumber(rawRate);
-			const rate = rawRateNumber.div(WAD).toNumber();
-			const percentage = rate == 0
-				? 100 * rate
-				: 100 * (rate - 1);
-			return `${percentage.toFixed(2)}%`;
+		_formatRatio(value) {
+			return Formatter.formatRatio(Converter.fromRay(value));
 		},
-		_formatRayRate(rawRate) {
-			const rawRateNumber = new BigNumber(rawRate);
-			const rate = rawRateNumber.div(RAY).toNumber();
-			const percentage = rate == 0
-				? 100 * rate
-				: 100 * (rate - 1);
-			return `${percentage.toFixed(2)}%`;
+		_formatWadRate(value) {
+			return Formatter.formatRate(Converter.fromWad(value));
 		},
-		_formatDuration(duration) {
-			const mins = duration / 60;
-			if (duration % (60 * 60) != 0) {
-				return `${mins} mins`;
-			}
-			const hours = mins / 60;
-			if (duration % (24 * 60 * 60) != 0) {
-				return `${hours} hrs`;
-			}
-			const days = hours / 24;
-			return `${days} days`;
+		_formatRayRate(value) {
+			return Formatter.formatRate(Converter.fromRay(value));
 		},
-		_formatAmount(rawAmount) {
-			const rawAmountNumber = new BigNumber(rawAmount);
-			const amount = rawAmountNumber.div(WAD).toNumber();
-			const amountNumber = new Number(amount.toString());
-			const options = {
-				minimumFractionDigits: 0,
-				maximumFractionDigits: 0,
-			};
-			return `${amountNumber.toLocaleString(undefined, options)}`;
+		_formatFee(value) {
+			return Formatter.formatFee(Converter.fromRay(value));
 		},
-		_formatDaiAmount(rawAmount) {
-			const rawAmountNumber = new BigNumber(rawAmount);
-			const amount = rawAmountNumber.div(RAY).div(WAD).toNumber();
-			const amountNumber = new Number(amount.toString());
-			const options = {
-				minimumFractionDigits: 0,
-				maximumFractionDigits: 0,
-			};
-			return `${amountNumber.toLocaleString(undefined, options)} DAI`;
+		_formatDuration(value) {
+			return Formatter.formatDuration(value);
 		},
 	},
 };

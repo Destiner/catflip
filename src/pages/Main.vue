@@ -15,7 +15,7 @@
 				<div class="stats">
 					<div class="stat">
 						<div class="value">
-							{{ formatAmount(vatLine) }} DAI
+							{{ formatDaiAmount(vatLine) }} DAI
 						</div>
 						<div class="param">
 							<div>Ceiling</div>
@@ -26,7 +26,7 @@
 					</div>
 					<div class="stat">
 						<div class="value">
-							{{ formatFee(jugBase) }}
+							{{ formatWadRate(jugBase) }}
 						</div>
 						<div class="param">
 							<div>Base stabitily fee</div>
@@ -62,7 +62,7 @@
 						</div>
 						<div class="row">
 							<div class="row-number">
-								{{ formatAmount(ilk.line) }} DAI
+								{{ formatDaiAmount(ilk.line) }} DAI
 							</div>
 							<div class="row-label">
 								Ceiling <span class="term">(Vat_line)</span>
@@ -70,7 +70,7 @@
 						</div>
 						<div class="row">
 							<div class="row-number">
-								{{ formatAmount(ilk.dust) }} DAI
+								{{ formatDaiAmount(ilk.dust) }} DAI
 							</div>
 							<div class="row-label">
 								Min. per Vault <span class="term">(Vat_dust)</span>
@@ -114,7 +114,7 @@
 						</div>
 						<div class="row">
 							<div class="row-number">
-								{{ formatRate(cat.chop) }}
+								{{ formatRayRate(cat.chop) }}
 							</div>
 							<div class="row-label">
 								Penalty <span class="term">(chop)</span>
@@ -145,7 +145,7 @@
 						</div>
 						<div class="row">
 							<div class="row-number">
-								{{ formatRate(flip.beg) }}
+								{{ formatWadRate(flip.beg) }}
 							</div>
 							<div class="row-label">
 								Min. bid increase <span class="term">(beg)</span>
@@ -181,7 +181,7 @@
 				<div class="stats">
 					<div class="stat">
 						<div class="value">
-							{{ formatRate(flapBeg) }}
+							{{ formatWadRate(flapBeg) }}
 						</div>
 						<div class="param">
 							<div>Minimal bid increase</div>
@@ -225,7 +225,7 @@
 				<div class="stats">
 					<div class="stat">
 						<div class="value">
-							{{ formatRate(flopBeg) }}
+							{{ formatWadRate(flopBeg) }}
 						</div>
 						<div class="param">
 							<div>Minimal bid increase</div>
@@ -258,7 +258,7 @@
 					</div>
 					<div class="stat">
 						<div class="value">
-							{{ formatRate(flopPad) }}
+							{{ formatWadRate(flopPad) }}
 						</div>
 						<div class="param">
 							<div>Lot size increase</div>
@@ -280,7 +280,7 @@
 				<div class="stats">
 					<div class="stat">
 						<div class="value">
-							{{ formatAmount(hump) }} DAI
+							{{ formatDaiAmount(hump) }} DAI
 						</div>
 						<div class="param">
 							<div>Surplus auction buffer</div>
@@ -291,7 +291,7 @@
 					</div>
 					<div class="stat">
 						<div class="value">
-							{{ formatAmount(bump) }} DAI
+							{{ formatDaiAmount(bump) }} DAI
 						</div>
 						<div class="param">
 							<div>Surplus lot size</div>
@@ -302,7 +302,7 @@
 					</div>
 					<div class="stat">
 						<div class="value">
-							{{ formatAmount(sump) }} DAI
+							{{ formatDaiAmount(sump) }} DAI
 						</div>
 						<div class="param">
 							<div>Debt auction bid size</div>
@@ -386,7 +386,6 @@
 </template>
 
 <script>
-import BigNumber from 'bignumber.js';
 import { ethers } from 'ethers';
 import ethcall from 'ethcall';
 
@@ -404,6 +403,9 @@ import vowAbi from '../abi/vow.json';
 import pauseAbi from '../abi/pause.json';
 import esmAbi from '../abi/esm.json';
 import endAbi from '../abi/end.json';
+
+import Formatter from '../utils/formatter.js';
+import Converter from '../utils/converter.js';
 
 const infuraKey = '2c010c2fdb8b4ef1a7617571553fc982';
 const provider = new ethers.providers.InfuraProvider('mainnet', infuraKey);
@@ -447,15 +449,11 @@ const pauseContract = new ethcall.Contract(addresses.pause, pauseAbi);
 const esmContract = new ethcall.Contract(addresses.esm, esmAbi);
 const endContract = new ethcall.Contract(addresses.end, endAbi);
 
-const TEN = new BigNumber(10);
-const WAD = TEN.pow(18);
-const RAY = TEN.pow(27);
-
 export default {
 	data() {
 		return {
 			vatLine: 0,
-			jugBase: 1,
+			jugBase: 0,
 			potDsr: 1,
 			ilks: [],
 			cats: [],
@@ -492,39 +490,26 @@ export default {
 		this._loadMisc();
 	},
 	methods: {
-		formatFee(fee) {
-			const apy = fee ** (60*60*24*365) - 1;
-			return `${apy.toFixed(6) * 100}%`;
+		formatAmount(value) {
+			return Formatter.formatMultiplier(Converter.fromWad(value));
 		},
-		formatRate(rate) {
-			const percentage = rate == 0
-				? 100 * rate
-				: 100 * (rate - 1);
-			return `${percentage.toFixed(2)}%`;
+		formatDaiAmount(value) {
+			return Formatter.formatMultiplier(Converter.fromWad(Converter.fromRay(value)));
 		},
-		formatRatio(ratio) {
-			return `${ratio * 100}%`;
+		formatRatio(value) {
+			return Formatter.formatRatio(Converter.fromRay(value));
 		},
-		formatDuration(duration) {
-			const mins = duration / 60;
-			if (duration % (60 * 60) != 0) {
-				return `${mins} mins`;
-			}
-			const hours = mins / 60;
-			if (duration % (24 * 60 * 60) != 0) {
-				return `${hours} hrs`;
-			}
-			const days = hours / 24;
-			return `${days} days`;
+		formatRayRate(value) {
+			return Formatter.formatRate(Converter.fromRay(value));
 		},
-		formatAmount(amount) {
-			if (amount > 1e6) {
-				return `${amount/1e6}M`;
-			}
-			if (amount > 1e3) {
-				return `${amount/1e3}K`;
-			}
-			return amount;
+		formatWadRate(value) {
+			return Formatter.formatRate(Converter.fromWad(value));
+		},
+		formatFee(value) {
+			return Formatter.formatFee(Converter.fromRay(value));
+		},
+		formatDuration(value) {
+			return Formatter.formatDuration(value);
 		},
 		getEtherscanLink(contract) {
 			const contractAddress = addresses[contract];
@@ -537,16 +522,12 @@ export default {
 
 			const data = await ethcall.all([vatLineCall, jugBaseCall, potDsrCall], provider);
 			const vatLine = data[0];
-			// const jugBase = data[1];
+			const jugBase = data[1];
 			const potDsr = data[2];
 
-			const vatLineNumber = new BigNumber(vatLine);
-			// const jugBaseNumber = new BigNumber(jugBase);
-			const potDsrNumber = new BigNumber(potDsr);
-
-			this.vatLine = vatLineNumber.div(RAY).div(WAD).toNumber();
-			// this.jugBase = jugBaseNumber.div(RAY).toNumber();
-			this.potDsr = potDsrNumber.div(RAY).toNumber();
+			this.vatLine = vatLine;
+			this.jugBase = jugBase;
+			this.potDsr = potDsr;
 		},
 		async _loadCollaterals() {
 			const count = ilkIds.length;
@@ -573,18 +554,13 @@ export default {
 				const dust = data[count + index].dust;
 				const mat = data[2 * count + index].mat;
 
-				const dutyNumber = new BigNumber(duty);
-				const lineNumber = new BigNumber(line);
-				const dustNumber = new BigNumber(dust);
-				const matNumber = new BigNumber(mat);
-
 				const ilk = {
 					id: `ilk-${id}`,
 					asset: id,
-					duty: dutyNumber.div(RAY).toNumber(),
-					line: lineNumber.div(RAY).div(WAD).toNumber(),
-					dust: dustNumber.div(RAY).div(WAD).toNumber(),
-					mat: matNumber.div(RAY).toNumber(),
+					duty,
+					line,
+					dust,
+					mat,
 				};
 				return ilk;
 			});
@@ -602,14 +578,11 @@ export default {
 				const index = ilkIds.indexOf(id);
 				const { chop, lump } = data[index];
 
-				const chopNumber = new BigNumber(chop);
-				const lumpNumber = new BigNumber(lump);
-
 				const flip = {
 					id: `cat-${id}`,
 					asset: id,
-					chop: chopNumber.div(RAY).toNumber(),
-					lump: lumpNumber.div(WAD).toNumber(),
+					chop,
+					lump,
 				};
 				return flip;
 			});
@@ -643,16 +616,12 @@ export default {
 				const ttl = data[count + index];
 				const tau = data[2 * count + index];
 
-				const begNumber = new BigNumber(beg);
-				const ttlNumber = new BigNumber(ttl);
-				const tauNumber = new BigNumber(tau);
-
 				const flip = {
 					id: `flip-${id}`,
 					asset: id,
-					beg: begNumber.div(WAD).toNumber(),
-					ttl: ttlNumber.toNumber(),
-					tau: tauNumber.toNumber(),
+					beg,
+					ttl,
+					tau,
 				};
 				return flip;
 			});
@@ -684,21 +653,13 @@ export default {
 			const flopTau = data[5];
 			const flopPad = data[6];
 
-			const flapBegNumber = new BigNumber(flapBeg);
-			const flapTtlNumber = new BigNumber(flapTtl);
-			const flapTauNumber = new BigNumber(flapTau);
-			const flopBegNumber = new BigNumber(flopBeg);
-			const flopTtlNumber = new BigNumber(flopTtl);
-			const flopTauNumber = new BigNumber(flopTau);
-			const flopPadNumber = new BigNumber(flopPad);
-
-			this.flapBeg = flapBegNumber.div(WAD).toNumber();
-			this.flapTtl = flapTtlNumber.toNumber();
-			this.flapTau = flapTauNumber.toNumber();
-			this.flopBeg = flopBegNumber.div(WAD).toNumber();
-			this.flopTtl = flopTtlNumber.toNumber();
-			this.flopTau = flopTauNumber.toNumber();
-			this.flopPad = flopPadNumber.div(WAD).toNumber();
+			this.flapBeg = flapBeg;
+			this.flapTtl = flapTtl;
+			this.flapTau = flapTau;
+			this.flopBeg = flopBeg;
+			this.flopTtl = flopTtl;
+			this.flopTau = flopTau;
+			this.flopPad = flopPad;
 		},
 		async _loadVow() {
 			const humpCall = vowContract.hump();
@@ -721,17 +682,11 @@ export default {
 			const dump = data[3];
 			const wait = data[4];
 
-			const humpNumber = new BigNumber(hump);
-			const bumpNumber = new BigNumber(bump);
-			const sumpNumber = new BigNumber(sump);
-			const dumpNumber = new BigNumber(dump);
-			const waitNumber = new BigNumber(wait);
-
-			this.hump = humpNumber.div(RAY).div(WAD).toNumber();
-			this.bump = bumpNumber.div(RAY).div(WAD).toNumber();
-			this.sump = sumpNumber.div(RAY).div(WAD).toNumber();
-			this.dump = dumpNumber.div(WAD).toNumber();
-			this.wait = waitNumber.toNumber();
+			this.hump = hump;
+			this.bump = bump;
+			this.sump = sump;
+			this.dump = dump;
+			this.wait = wait;
 		},
 		async _loadMisc() {
 			const pauseDelayCall = pauseContract.delay();
@@ -749,13 +704,9 @@ export default {
 			const esmMin = data[1];
 			const endWait = data[2];
 
-			const pauseDelayNumber = new BigNumber(pauseDelay);
-			const esmMinNumber = new BigNumber(esmMin);
-			const endWaitNumber = new BigNumber(endWait);
-
-			this.pauseDelay = pauseDelayNumber.toNumber();
-			this.esmMin = esmMinNumber.div(WAD).toNumber();
-			this.endWait = endWaitNumber.toNumber();
+			this.pauseDelay = pauseDelay;
+			this.esmMin = esmMin;
+			this.endWait = endWait;
 		},
 	},
 };
