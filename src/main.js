@@ -5,12 +5,14 @@ import App from './App.vue';
 
 import Main from './pages/Main.vue';
 import Changelog from './pages/Changelog.vue';
+import Wards from './pages/Wards.vue';
 
 Vue.use(VueRouter);
 
 const routes = [
 	{ path: '/', component: Main },
 	{ path: '/changelog', component: Changelog },
+	{ path: '/wards', component: Wards },
 ];
 
 const router = new VueRouter({
