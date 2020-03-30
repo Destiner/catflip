@@ -720,6 +720,7 @@ export default {
 <style scoped>
 h1 {
 	text-align: center;
+	margin-top: 1rem;
 }
 
 h2 {
@@ -769,6 +770,7 @@ h2 {
 	display: flex;
 	margin: 1em 0;
 	justify-content: space-evenly;
+	flex-wrap: wrap;
 }
 
 .card {

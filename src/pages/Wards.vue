@@ -144,6 +144,7 @@ export default {
 <style scoped>
 h1 {
 	text-align: center;
+	margin-top: 1rem;
 }
 
 #contracts {
@@ -190,5 +191,11 @@ h1 {
 
 .address {
 	color: #818da4;
+}
+
+@media all and (max-width: 768px) {
+	.contract {
+		min-width: 300px;
+	}
 }
 </style>

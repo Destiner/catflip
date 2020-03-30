@@ -337,6 +337,7 @@ export default {
 <style scoped>
 h1 {
 	text-align: center;
+	margin-top: 1rem;
 }
 
 #spells {
@@ -377,5 +378,11 @@ h1 {
 
 .term {
 	color: #818da4;
+}
+
+@media all and (max-width: 768px) {
+	.change {
+		flex-direction: column;
+	}
 }
 </style>

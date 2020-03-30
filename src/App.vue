@@ -1,7 +1,7 @@
 <template>
 	<div id="app">
 		<section id="nav">
-			<h1>Catflip</h1>
+			<h1 id="app-title">Catflip</h1>
 			<div>
 				<div class="nav-section">
 					<div class="nav-links">
@@ -22,7 +22,7 @@
 						</router-link>
 					</div>
 				</div>
-				<div class="nav-section">
+				<div class="nav-section nav-section-secondary">
 					<h2>Links</h2>
 					<div class="nav-links">
 						<a
@@ -78,7 +78,7 @@ body {
 
 h1 {
 	font-size: 24px;
-	margin: 1rem 0 0 0;
+	margin: 0;
 }
 
 h1,
@@ -91,9 +91,9 @@ h2 {
 }
 
 #nav {
-	width: 184px;
+	width: 192px;
 	background: #000638;
-	padding-left: 1rem;
+	padding: 1rem;
 	color: #d6daea;
 	font-size: 14px;
 }
@@ -122,5 +122,41 @@ h2 {
 
 #content {
 	width: calc(100% - 200px);
+}
+
+@media all and (max-width: 768px) {
+	#app {
+		flex-direction: column;
+	}
+
+	#nav {
+		width: 100%;
+		box-sizing: border-box;
+	}
+
+	#content {
+		width: 100%;
+	}
+
+	#app-title {
+		display: none;
+	}
+
+	.nav-section {
+		margin-top: 0;
+	}
+
+	.nav-section-secondary {
+		display: none;
+	}
+
+	.nav-links {
+		flex-direction: row;
+		justify-content: space-between;
+	}
+
+	.nav-links > a {
+		margin-top: 0;
+	}
 }
 </style>
