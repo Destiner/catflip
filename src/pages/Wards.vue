@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<h1>Wards</h1>
-		<div id="term">Addresses that are allowed to call auth methods of the corresponding contract</div>
+		<div id="term">Addresses that are allowed to call auth methods</div>
 		<div id="contracts">
 			<div
 				v-for="contract in contracts"
