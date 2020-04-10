@@ -106,7 +106,7 @@ export default {
 			return `https://etherscan.io/tx/${txHash}`;
 		},
 		async _loadChanges() {
-			const url = 'https://api.thegraph.com/subgraphs/name/destiner/maker';
+			const url = 'https://api.thegraph.com/subgraphs/name/graphitetools/maker';
 			const query = `
 				query {
 					changes(

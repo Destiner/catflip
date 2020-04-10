@@ -103,7 +103,7 @@ export default {
 			return contractNameMap[address];
 		},
 		async _loadWards() {
-			const url = 'https://api.thegraph.com/subgraphs/name/destiner/maker';
+			const url = 'https://api.thegraph.com/subgraphs/name/graphitetools/maker';
 			const query = `
 				query {
 					authorities {
