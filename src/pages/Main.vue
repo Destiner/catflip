@@ -521,11 +521,14 @@ export default {
 			return `https://etherscan.io/address/${contractAddress}`;
 		},
 		async _loadBase() {
+			const ethcallProvider = new ethcall.Provider();
+			await ethcallProvider.init(provider);
+
 			const vatLineCall = vatContract.Line();
 			const jugBaseCall = jugContract.base();
 			const potDsrCall = potContract.dsr();
 
-			const data = await ethcall.all([vatLineCall, jugBaseCall, potDsrCall], provider);
+			const data = await ethcallProvider.all([vatLineCall, jugBaseCall, potDsrCall]);
 			const vatLine = data[0];
 			const jugBase = data[1];
 			const potDsr = data[2];
@@ -535,6 +538,9 @@ export default {
 			this.potDsr = potDsr;
 		},
 		async _loadCollaterals() {
+			const ethcallProvider = new ethcall.Provider();
+			await ethcallProvider.init(provider);
+
 			const count = ilkIds.length;
 			const collateralIdBytes = ilkIds.map(id =>
 				ethers.utils.formatBytes32String(id)
@@ -550,7 +556,7 @@ export default {
 			);
 			const ilkCalls = jugIlkCalls.concat(vatIlkCalls).concat(spotIlkCalls);
 
-			const data = await ethcall.all(ilkCalls, provider);
+			const data = await ethcallProvider.all(ilkCalls);
 
 			this.ilks = ilkIds.map(id => {
 				const index = ilkIds.indexOf(id);
@@ -571,6 +577,9 @@ export default {
 			});
 		},
 		async _loadCats() {
+			const ethcallProvider = new ethcall.Provider();
+			await ethcallProvider.init(provider);
+
 			const collateralIdBytes = ilkIds.map(id =>
 				ethers.utils.formatBytes32String(id)
 			);
@@ -578,7 +587,7 @@ export default {
 				catContract.ilks(ilk)
 			);
 
-			const data = await ethcall.all(catIlkCalls, provider);
+			const data = await ethcallProvider.all(catIlkCalls);
 			this.cats = ilkIds.map(id => {
 				const index = ilkIds.indexOf(id);
 				const { chop, lump } = data[index];
@@ -593,6 +602,9 @@ export default {
 			});
 		},
 		async _loadFlips() {
+			const ethcallProvider = new ethcall.Provider();
+			await ethcallProvider.init(provider);
+
 			const flipIds = Object.keys(addresses.flip);
 			const count = flipIds.length;
 			const flipContracts = flipIds.map(flipId => {
@@ -614,7 +626,7 @@ export default {
 			});
 			const flipCalls = begCalls.concat(ttlCalls).concat(tauCalls);
 
-			const data = await ethcall.all(flipCalls, provider);
+			const data = await ethcallProvider.all(flipCalls);
 			this.flips = flipIds.map(id => {
 				const index = flipIds.indexOf(id);
 				const beg = data[index];
@@ -632,6 +644,9 @@ export default {
 			});
 		},
 		async _loadFlapFlop() {
+			const ethcallProvider = new ethcall.Provider();
+			await ethcallProvider.init(provider);
+
 			const flapBegCall = flapContract.beg();
 			const flapTtlCall = flapContract.ttl();
 			const flapTauCall = flapContract.tau();
@@ -649,7 +664,8 @@ export default {
 				flopTauCall,
 				flopPadCall,
 			];
-			const data = await ethcall.all(calls, provider);
+
+			const data = await ethcallProvider.all(calls);
 			const flapBeg = data[0];
 			const flapTtl = data[1];
 			const flapTau = data[2];
@@ -667,6 +683,9 @@ export default {
 			this.flopPad = flopPad;
 		},
 		async _loadVow() {
+			const ethcallProvider = new ethcall.Provider();
+			await ethcallProvider.init(provider);
+
 			const humpCall = vowContract.hump();
 			const bumpCall = vowContract.bump();
 			const sumpCall = vowContract.sump();
@@ -680,7 +699,8 @@ export default {
 				dumpCall,
 				waitCall,
 			];
-			const data = await ethcall.all(calls, provider);
+
+			const data = await ethcallProvider.all(calls);
 			const hump = data[0];
 			const bump = data[1];
 			const sump = data[2];
@@ -694,6 +714,9 @@ export default {
 			this.wait = wait;
 		},
 		async _loadMisc() {
+			const ethcallProvider = new ethcall.Provider();
+			await ethcallProvider.init(provider);
+
 			const pauseDelayCall = pauseContract.delay();
 			const esmMinCall = esmContract.min();
 			const endWaitCall = endContract.wait();
@@ -704,7 +727,7 @@ export default {
 				endWaitCall,
 			];
 
-			const data = await ethcall.all(calls, provider);
+			const data = await ethcallProvider.all(calls);
 			const pauseDelay = data[0];
 			const esmMin = data[1];
 			const endWait = data[2];
