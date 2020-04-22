@@ -66,13 +66,18 @@ export default {
 				if (!(txHash in spellMap)) {
 					spellMap[txHash] = [];
 				}
+				const oldValue = this._getValue(param, values[param]);
+				const newValue = this._getValue(param, value);
+				if (oldValue == newValue) {
+					continue;
+				}
 				spellMap[txHash].push({
 					id,
 					timestamp,
 					param: this._getParamName(param),
 					term: this._getTermName(param),
-					oldValue: this._getValue(param, values[param]),
-					newValue: this._getValue(param, value),
+					oldValue,
+					newValue,
 				});
 				values[param] = value;
 			}
