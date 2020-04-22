@@ -73,7 +73,7 @@ export default {};
 
 body {
 	margin: 0;
-	font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', Helvetica, Arial, sans-serif;
+	font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
 	background: #f7f8fc;
 	color: #3a4359;
 }
