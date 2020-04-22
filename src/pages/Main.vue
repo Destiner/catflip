@@ -389,8 +389,6 @@
 import { ethers } from 'ethers';
 import ethcall from 'ethcall';
 
-import etherscanIcon from '../../public/etherscan.svg';
-
 import vatAbi from '../abi/vat.json';
 import jugAbi from '../abi/jug.json';
 import spotAbi from '../abi/spot.json';
@@ -479,11 +477,6 @@ export default {
 			esmMin: 0,
 			endWait: 0,
 		};
-	},
-	computed: {
-		etherscanIcon() {
-			return etherscanIcon;
-		},
 	},
 	mounted() {
 		this._loadBase();
