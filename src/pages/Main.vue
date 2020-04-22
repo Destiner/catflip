@@ -795,7 +795,7 @@ h2 {
 	width: 240px;
 	border: 1px solid #dedede;
 	padding: 0.25em 0.5em;
-	flex-wrap: wrap;
+	margin: 0.25em;
 }
 
 .card-header {
