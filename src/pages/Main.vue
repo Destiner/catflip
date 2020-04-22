@@ -522,9 +522,9 @@ export default {
 			const potDsrCall = potContract.dsr();
 
 			const data = await ethcallProvider.all([vatLineCall, jugBaseCall, potDsrCall]);
-			const vatLine = data[0];
-			const jugBase = data[1];
-			const potDsr = data[2];
+			const vatLine = data[0].toString();
+			const jugBase = data[1].toString();
+			const potDsr = data[2].toString();
 
 			this.vatLine = vatLine;
 			this.jugBase = jugBase;
@@ -553,10 +553,10 @@ export default {
 
 			this.ilks = ilkIds.map(id => {
 				const index = ilkIds.indexOf(id);
-				const duty = data[index].duty;
-				const line = data[count + index].line;
-				const dust = data[count + index].dust;
-				const mat = data[2 * count + index].mat;
+				const duty = data[index].duty.toString();
+				const line = data[count + index].line.toString();
+				const dust = data[count + index].dust.toString();
+				const mat = data[2 * count + index].mat.toString();
 
 				const ilk = {
 					id: `ilk-${id}`,
@@ -583,7 +583,9 @@ export default {
 			const data = await ethcallProvider.all(catIlkCalls);
 			this.cats = ilkIds.map(id => {
 				const index = ilkIds.indexOf(id);
-				const { chop, lump } = data[index];
+				const cat = data[index];
+				const chop = cat.chop.toString();
+				const lump = cat.lump.toString();
 
 				const flip = {
 					id: `cat-${id}`,
@@ -622,7 +624,7 @@ export default {
 			const data = await ethcallProvider.all(flipCalls);
 			this.flips = flipIds.map(id => {
 				const index = flipIds.indexOf(id);
-				const beg = data[index];
+				const beg = data[index].toString();
 				const ttl = data[count + index];
 				const tau = data[2 * count + index];
 
@@ -667,13 +669,13 @@ export default {
 			const flopTau = data[5];
 			const flopPad = data[6];
 
-			this.flapBeg = flapBeg;
+			this.flapBeg = flapBeg.toString();
 			this.flapTtl = flapTtl;
 			this.flapTau = flapTau;
-			this.flopBeg = flopBeg;
+			this.flopBeg = flopBeg.toString();
 			this.flopTtl = flopTtl;
 			this.flopTau = flopTau;
-			this.flopPad = flopPad;
+			this.flopPad = flopPad.toString();
 		},
 		async _loadVow() {
 			const ethcallProvider = new ethcall.Provider();
@@ -700,11 +702,11 @@ export default {
 			const dump = data[3];
 			const wait = data[4];
 
-			this.hump = hump;
-			this.bump = bump;
-			this.sump = sump;
-			this.dump = dump;
-			this.wait = wait;
+			this.hump = hump.toString();
+			this.bump = bump.toString();
+			this.sump = sump.toString();
+			this.dump = dump.toString();
+			this.wait = wait.toNumber();
 		},
 		async _loadMisc() {
 			const ethcallProvider = new ethcall.Provider();
@@ -725,9 +727,9 @@ export default {
 			const esmMin = data[1];
 			const endWait = data[2];
 
-			this.pauseDelay = pauseDelay;
-			this.esmMin = esmMin;
-			this.endWait = endWait;
+			this.pauseDelay = pauseDelay.toNumber();
+			this.esmMin = esmMin.toString();
+			this.endWait = endWait.toNumber();
 		},
 	},
 };
