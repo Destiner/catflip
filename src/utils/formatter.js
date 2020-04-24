@@ -38,6 +38,14 @@ class Formatter {
 		return amountNumber.toLocaleString(undefined, options);
 	}
 
+	static formatAddress(address, length=8) {
+		if (!address) {
+			return '';
+		}
+		const ellipsizedAddress = `${address.substr(0, 2 + length / 2)}…${address.substr(42 - length / 2)}`;
+		return ellipsizedAddress;
+	}
+
 	static formatMultiplier(amount) {
 		if (amount > 1e6) {
 			return `${amount/1e6}M`;
