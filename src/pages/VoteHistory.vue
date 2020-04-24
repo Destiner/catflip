@@ -14,6 +14,7 @@
 					<th
 						v-for="spell in spells"
 						:key="spell"
+						:class="{ 'hat': isHat(spell) }"
 					>
 						{{ formatSpell(spell) }}
 					</th>
@@ -55,6 +56,9 @@ export default {
 		},
 		spells() {
 			return this.spellData.map(data => data.id);
+		},
+		hat() {
+			return this.spells[0];
 		},
 		votes() {
 			const votes = {};
@@ -108,6 +112,9 @@ export default {
 		this.spellData = await this._loadSpells();
 	},
 	methods: {
+		isHat(spell) {
+			return this.hat == spell;
+		},
 		formatSpell(spell) {
 			return Formatter.formatAddress(spell, 4);
 		},
@@ -278,5 +285,9 @@ table {
 	margin-top: 0.5em;
 	text-align: center;
 	color: #818da4;
+}
+
+.hat {
+	font-weight: bold;
 }
 </style>
