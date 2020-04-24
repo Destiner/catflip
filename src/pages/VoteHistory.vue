@@ -5,6 +5,7 @@
 			(Last 20 lifted executives)
 		</div>
 		<div id="votes">
+			<div>Rows = voters, colums = spells, %% = voter share (at the moment of lift).</div>
 			<table>
 				<tr>
 					<th>
@@ -270,7 +271,7 @@ table {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	margin: 1rem 0;
+	margin: 3rem 0 1rem 0;
 }
 
 #term {
