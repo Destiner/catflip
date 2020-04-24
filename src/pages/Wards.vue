@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<h1>Wards</h1>
-		<div id="term">
+		<div id="subtitle">
 			Addresses that are allowed to call auth methods
 		</div>
 		<div id="contracts">
@@ -185,7 +185,7 @@ h1 {
 	background: #eceff1;
 }
 
-#term {
+#subtitle {
 	margin-top: 0.5em;
 	text-align: center;
 	color: #818da4;

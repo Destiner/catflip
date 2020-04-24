@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<h1>Vote history</h1>
-		<div id="term">
+		<div id="subtitle">
 			(Recent lifted executives)
 		</div>
 		<div id="votes">
@@ -283,7 +283,7 @@ table {
 	margin: 3rem 0 1rem 0;
 }
 
-#term {
+#subtitle {
 	margin-top: 0.5em;
 	text-align: center;
 	color: #818da4;
