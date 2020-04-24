@@ -20,14 +20,15 @@
 					</th>
 				</tr>
 				<tr
-					v-for="voter in voters"
-					:key="voter"
+					v-for="voter in holderData"
+					:key="voter.address"
 				>
-					<td>
-						{{ formatVoter(voter) }}
+					<td class="voter">
+						<div>{{ formatVoter(voter.address) }}</div>
+						<div>{{ formatAmount(voter.locked) }} MKR</div>
 					</td>
 					<td
-						v-for="(voterVote, index) in votes[voter]"
+						v-for="(voterVote, index) in votes[voter.address]"
 						:key="index"
 					>
 						{{ formatVote(voterVote) }}
@@ -51,9 +52,6 @@ export default {
 		};
 	},
 	computed: {
-		voters() {
-			return this.holderData.map(data => data.address);
-		},
 		spells() {
 			return this.spellData.map(data => data.id);
 		},
@@ -62,10 +60,11 @@ export default {
 		},
 		votes() {
 			const votes = {};
-			for (const voter of this.voters) {
-				votes[voter] = {};
+			for (const voter of this.holderData) {
+				const { address: voterAddress } = voter;
+				votes[voterAddress] = {};
 				for (const spell of this.spells) {
-					votes[voter][spell] = 0;
+					votes[voterAddress][spell] = 0;
 				}
 			}
 			for (const data of this.spellData) {
@@ -114,6 +113,9 @@ export default {
 	methods: {
 		isHat(spell) {
 			return this.hat == spell;
+		},
+		formatAmount(amount) {
+			return Formatter.formatAmount(amount);
 		},
 		formatSpell(spell) {
 			return Formatter.formatAddress(spell, 4);
@@ -285,6 +287,12 @@ table {
 	margin-top: 0.5em;
 	text-align: center;
 	color: #818da4;
+}
+
+.voter {
+	width: 210px;
+	display: flex;
+	justify-content: space-between;
 }
 
 .hat {
