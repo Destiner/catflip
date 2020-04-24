@@ -2,7 +2,7 @@
 	<div>
 		<h1>Vote history</h1>
 		<div id="term">
-			(Last 20 lifted executives)
+			(Recent lifted executives)
 		</div>
 		<div id="votes">
 			<div>Rows = voters, colums = spells, %% = voter share (at the moment of lift).</div>
