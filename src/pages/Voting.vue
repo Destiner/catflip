@@ -16,11 +16,22 @@
 					</th>
 					<th
 						v-for="spell in spells"
-						:key="spell"
-						:class="{ 'hat': isHat(spell) }"
+						:key="spell.address"
+						:class="{ 'hat': isHat(spell.address) }"
 					>
-						{{ formatSpell(spell) }}
+						{{ formatSpell(spell.address) }}
 					</th>
+				</tr>
+				<tr>
+					<td>
+						Passed with (1000s of MKR)
+					</td>
+					<td
+						v-for="spell in spells"
+						:key="spell.address"
+					>
+						{{ formatLifted(spell.liftedWith) }}
+					</td>
 				</tr>
 				<tr
 					v-for="voter in holderData"
@@ -56,18 +67,24 @@ export default {
 	},
 	computed: {
 		spells() {
-			return this.spellData.map(data => data.id);
+			return this.spellData.map(data => { 
+				return {
+					address: data.id,
+					liftedWith: data.liftedWith,
+				};
+			});
 		},
 		hat() {
-			return this.spells[0];
+			return this.spells[0].address;
 		},
 		votes() {
 			const votes = {};
 			for (const voter of this.holderData) {
-				const { address: voterAddress } = voter;
+				const voterAddress = voter.address;
 				votes[voterAddress] = {};
 				for (const spell of this.spells) {
-					votes[voterAddress][spell] = 0;
+					const spellAddress = spell.address;
+					votes[voterAddress][spellAddress] = 0;
 				}
 			}
 			for (const data of this.spellData) {
@@ -130,6 +147,9 @@ export default {
 		},
 		formatAmount(amount) {
 			return Formatter.formatAmount(amount);
+		},
+		formatLifted(amount) {
+			return Formatter.formatMultiplier(amount, 0);
 		},
 		formatSpell(spell) {
 			return Formatter.formatAddress(spell, 4);
