@@ -4,7 +4,10 @@
 		<div id="subtitle">
 			Recently passed executives
 		</div>
-		<div id="votes">
+		<div
+			v-if="votesLoaded"
+			id="votes"
+		>
 			<div>Rows = voters, colums = spells, %% = voter share.</div>
 			<table>
 				<tr>
@@ -101,8 +104,19 @@ export default {
 					}
 				}
 			}
-
 			return votes;
+		},
+		votesLoaded() {
+			const holders = Object.keys(this.votes);
+			if (holders.length == 0) {
+				return false;
+			}
+			const holder = holders[0];
+			const holderVotes = Object.keys(this.votes[holder]);
+			if (holderVotes.length == 0) {
+				return false;
+			}
+			return true;
 		},
 	},
 	async mounted() {
