@@ -5,7 +5,7 @@
 			Recently passed executives
 		</div>
 		<div id="votes">
-			<div>Rows = voters, colums = spells, %% = voter share (at the moment of lift).</div>
+			<div>Rows = voters, colums = spells, %% = voter share.</div>
 			<table>
 				<tr>
 					<th>
