@@ -13,14 +13,14 @@
 							System parameters
 						</router-link>
 						<router-link
-							:to="'/vote-history'"
-						>
-							Vote history
-						</router-link>
-						<router-link
 							:to="'/changelog'"
 						>
 							Changelog
+						</router-link>
+						<router-link
+							:to="'/voting'"
+						>
+							Voting
 						</router-link>
 						<router-link
 							:to="'/wards'"

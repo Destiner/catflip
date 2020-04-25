@@ -4,7 +4,7 @@ import VueRouter from 'vue-router';
 import App from './App.vue';
 
 import Main from './pages/Main.vue';
-import VoteHistory from './pages/VoteHistory.vue';
+import Voting from './pages/Voting.vue';
 import Changelog from './pages/Changelog.vue';
 import Wards from './pages/Wards.vue';
 
@@ -12,8 +12,8 @@ Vue.use(VueRouter);
 
 const routes = [
 	{ path: '/', component: Main },
-	{ path: '/vote-history', component: VoteHistory },
 	{ path: '/changelog', component: Changelog },
+	{ path: '/voting', component: Voting },
 	{ path: '/wards', component: Wards },
 ];
 

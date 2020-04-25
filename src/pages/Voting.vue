@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<h1>Vote history</h1>
+		<h1>Voting</h1>
 		<div id="subtitle">
 			Recent lifted executives
 		</div>
