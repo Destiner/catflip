@@ -46,14 +46,16 @@ class Formatter {
 		return ellipsizedAddress;
 	}
 
-	static formatMultiplier(amount) {
+	static formatMultiplier(amount, decimals=2) {
 		if (amount > 1e6) {
-			return `${amount/1e6}M`;
+			const shortAmount = amount/1e6;
+			return `${shortAmount.toFixed(decimals)}M`;
 		}
 		if (amount > 1e3) {
-			return `${amount/1e3}K`;
+			const shortAmount = amount/1e3;
+			return `${shortAmount.toFixed(decimals)}K`;
 		}
-		return amount;
+		return amount.toFixed(decimals);
 	}
 }
 
