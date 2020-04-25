@@ -19,7 +19,12 @@
 						:key="spell.address"
 						:class="{ 'hat': isHat(spell.address) }"
 					>
-						{{ formatSpell(spell.address) }}
+						<a
+							:href="getEtherscanLink(spell.address)"
+							target="_blank"
+						>
+							{{ formatSpell(spell.address) }}
+						</a>
 					</th>
 				</tr>
 				<tr
@@ -27,7 +32,14 @@
 					:key="voter.address"
 				>
 					<td class="voter">
-						<div>{{ formatVoter(voter.address) }}</div>
+						<div>
+							<a
+								:href="getEtherscanLink(voter.address)"
+								target="_blank"
+							>
+								{{ formatVoter(voter.address) }}
+							</a>
+						</div>
 						<div>{{ formatAmount(voter.locked) }} MKR</div>
 					</td>
 					<td
@@ -153,6 +165,9 @@ export default {
 			}
 			return Formatter.formatRatio(vote);
 		},
+		getEtherscanLink(address) {
+			return `https://etherscan.io/address/${address}`;
+		},
 		async _loadProxiesAndVoters() {
 			const query = `
 				{
@@ -271,6 +286,16 @@ export default {
 h1 {
 	text-align: center;
 	margin-top: 1rem;
+}
+
+th > a {
+	color: #818da4;
+	text-decoration: none;
+}
+
+td > div > a {
+	color: #3a4359;
+	text-decoration: none;
 }
 
 td,
