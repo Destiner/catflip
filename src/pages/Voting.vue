@@ -29,6 +29,7 @@
 					<td
 						v-for="spell in spells"
 						:key="spell.address"
+						class="number"
 					>
 						{{ formatLifted(spell.liftedWith) }}
 					</td>
@@ -44,6 +45,7 @@
 					<td
 						v-for="(voterVote, index) in votes[voter.address]"
 						:key="index"
+						class="number"
 					>
 						{{ formatVote(voterVote) }}
 					</td>
@@ -327,6 +329,10 @@ table {
 	width: 210px;
 	display: flex;
 	justify-content: space-between;
+}
+
+.number {
+	text-align: right;
 }
 
 .hat {
