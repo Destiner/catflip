@@ -2,7 +2,7 @@
 	<div>
 		<h1>Voting</h1>
 		<div id="subtitle">
-			Recent lifted executives
+			Recently passed executives
 		</div>
 		<div id="votes">
 			<div>Rows = voters, colums = spells, %% = voter share (at the moment of lift).</div>
