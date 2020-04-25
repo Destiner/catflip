@@ -24,7 +24,7 @@
 				</tr>
 				<tr>
 					<td>
-						Passed with (1000s of MKR)
+						Passed with
 					</td>
 					<td
 						v-for="spell in spells"
