@@ -22,18 +22,6 @@
 						{{ formatSpell(spell.address) }}
 					</th>
 				</tr>
-				<tr>
-					<td>
-						Passed with
-					</td>
-					<td
-						v-for="spell in spells"
-						:key="spell.address"
-						class="number"
-					>
-						{{ formatLifted(spell.liftedWith) }}
-					</td>
-				</tr>
 				<tr
 					v-for="voter in holderData"
 					:key="voter.address"
@@ -149,9 +137,6 @@ export default {
 		},
 		formatAmount(amount) {
 			return Formatter.formatAmount(amount);
-		},
-		formatLifted(amount) {
-			return Formatter.formatMultiplier(amount, 0);
 		},
 		formatSpell(spell) {
 			return Formatter.formatAddress(spell, 4);
