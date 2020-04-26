@@ -288,14 +288,24 @@ h1 {
 	margin-top: 1rem;
 }
 
-th > a {
+#subtitle {
+	margin-top: 0.5em;
+	text-align: center;
 	color: #818da4;
-	text-decoration: none;
 }
 
-td > div > a {
-	color: #3a4359;
-	text-decoration: none;
+#votes {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	margin: 3rem 0 1rem 0;
+}
+
+table {
+	border: 1px solid #dedede;
+	background: white;
+	margin: 1em;
+	border-collapse: collapse;
 }
 
 td,
@@ -311,28 +321,18 @@ th {
 	font-weight: normal;
 }
 
+th > a {
+	color: #818da4;
+	text-decoration: none;
+}
+
+td > div > a {
+	color: #3a4359;
+	text-decoration: none;
+}
+
 th:first-child {
 	writing-mode: initial;
-}
-
-table {
-	border: 1px solid #dedede;
-	background: white;
-	margin: 1em;
-	border-collapse: collapse;
-}
-
-#votes {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	margin: 3rem 0 1rem 0;
-}
-
-#subtitle {
-	margin-top: 0.5em;
-	text-align: center;
-	color: #818da4;
 }
 
 .voter {
