@@ -52,6 +52,12 @@
 				</tr>
 			</table>
 		</div>
+		<div
+			v-else
+			id="votes"
+		>
+			Loading…
+		</div>
 	</div>
 </template>
 
