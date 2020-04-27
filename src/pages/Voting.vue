@@ -8,7 +8,7 @@
 			v-if="votesLoaded"
 			id="votes"
 		>
-			<div>Rows = voters, colums = spells, %% = voter share.</div>
+			<div>Rows = voters, colums = spells (from latest to earliest), %% = voter share.</div>
 			<table>
 				<tr>
 					<th>
