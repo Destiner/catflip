@@ -489,10 +489,10 @@ export default {
 	},
 	methods: {
 		formatAmount(value) {
-			return Formatter.formatMultiplier(Converter.fromWad(value));
+			return Formatter.formatMultiplier(Converter.fromWad(value), 0);
 		},
 		formatDaiAmount(value) {
-			return Formatter.formatMultiplier(Converter.fromWad(Converter.fromRay(value)));
+			return Formatter.formatMultiplier(Converter.fromWad(Converter.fromRay(value)), 0);
 		},
 		formatRatio(value) {
 			return Formatter.formatRatio(Converter.fromRay(value));
