@@ -4,7 +4,7 @@
 		<div id="sections">
 			<div class="section">
 				<h2>
-					Basic 
+					Basic
 					<span class="term">
 						(Vat <EtherscanIcon :link="getEtherscanLink('vat')" />,
 						Jug <EtherscanIcon :link="getEtherscanLink('jug')" />,
@@ -29,7 +29,7 @@
 							{{ formatWadRate(jugBase) }}
 						</div>
 						<div class="param">
-							<div>Base stabitily fee</div>
+							<div>Base stability fee</div>
 							<div class="term">
 								Jug_base
 							</div>
