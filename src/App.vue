@@ -22,11 +22,6 @@
 						>
 							Voting
 						</router-link>
-						<router-link
-							:to="'/wards'"
-						>
-							Wards
-						</router-link>
 					</div>
 				</div>
 				<div class="nav-section nav-section-secondary">
