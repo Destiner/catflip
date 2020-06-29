@@ -1,7 +1,8 @@
 class Formatter {
 	static formatFee(fee) {
 		const apy = fee ** (60*60*24*365) - 1;
-		return `${apy.toFixed(6) * 100}%`;
+		const apyPercentage = apy * 100;
+		return `${apyPercentage.toFixed(2)}%`;
 	}
 
 	static formatRatio(ratio) {
