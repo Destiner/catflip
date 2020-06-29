@@ -48,8 +48,10 @@ import EtherscanIcon from '../components/EtherscanIcon.vue';
 
 const ilkIds = [
 	'ETH-A',
-	'BAT-A',
 	'WBTC-A',
+	'BAT-A',
+	'KNC-A',
+	'ZRX-A',
 	'USDC-A',
 	'USDC-B',
 	'TUSD-A',
