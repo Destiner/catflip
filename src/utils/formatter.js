@@ -48,11 +48,11 @@ class Formatter {
 	}
 
 	static formatMultiplier(amount, decimals=2) {
-		if (amount > 1e6) {
+		if (amount >= 1e6) {
 			const shortAmount = amount/1e6;
 			return `${shortAmount.toFixed(decimals)}M`;
 		}
-		if (amount > 1e3) {
+		if (amount >= 1e3) {
 			const shortAmount = amount/1e3;
 			return `${shortAmount.toFixed(decimals)}K`;
 		}

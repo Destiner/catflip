@@ -34,7 +34,7 @@
 							Source code
 						</a>
 						<a
-							href="https://changelog.makerdao.com/releases/mainnet/1.0.8/contracts.json"
+							href="https://changelog.makerdao.com/releases/mainnet/1.0.9/contracts.json"
 							target="_blank"
 						>
 							Contract addresses
