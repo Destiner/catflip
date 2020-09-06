@@ -103,6 +103,19 @@
 						(Cat <EtherscanIcon :link="getEtherscanLink('cat')" />)
 					</span>
 				</h2>
+				<div class="stats">
+					<div class="stat">
+						<div class="value">
+							{{ formatDaiAmount(catBox) }} DAI
+						</div>
+						<div class="param">
+							<div>Debt limit</div>
+							<div class="term">
+								Cat_box
+							</div>
+						</div>
+					</div>
+				</div>
 				<div class="cards">
 					<div
 						v-for="cat in cats"
@@ -114,7 +127,7 @@
 						</div>
 						<div class="row">
 							<div class="row-number">
-								{{ formatRayRate(cat.chop) }}
+								{{ formatWadRate(cat.chop) }}
 							</div>
 							<div class="row-label">
 								Penalty <span class="term">(chop)</span>
@@ -122,10 +135,10 @@
 						</div>
 						<div class="row">
 							<div class="row-number">
-								{{ formatAmount(cat.lump) }}
+								{{ formatDaiAmount(cat.dunk) }} DAI
 							</div>
 							<div class="row-label">
-								Lot size <span class="term">(lump)</span>
+								Debt size <span class="term">(dunk)</span>
 							</div>
 						</div>
 					</div>
@@ -428,21 +441,21 @@ const addresses = {
 	jug: '0x19c0976f590D67707E62397C87829d896Dc0f1F1',
 	spot: '0x65C79fcB50Ca1594B025960e539eD7A9a6D434A3',
 	pot: '0x197E90f9FAD81970bA7976f33CbD77088E5D7cf7',
-	cat: '0x78F2c2AF65126834c51822F56Be0d7469D7A523E',
+	cat: '0xa5679C04fc3d9d8b0AaB1F0ab83555b301cA70Ea',
 	flip: {
-		'ETH-A': '0xd8a04F5412223F513DC55F839574430f5EC15531',
-		'WBTC-A': '0x3E115d85D4d7253b05fEc9C0bB5b08383C2b0603',
-		'BAT-A': '0xaA745404d55f88C108A28c86abE7b5A1E7817c07',
-		'KNC-A': '0xAbBCB9Ae89cDD3C27E02D279480C7fF33083249b',
-		'ZRX-A': '0x08c89251FC058cC97d5bA5F06F95026C0A5CF9B0',
-		'MANA-A': '0x4bf9D2EBC4c57B9B783C12D30076507660B58b3a',
-		'USDC-A': '0xE6ed1d09a19Bd335f051d78D5d22dF3bfF2c28B1',
-		'USDC-B': '0xec25Ca3fFa512afbb1784E17f1D414E16D01794F',
-		'TUSD-A': '0xba3f6a74BD12Cf1e48d4416c7b50963cA98AfD61',
+		'ETH-A': '0xF32836B9E1f47a0515c6Ec431592D5EbC276407f',
+		'WBTC-A': '0x58CD24ac7322890382eE45A3E4F903a5B22Ee930',
+		'BAT-A': '0xF7C569B2B271354179AaCC9fF1e42390983110BA',
+		'KNC-A': '0x57B01F1B3C59e2C0bdfF3EC9563B71EEc99a3f2f',
+		'ZRX-A': '0xa4341cAf9F9F098ecb20fb2CeE2a0b8C78A18118',
+		'MANA-A': '0x0a1D75B4f49BA80724a214599574080CD6B68357',
+		'USDC-A': '0xbe359e53038E41a1ffA47DAE39645756C80e557a',
+		'USDC-B': '0x77282aD36aADAfC16bCA42c865c674F108c4a616',
+		'TUSD-A': '0x9E4b213C4defbce7564F2Ac20B6E3bF40954C440',
 		// 'SAI': '0x5432b2f3c0DFf95AA191C45E5cbd539E2820aE72',
 	},
-	flap: '0xdfE0fb1bE2a52CDBf8FB962D5701d7fd0902db9f',
-	flop: '0x4D95A049d5B0b7d32058cd3F2163015747522e99',
+	flap: '0xC4269cC7acDEdC3794b221aA4D9205F564e27f0d',
+	flop: '0xA41B6EF151E06da0e34B009B86E828308986736D',
 	vow: '0xA950524441892A31ebddF91d3cEEFa04Bf454466',
 	pause: '0xbE286431454714F511008713973d3B053A2d38f3',
 	esm: '0x0581A0AbE32AAe9B5f0f68deFab77C6759100085',
@@ -471,6 +484,7 @@ export default {
 			jugBase: 0,
 			potDsr: 1,
 			ilks: [],
+			catBox: 0,
 			cats: [],
 			flips: [],
 			flapBeg: 0,
@@ -532,15 +546,18 @@ export default {
 			const vatLineCall = vatContract.Line();
 			const jugBaseCall = jugContract.base();
 			const potDsrCall = potContract.dsr();
+			const catBoxCall = catContract.box();
 
-			const data = await ethcallProvider.all([vatLineCall, jugBaseCall, potDsrCall]);
+			const data = await ethcallProvider.all([vatLineCall, jugBaseCall, potDsrCall, catBoxCall]);
 			const vatLine = data[0].toString();
 			const jugBase = data[1].toString();
 			const potDsr = data[2].toString();
+			const catBox = data[3].toString();
 
 			this.vatLine = vatLine;
 			this.jugBase = jugBase;
 			this.potDsr = potDsr;
+			this.catBox = catBox;
 		},
 		async _loadCollaterals() {
 			const ethcallProvider = new ethcall.Provider();
@@ -597,13 +614,13 @@ export default {
 				const index = ilkIds.indexOf(id);
 				const cat = data[index];
 				const chop = cat.chop.toString();
-				const lump = cat.lump.toString();
+				const dunk = cat.dunk.toString();
 
 				const flip = {
 					id: `cat-${id}`,
 					asset: id,
 					chop,
-					lump,
+					dunk,
 				};
 				return flip;
 			});

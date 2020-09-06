@@ -98,9 +98,33 @@
 	"stateMutability": "nonpayable",
 	"type": "function"
 }, {
+	"constant": true,
+	"inputs": [],
+	"name": "box",
+	"outputs": [{
+		"internalType": "uint256",
+		"name": "",
+		"type": "uint256"
+	}],
+	"payable": false,
+	"stateMutability": "view",
+	"type": "function"
+}, {
 	"constant": false,
 	"inputs": [],
 	"name": "cage",
+	"outputs": [],
+	"payable": false,
+	"stateMutability": "nonpayable",
+	"type": "function"
+}, {
+	"constant": false,
+	"inputs": [{
+		"internalType": "uint256",
+		"name": "rad",
+		"type": "uint256"
+	}],
+	"name": "claw",
 	"outputs": [],
 	"payable": false,
 	"stateMutability": "nonpayable",
@@ -124,6 +148,22 @@
 		"name": "ilk",
 		"type": "bytes32"
 	}, {
+		"internalType": "bytes32",
+		"name": "what",
+		"type": "bytes32"
+	}, {
+		"internalType": "uint256",
+		"name": "data",
+		"type": "uint256"
+	}],
+	"name": "file",
+	"outputs": [],
+	"payable": false,
+	"stateMutability": "nonpayable",
+	"type": "function"
+}, {
+	"constant": false,
+	"inputs": [{
 		"internalType": "bytes32",
 		"name": "what",
 		"type": "bytes32"
@@ -191,7 +231,19 @@
 		"type": "uint256"
 	}, {
 		"internalType": "uint256",
-		"name": "lump",
+		"name": "dunk",
+		"type": "uint256"
+	}],
+	"payable": false,
+	"stateMutability": "view",
+	"type": "function"
+}, {
+	"constant": true,
+	"inputs": [],
+	"name": "litter",
+	"outputs": [{
+		"internalType": "uint256",
+		"name": "",
 		"type": "uint256"
 	}],
 	"payable": false,
