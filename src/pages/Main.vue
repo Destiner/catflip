@@ -109,7 +109,7 @@
 							{{ formatDaiAmount(catBox) }} DAI
 						</div>
 						<div class="param">
-							<div>Debt limit</div>
+							<div>Total auction limit</div>
 							<div class="term">
 								Cat_box
 							</div>
@@ -138,7 +138,7 @@
 								{{ formatDaiAmount(cat.dunk) }} DAI
 							</div>
 							<div class="row-label">
-								Debt size <span class="term">(dunk)</span>
+								Auction size <span class="term">(dunk)</span>
 							</div>
 						</div>
 					</div>
