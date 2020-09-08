@@ -152,6 +152,7 @@ export default {
 				'Vat-Line': 'Ceiling',
 				'Jug-base': 'Base stability fee',
 				'Pot-dsr': 'Savings rate',
+				'Cat-box': 'Total auction limit',
 				'Flap-beg': 'Surplus auction min bid increase',
 				'Flap-tau': 'Surplus auction duration',
 				'Flap-ttl': 'Surplus auction bid duration',
@@ -172,6 +173,7 @@ export default {
 				paramMap[`Spot-${ilk}-mat`] = `${ilk} col. ratio`;
 				paramMap[`Jug-${ilk}-duty`] = `${ilk} stability fee`;
 				paramMap[`Cat-${ilk}-chop`] = `${ilk} liquidation penalty`;
+				paramMap[`Cat-${ilk}-dunk`] = `${ilk} liquidation auction size`;
 				paramMap[`Cat-${ilk}-lump`] = `${ilk} liquidation lot size`;
 				paramMap[`Flip-${ilk}-beg`] = `${ilk} auction min. bid increase`;
 				paramMap[`Flip-${ilk}-tau`] = `${ilk} auction duration`;
@@ -185,6 +187,7 @@ export default {
 				'Vat-Line': 'Vat_Line',
 				'Jug-base': 'Jug_base',
 				'Pot-dsr': 'Pot_dsr',
+				'Cat-box': 'Cat_box',
 				'Flap-beg': 'Flap_beg',
 				'Flap-tau': 'Flap_tau',
 				'Flap-ttl': 'Flap_ttl',
@@ -205,6 +208,7 @@ export default {
 				termMap[`Spot-${ilk}-mat`] = `Spot[${ilk}]_mat`;
 				termMap[`Jug-${ilk}-duty`] = `Jug[${ilk}]_duty`;
 				termMap[`Cat-${ilk}-chop`] = `Cat[${ilk}]_chop`;
+				termMap[`Cat-${ilk}-dunk`] = `Cat[${ilk}]_dunk`;
 				termMap[`Cat-${ilk}-lump`] = `Cat[${ilk}]_lump`;
 				termMap[`Flip-${ilk}-beg`] = `Flip[${ilk}]_beg`;
 				termMap[`Flip-${ilk}-tau`] = `Flip[${ilk}]_tau`;
@@ -221,6 +225,7 @@ export default {
 				'Vat-Line': this._formatDaiAmount,
 				'Jug-base': this._formatWadRate,
 				'Pot-dsr': this._formatFee,
+				'Cat-box': this._formatDaiAmount,
 				'Flap-beg': this._formatWadRate,
 				'Flap-tau': this._formatDuration,
 				'Flap-ttl': this._formatDuration,
@@ -241,6 +246,7 @@ export default {
 				formatFuncMap[`Spot-${ilk}-mat`] = this._formatRatio;
 				formatFuncMap[`Jug-${ilk}-duty`] = this._formatFee;
 				formatFuncMap[`Cat-${ilk}-chop`] = this._formatRayRate;
+				formatFuncMap[`Cat-${ilk}-dunk`] = this._formatDaiAmount;
 				formatFuncMap[`Cat-${ilk}-lump`] = this._formatAmount;
 				formatFuncMap[`Flip-${ilk}-beg`] = this._formatWadRate;
 				formatFuncMap[`Flip-${ilk}-tau`] = this._formatDuration;
