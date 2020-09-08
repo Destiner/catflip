@@ -51,6 +51,8 @@ const ilkIds = [
 	'USDC-A',
 	'USDC-B',
 	'TUSD-A',
+	'USDT-A',
+	'PAXUSD-A',
 	'WBTC-A',
 	'BAT-A',
 	'KNC-A',
