@@ -247,7 +247,7 @@ export default {
 				formatFuncMap[`Vat-${ilk}-line`] = this._formatDaiAmount;
 				formatFuncMap[`Spot-${ilk}-mat`] = this._formatRatio;
 				formatFuncMap[`Jug-${ilk}-duty`] = this._formatFee;
-				formatFuncMap[`Cat-${ilk}-chop`] = this._formatRayRate;
+				formatFuncMap[`Cat-${ilk}-chop`] = this._formatWadRate;
 				formatFuncMap[`Cat-${ilk}-dunk`] = this._formatDaiAmount;
 				formatFuncMap[`Cat-${ilk}-lump`] = this._formatAmount;
 				formatFuncMap[`Flip-${ilk}-beg`] = this._formatWadRate;
