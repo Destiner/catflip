@@ -41,10 +41,10 @@
 </template>
 
 <script>
-import Converter from '../utils/converter.js';
-import Formatter from '../utils/formatter.js';
+import Converter from '../../utils/converter.js';
+import Formatter from '../../utils/formatter.js';
 
-import EtherscanIcon from '../components/EtherscanIcon.vue';
+import EtherscanIcon from '../../components/EtherscanIcon.vue';
 
 const ilkIds = [
 	'ETH-A',

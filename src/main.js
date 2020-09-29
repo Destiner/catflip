@@ -3,16 +3,17 @@ import VueRouter from 'vue-router';
 
 import App from './App.vue';
 
-import Main from './pages/Main.vue';
-import Voting from './pages/Voting.vue';
-import Changelog from './pages/Changelog.vue';
+import MakerMain from './pages/maker/Main.vue';
+import MakerChangelog from './pages/maker/Changelog.vue';
+import MakerVoting from './pages/maker/Voting.vue';
 
 Vue.use(VueRouter);
 
 const routes = [
-	{ path: '/', component: Main },
-	{ path: '/changelog', component: Changelog },
-	{ path: '/voting', component: Voting },
+	{ path: '/', redirect: '/maker/' },
+	{ path: '/maker/', component: MakerMain },
+	{ path: '/maker/changelog', component: MakerChangelog },
+	{ path: '/maker/voting', component: MakerVoting },
 ];
 
 const router = new VueRouter({

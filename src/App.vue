@@ -6,19 +6,20 @@
 			</h1>
 			<div>
 				<div class="nav-section">
+					<h2>Maker</h2>
 					<div class="nav-links">
 						<router-link
-							:to="'/'"
+							:to="'/maker/'"
 						>
 							System parameters
 						</router-link>
 						<router-link
-							:to="'/changelog'"
+							:to="'/maker/changelog'"
 						>
 							Changelog
 						</router-link>
 						<router-link
-							:to="'/voting'"
+							:to="'/maker/voting'"
 						>
 							Voting
 						</router-link>
@@ -31,25 +32,7 @@
 							href="https://github.com/Destiner/catflip"
 							target="_blank"
 						>
-							Source code
-						</a>
-						<a
-							href="https://changelog.makerdao.com/releases/mainnet/latest/contracts.json"
-							target="_blank"
-						>
-							Contract addresses
-						</a>
-						<a
-							href="https://docs.makerdao.com/other-documentation/system-glossary"
-							target="_blank"
-						>
-							Glossary
-						</a>
-						<a
-							href="https://mkrgov.science/"
-							target="_blank"
-						>
-							Governance dashboard
+							Github
 						</a>
 					</div>
 				</div>

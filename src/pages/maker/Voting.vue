@@ -64,7 +64,7 @@
 <script>
 import BigNumber from 'bignumber.js';
 
-import Formatter from '../utils/formatter.js';
+import Formatter from '../../utils/formatter.js';
 
 export default {
 	data() {
