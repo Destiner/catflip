@@ -58,6 +58,9 @@ const ilkIds = [
 	'KNC-A',
 	'ZRX-A',
 	'MANA-A',
+	'LRC-A',
+	'COMP-A',
+	'LINK-A',
 	'SAI',
 ];
 
