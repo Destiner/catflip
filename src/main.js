@@ -11,6 +11,7 @@ Vue.use(VueRouter);
 
 const routes = [
 	{ path: '/', redirect: '/maker/' },
+	{ path: '/changelog', redirect: '/maker/changelog' },
 	{ path: '/maker/', component: MakerMain },
 	{ path: '/maker/changelog', component: MakerChangelog },
 	{ path: '/maker/voting', component: MakerVoting },
