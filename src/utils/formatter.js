@@ -30,11 +30,11 @@ class Formatter {
 		return `${days} days`;
 	}
 
-	static formatAmount(amount) {
+	static formatAmount(amount, decimals=0) {
 		const amountNumber = new Number(amount.toString());
 		const options = {
-			minimumFractionDigits: 0,
-			maximumFractionDigits: 0,
+			minimumFractionDigits: decimals,
+			maximumFractionDigits: decimals,
 		};
 		return amountNumber.toLocaleString(undefined, options);
 	}
