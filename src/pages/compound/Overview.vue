@@ -35,6 +35,14 @@
 					</div>
 					<div class="stat">
 						<div class="value">
+							{{ formatAmount(compRate) }}
+						</div>
+						<div class="param">
+							<div>COMP rate</div>
+						</div>
+					</div>
+					<div class="stat">
+						<div class="value">
 							{{ formatAddress(comptrollerAdmin) }}
 						</div>
 						<div class="param">
@@ -217,6 +225,7 @@ const infuraKey = '2c010c2fdb8b4ef1a7617571553fc982';
 const provider = new ethers.providers.InfuraProvider('mainnet', infuraKey);
 const addresses = {
 	comptroller: '0x3d9819210A31b4961b30EF54bE2aeD79B9c9Cd3B',
+	comp: '0xc00e94Cb662C3520282E6f5717214004A7f26888',
 	timelock: '0x6d903f6003cca6255D85CcA4D3B5E5146dC33925',
 	governor: '0xc0dA01a04C3f3E0be433606045bB7017A7323E38',
 	tokens: {
@@ -243,6 +252,7 @@ export default {
 			maxAssets: 0,
 			liquidationIncentiveMantissa: '0',
 			closeFactorMantissa: '0',
+			compRate: '0',
 			comptrollerAdmin: '',
 			pauseGuardian: '',
 			comptrollerImplementation: '',
@@ -334,6 +344,7 @@ export default {
 			const maxAssetsCall = comptroller.maxAssets();
 			const liquidationIncentiveMantissaCall = comptroller.liquidationIncentiveMantissa();
 			const closeFactorMantissaCall = comptroller.closeFactorMantissa();
+			const compRateCall = comptroller.compRate();
 			const adminCall = comptroller.admin();
 			const pauseGuardianCall = comptroller.pauseGuardian();
 			const comptrollerImplementationCall = comptroller.comptrollerImplementation();
@@ -342,6 +353,7 @@ export default {
 				maxAssetsCall,
 				liquidationIncentiveMantissaCall,
 				closeFactorMantissaCall,
+				compRateCall,
 				adminCall,
 				pauseGuardianCall,
 				comptrollerImplementationCall,
@@ -351,13 +363,15 @@ export default {
 			const maxAssets = data[0].toNumber();
 			const liquidationIncentiveMantissa = data[1].toString();
 			const closeFactorMantissa = data[2].toString();
-			const comptrollerAdmin = data[3];
-			const pauseGuardian = data[4];
-			const comptrollerImplementation = data[5];
-			const oracle = data[6];
+			const compRate = data[3].toString();
+			const comptrollerAdmin = data[4];
+			const pauseGuardian = data[5];
+			const comptrollerImplementation = data[6];
+			const oracle = data[7];
 			this.maxAssets = maxAssets;
 			this.liquidationIncentiveMantissa = liquidationIncentiveMantissa;
 			this.closeFactorMantissa = closeFactorMantissa;
+			this.compRate = compRate;
 			this.comptrollerAdmin = comptrollerAdmin;
 			this.pauseGuardian = pauseGuardian;
 			this.comptrollerImplementation = comptrollerImplementation;
