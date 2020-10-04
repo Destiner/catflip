@@ -16,6 +16,10 @@ class Converter {
 		const convertedNumber = number.div(RAY).toNumber();
 		return convertedNumber;
 	}
+
+	static fromBlockCount(n) {
+		return n * 15;
+	}
 }
 
 export default Converter;
