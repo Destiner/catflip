@@ -11,7 +11,7 @@
 						<router-link
 							:to="'/maker/'"
 						>
-							System parameters
+							Overview
 						</router-link>
 						<router-link
 							:to="'/maker/changelog'"

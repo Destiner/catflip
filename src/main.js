@@ -5,7 +5,7 @@ import App from './App.vue';
 
 import CompoundMain from './pages/compound/Main.vue';
 import CompoundProposals from './pages/compound/Proposals.vue';
-import MakerMain from './pages/maker/Main.vue';
+import MakerOverview from './pages/maker/Overview.vue';
 import MakerChangelog from './pages/maker/Changelog.vue';
 import MakerVoting from './pages/maker/Voting.vue';
 
@@ -16,7 +16,7 @@ const routes = [
 	{ path: '/changelog', redirect: '/maker/changelog' },
 	{ path: '/compound/', component: CompoundMain },
 	{ path: '/compound/proposals', component: CompoundProposals },
-	{ path: '/maker/', component: MakerMain },
+	{ path: '/maker/', component: MakerOverview },
 	{ path: '/maker/changelog', component: MakerChangelog },
 	{ path: '/maker/voting', component: MakerVoting },
 ];

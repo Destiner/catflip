@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<h1>System parameters</h1>
+		<h1>Overview</h1>
 		<div id="sections">
 			<div class="section">
 				<h2>
