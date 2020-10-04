@@ -95,9 +95,6 @@ export default {
 					const key = this._getKey(target, signature, calldata);
 					const newValue = this._getValue(signature, calldata);
 					const oldValue = values[key];
-					if (!calldata || !title || !key || newValue === undefined) {
-						console.log(target, signature, calldata);
-					}
 					const change = {
 						title,
 						key,
