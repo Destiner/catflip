@@ -25,6 +25,21 @@
 						</router-link>
 					</div>
 				</div>
+				<div class="nav-section">
+					<h2>Compound</h2>
+					<div class="nav-links">
+						<router-link
+							:to="'/compound/'"
+						>
+							Overview
+						</router-link>
+						<router-link
+							:to="'/compound/proposals'"
+						>
+							Proposals
+						</router-link>
+					</div>
+				</div>
 				<div class="nav-section nav-section-secondary">
 					<h2>Links</h2>
 					<div class="nav-links">
