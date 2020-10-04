@@ -50,19 +50,8 @@ import Converter from '../../utils/converter.js';
 
 const infuraKey = '2c010c2fdb8b4ef1a7617571553fc982';
 const provider = new ethers.providers.InfuraProvider('mainnet', infuraKey);
-const tokens = {
-	cBAT: '0x6C8c6b02E7b2BE14d4fA6022Dfd6d75921D90E4E',
-	cDAI: '0x5d3a536E4D6DbD6114cc1Ead35777bAB948E3643',
-	cETH: '0x4Ddc2D193948926D02f9B1fE9e1daa0718270ED5',
-	cREP: '0x158079Ee67Fce2f58472A96584A73C7Ab9AC95c1',
-	cSAI: '0xF5DCe57282A584D2746FaF1593d3121Fcac444dC',
-	cUNI: '0x35A18000230DA775CAc24873d00Ff85BccdeD550',
-	cUSDC: '0x39AA39c021dfbaE8faC545936693aC917d5E7563',
-	cUSDT: '0xf650C3d88D12dB855b8bf7D11Be6C55A4e07dCC9',
-	cWBTC: '0xC11b1268C1A384e55C48c2391d8d480264A3A7F4',
-	cZRX: '0xB3319f5D18Bc0D84dD1b4825Dcde5d5f7266d407',
-	DAI: '0x89d24A6b4CcB1B6fAA2625fE562bDD9a23260359',
-};
+
+const governorAddress = '0xc0dA01a04C3f3E0be433606045bB7017A7323E38';
 
 const BECOME_UNITROLLER = '_become(address,uint256,address[],address[])';
 const BECOME_COMPTROLLER = '_become(address)';
@@ -369,6 +358,19 @@ export default {
 			}
 		},
 		_getToken(address) {
+			const tokens = {
+				cBAT: '0x6C8c6b02E7b2BE14d4fA6022Dfd6d75921D90E4E',
+				cDAI: '0x5d3a536E4D6DbD6114cc1Ead35777bAB948E3643',
+				cETH: '0x4Ddc2D193948926D02f9B1fE9e1daa0718270ED5',
+				cREP: '0x158079Ee67Fce2f58472A96584A73C7Ab9AC95c1',
+				cSAI: '0xF5DCe57282A584D2746FaF1593d3121Fcac444dC',
+				cUNI: '0x35A18000230DA775CAc24873d00Ff85BccdeD550',
+				cUSDC: '0x39AA39c021dfbaE8faC545936693aC917d5E7563',
+				cUSDT: '0xf650C3d88D12dB855b8bf7D11Be6C55A4e07dCC9',
+				cWBTC: '0xC11b1268C1A384e55C48c2391d8d480264A3A7F4',
+				cZRX: '0xB3319f5D18Bc0D84dD1b4825Dcde5d5f7266d407',
+				DAI: '0x89d24A6b4CcB1B6fAA2625fE562bDD9a23260359',
+			};
 			return Object.keys(tokens).find(token => tokens[token] === address);
 		},
 		_parseCalldata(signature, rawCalldata) {
@@ -392,7 +394,7 @@ export default {
 		async _getProposalCount() {
 			const ethcallProvider = new ethcall.Provider();
 			await ethcallProvider.init(provider);
-			const governor = new ethcall.Contract(addresses.governor, governorAbi);
+			const governor = new ethcall.Contract(governorAddress, governorAbi);
 			const proposalCountCall = governor.proposalCount();
 			const data = await ethcallProvider.all([proposalCountCall]);
 			const proposalCount = data[0].toNumber();
@@ -401,7 +403,7 @@ export default {
 		async _getProposals(proposalCount) {
 			const ethcallProvider = new ethcall.Provider();
 			await ethcallProvider.init(provider);
-			const governor = new ethcall.Contract(addresses.governor, governorAbi);
+			const governor = new ethcall.Contract(governorAddress, governorAbi);
 			const calls = [];
 			for (let i = 1; i <= proposalCount; i++) {
 				const actionsCall = governor.getActions(i);
