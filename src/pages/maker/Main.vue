@@ -425,6 +425,7 @@ const provider = new ethers.providers.InfuraProvider('mainnet', infuraKey);
 
 const ilkIds = [
 	'ETH-A',
+	'ETH-B',
 	'USDC-A',
 	'USDC-B',
 	'TUSD-A',
@@ -449,6 +450,7 @@ const addresses = {
 	cat: '0xa5679C04fc3d9d8b0AaB1F0ab83555b301cA70Ea',
 	flip: {
 		'ETH-A': '0xF32836B9E1f47a0515c6Ec431592D5EbC276407f',
+		'ETH-B': '0xD499d71bE9e9E5D236A07ac562F7B6CeacCa624c',
 		'WBTC-A': '0x58CD24ac7322890382eE45A3E4F903a5B22Ee930',
 		'BAT-A': '0xF7C569B2B271354179AaCC9fF1e42390983110BA',
 		'KNC-A': '0x57B01F1B3C59e2C0bdfF3EC9563B71EEc99a3f2f',

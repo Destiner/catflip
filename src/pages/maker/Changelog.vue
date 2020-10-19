@@ -48,6 +48,7 @@ import EtherscanIcon from '../../components/EtherscanIcon.vue';
 
 const ilkIds = [
 	'ETH-A',
+	'ETH-B',
 	'USDC-A',
 	'USDC-B',
 	'TUSD-A',
