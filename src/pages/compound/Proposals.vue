@@ -57,6 +57,7 @@ const BECOME_UNITROLLER = '_become(address,uint256,address[],address[])';
 const BECOME_COMPTROLLER = '_become(address)';
 const SET_ORACLE_SIG = '_setPriceOracle(address)';
 const SET_PENDING_IMPLEMENTATION = '_setPendingImplementation(address)';
+const SET_BORROW_CAP_GUARDIAN = '_setBorrowCapGuardian(address)';
 
 const SET_COMP_RATE = '_setCompRate(uint256)';
 const ADD_COMP_MARKETS = '_addCompMarkets(address[])';
@@ -154,6 +155,9 @@ export default {
 			if (signature === SET_PENDING_IMPLEMENTATION) {
 				return 'Comptroller implementation';
 			}
+			if (signature === SET_BORROW_CAP_GUARDIAN) {
+				return 'Borrow cap guardian';
+			}
 			if (signature === SET_COMP_RATE) {
 				return 'COMP rate';
 			}
@@ -243,6 +247,9 @@ export default {
 			if (signature === SET_PENDING_IMPLEMENTATION) {
 				return 'pending_implementation';
 			}
+			if (signature === SET_BORROW_CAP_GUARDIAN) {
+				return 'borrow_cap_guardian';
+			}
 			if (signature === SET_COMP_RATE) {
 				return 'comp_rate';
 			}
@@ -312,6 +319,10 @@ export default {
 			if (signature === SET_PENDING_IMPLEMENTATION) {
 				const implementation = calldata[0];
 				return this._formatAddress(implementation);
+			}
+			if (signature === SET_BORROW_CAP_GUARDIAN) {
+				const guardian = calldata[0];
+				return this._formatAddress(guardian);
 			}
 			if (signature === SET_COMP_RATE) {
 				const rate = this._formatAmount(calldata[0]);
