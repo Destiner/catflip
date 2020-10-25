@@ -193,14 +193,6 @@
 								Interest rate model
 							</div>
 						</div>
-						<div class="row">
-							<div class="row-number">
-								{{ formatAddress(token.comptroller) }}
-							</div>
-							<div class="row-label">
-								Comptroller
-							</div>
-						</div>
 					</div>
 				</div>
 			</div>
@@ -309,30 +301,26 @@ export default {
 				const reserveFactorMantissaCall = cToken.reserveFactorMantissa();
 				const totalReserveCall = cToken.totalReserves();
 				const interestRateModelCall = cToken.interestRateModel();
-				const comptrollerCall = cToken.comptroller();
 				calls.push(marketCall);
 				calls.push(reserveFactorMantissaCall);
 				calls.push(totalReserveCall);
 				calls.push(interestRateModelCall);
-				calls.push(comptrollerCall);
 			}
 			const data = await ethcallProvider.all(calls);
 			this.tokens = tokens.map(token => {
 				const index = tokens.indexOf(token);
 				const tokenTitle = tokens[index];
-				const market = data[5 * index];
+				const market = data[4 * index];
 				const collateralFactorMantissa = market.collateralFactorMantissa.toString();
-				const reserveFactorMantissa = data[5 * index + 1].toString();
-				const totalReserve = data[5 * index + 2].toString();
-				const interestRateModel = data[5 * index + 3];
-				const comptroller = data[5 * index + 4];
+				const reserveFactorMantissa = data[4 * index + 1].toString();
+				const totalReserve = data[4 * index + 2].toString();
+				const interestRateModel = data[4 * index + 3];
 				return {
 					title: tokenTitle,
 					collateralFactorMantissa,
 					reserveFactorMantissa,
 					totalReserve,
 					interestRateModel,
-					comptroller,
 				};
 			});
 		},
