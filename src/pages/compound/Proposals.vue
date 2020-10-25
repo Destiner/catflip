@@ -469,8 +469,20 @@ export default {
 			return Formatter.formatRate(Converter.fromWad(value));
 		},
 		_getInitialValues() {
-			// TODO
-			return {};
+			return {
+				cBAT_reserve_factor: this._formatRatio('100000000000000000'),
+				cDAI_interest_rate_model: this._formatAddress('0xec163986cc9a6593d6addcbff5509430d348030f'),
+				cREP_reserve_factor: this._formatRatio('100000000000000000'),
+				cSAI_collateral_factor: this._formatRatio('750000000000000000'),
+				cSAI_reserve_factor: this._formatRatio('500000000000000000'),
+				cUSDC_interest_rate_model: this._formatAddress('0x0c3f8df27e1a00b47653fde878d68d35f00714c0'),
+				cUSDT_interest_rate_model: this._formatAddress('0x6bc8fe27d0c7207733656595e73c0d5cf7afae36'),
+				cUSDT_reserve_factor: this._formatRatio('0'),
+				cWBTC_collateral_factor: this._formatRatio('0'),
+				cZRX_reserve_factor: this._formatRatio('100000000000000000'),
+				pending_implementation: this._formatAddress('0x97bd4cc841fc999194174cd1803c543247a014fe'),
+				price_oracle: this._formatAddress('0xda17fbeda95222f331cb1d252401f4b44f49f7a0'),
+			};
 		},
 	},
 };
