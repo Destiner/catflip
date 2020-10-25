@@ -162,67 +162,67 @@
 							<span>{{ token.title }}</span>
 						</div>
 						<div class="row">
-							<div class="row-number">
-								{{ formatWadRatio(token.collateralFactorMantissa) }}
-							</div>
 							<div class="row-label">
 								Collateral factor
 							</div>
+							<div class="row-number">
+								{{ formatWadRatio(token.collateralFactorMantissa) }}
+							</div>
 						</div>
 						<div class="row">
-							<div class="row-number">
-								{{ formatWadRatio(token.reserveFactorMantissa) }}
-							</div>
 							<div class="row-label">
 								Reserve factor
 							</div>
+							<div class="row-number">
+								{{ formatWadRatio(token.reserveFactorMantissa) }}
+							</div>
 						</div>
 						<div class="row">
-							<div class="row-number">
-								{{ formatAmount(token.totalReserve) }}
-							</div>
 							<div class="row-label">
 								Total reserve
 							</div>
+							<div class="row-number">
+								{{ formatAmount(token.totalReserve) }}
+							</div>
 						</div>
 						<div class="row">
-							<div class="row-number">
-								{{ formatAddress(token.interestRateModel) }}
-							</div>
 							<div class="row-label">
 								Interest rate model
 							</div>
+							<div class="row-number">
+								{{ formatAddress(token.interestRateModel) }}
+							</div>
 						</div>
 						<div class="row">
-							<div class="row-number">
-								{{ formatAmount(token.borrowCap) }}
-							</div>
 							<div class="row-label">
 								Borrow cap
 							</div>
+							<div class="row-number">
+								{{ formatAmount(token.borrowCap) }}
+							</div>
 						</div>
 						<div class="row">
-							<div class="row-number">
-								{{ token.mintEnabled }}
-							</div>
 							<div class="row-label">
 								Deposit enabled
 							</div>
+							<div class="row-number">
+								{{ token.mintEnabled }}
+							</div>
 						</div>
 						<div class="row">
-							<div class="row-number">
-								{{ token.borrowEnabled }}
-							</div>
 							<div class="row-label">
 								Borrow enabled
 							</div>
+							<div class="row-number">
+								{{ token.borrowEnabled }}
+							</div>
 						</div>
 						<div class="row">
-							<div class="row-number">
-								{{ token.compEnabled }}
-							</div>
 							<div class="row-label">
 								COMP enabled
+							</div>
+							<div class="row-number">
+								{{ token.compEnabled }}
 							</div>
 						</div>
 					</div>

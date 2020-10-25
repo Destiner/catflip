@@ -61,35 +61,35 @@
 							<span>{{ ilk.asset }}</span>
 						</div>
 						<div class="row">
-							<div class="row-number">
-								{{ formatDaiAmount(ilk.line) }} DAI
-							</div>
 							<div class="row-label">
 								Ceiling <span class="term">(Vat_line)</span>
 							</div>
+							<div class="row-number">
+								{{ formatDaiAmount(ilk.line) }} DAI
+							</div>
 						</div>
 						<div class="row">
-							<div class="row-number">
-								{{ formatDaiAmount(ilk.dust) }} DAI
-							</div>
 							<div class="row-label">
 								Min. per Vault <span class="term">(Vat_dust)</span>
 							</div>
+							<div class="row-number">
+								{{ formatDaiAmount(ilk.dust) }} DAI
+							</div>
 						</div>
 						<div class="row">
-							<div class="row-number">
-								{{ formatFee(ilk.duty) }}
-							</div>
 							<div class="row-label">
 								Stability fee <span class="term">(Jug_duty)</span>
 							</div>
+							<div class="row-number">
+								{{ formatFee(ilk.duty) }}
+							</div>
 						</div>
 						<div class="row">
-							<div class="row-number">
-								{{ formatRatio(ilk.mat) }}
-							</div>
 							<div class="row-label">
 								Col. ratio <span class="term">(Spot_mat)</span>
+							</div>
+							<div class="row-number">
+								{{ formatRatio(ilk.mat) }}
 							</div>
 						</div>
 					</div>
@@ -126,19 +126,19 @@
 							<span>{{ cat.asset }}</span>
 						</div>
 						<div class="row">
-							<div class="row-number">
-								{{ formatWadRate(cat.chop) }}
-							</div>
 							<div class="row-label">
 								Penalty <span class="term">(chop)</span>
 							</div>
+							<div class="row-number">
+								{{ formatWadRate(cat.chop) }}
+							</div>
 						</div>
 						<div class="row">
-							<div class="row-number">
-								{{ formatDaiAmount(cat.dunk) }} DAI
-							</div>
 							<div class="row-label">
 								Auction size <span class="term">(dunk)</span>
+							</div>
+							<div class="row-number">
+								{{ formatDaiAmount(cat.dunk) }} DAI
 							</div>
 						</div>
 					</div>
@@ -157,27 +157,27 @@
 							<span>{{ flip.asset }}</span>
 						</div>
 						<div class="row">
-							<div class="row-number">
-								{{ formatWadRate(flip.beg) }}
-							</div>
 							<div class="row-label">
 								Min. bid increase <span class="term">(beg)</span>
 							</div>
+							<div class="row-number">
+								{{ formatWadRate(flip.beg) }}
+							</div>
 						</div>
 						<div class="row">
-							<div class="row-number">
-								{{ formatDuration(flip.ttl) }}
-							</div>
 							<div class="row-label">
 								Bid duration <span class="term">(ttl)</span>
 							</div>
+							<div class="row-number">
+								{{ formatDuration(flip.ttl) }}
+							</div>
 						</div>
 						<div class="row">
-							<div class="row-number">
-								{{ formatDuration(flip.tau) }}
-							</div>
 							<div class="row-label">
 								Auction duration <span class="term">(tau)</span>
+							</div>
+							<div class="row-number">
+								{{ formatDuration(flip.tau) }}
 							</div>
 						</div>
 					</div>
