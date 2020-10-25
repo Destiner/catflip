@@ -161,7 +161,7 @@ export default {
 				const marketString = calldata[0]
 					.map(marketAddress => this._getToken(marketAddress))
 					.join(',');
-				return `Enable COMP for ${marketString}`;
+				return `Enable COMP distribution for ${marketString} market`;
 			}
 			if (signature === DROP_COMP_MARKET) {
 				const marketAddress = calldata[0];
