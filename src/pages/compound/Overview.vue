@@ -193,6 +193,38 @@
 								Interest rate model
 							</div>
 						</div>
+						<div class="row">
+							<div class="row-number">
+								{{ formatAmount(token.borrowCap) }}
+							</div>
+							<div class="row-label">
+								Borrow cap
+							</div>
+						</div>
+						<div class="row">
+							<div class="row-number">
+								{{ token.mintEnabled }}
+							</div>
+							<div class="row-label">
+								Deposit enabled
+							</div>
+						</div>
+						<div class="row">
+							<div class="row-number">
+								{{ token.borrowEnabled }}
+							</div>
+							<div class="row-label">
+								Borrow enabled
+							</div>
+						</div>
+						<div class="row">
+							<div class="row-number">
+								{{ token.compEnabled }}
+							</div>
+							<div class="row-label">
+								COMP enabled
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -299,28 +331,43 @@ export default {
 				const cToken = new ethcall.Contract(tokenAddress, cTokenAbi);
 				const marketCall = comptroller.markets(tokenAddress);
 				const reserveFactorMantissaCall = cToken.reserveFactorMantissa();
+				const borrowCapCall = comptroller.borrowCaps(tokenAddress);
 				const totalReserveCall = cToken.totalReserves();
 				const interestRateModelCall = cToken.interestRateModel();
+				const mintGuardianPausedCall = comptroller.mintGuardianPaused(tokenAddress);
+				const borrowGuardianPausedCall = comptroller.borrowGuardianPaused(tokenAddress);
 				calls.push(marketCall);
 				calls.push(reserveFactorMantissaCall);
+				calls.push(borrowCapCall);
 				calls.push(totalReserveCall);
 				calls.push(interestRateModelCall);
+				calls.push(mintGuardianPausedCall);
+				calls.push(borrowGuardianPausedCall);
 			}
 			const data = await ethcallProvider.all(calls);
 			this.tokens = tokens.map(token => {
 				const index = tokens.indexOf(token);
 				const tokenTitle = tokens[index];
-				const market = data[4 * index];
+				const market = data[7 * index];
 				const collateralFactorMantissa = market.collateralFactorMantissa.toString();
-				const reserveFactorMantissa = data[4 * index + 1].toString();
-				const totalReserve = data[4 * index + 2].toString();
-				const interestRateModel = data[4 * index + 3];
+				const reserveFactorMantissa = data[7 * index + 1].toString();
+				const borrowCap = data[7 * index + 2].toString();
+				const totalReserve = data[7 * index + 3].toString();
+				const interestRateModel = data[7 * index + 4];
+				const mintEnabled = !data[7 * index + 5];
+				const borrowEnabled = !data[7 * index + 6];
+				const compEnabled = market.isComped;
+				console.log(borrowCap, mintEnabled, borrowEnabled, compEnabled);
 				return {
 					title: tokenTitle,
 					collateralFactorMantissa,
 					reserveFactorMantissa,
+					borrowCap,
 					totalReserve,
 					interestRateModel,
+					mintEnabled,
+					borrowEnabled,
+					compEnabled,
 				};
 			});
 		},
