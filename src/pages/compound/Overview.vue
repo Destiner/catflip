@@ -358,7 +358,6 @@ export default {
 				const mintEnabled = !data[7 * index + 5];
 				const borrowEnabled = !data[7 * index + 6];
 				const compEnabled = market.isComped;
-				console.log(borrowCap, mintEnabled, borrowEnabled, compEnabled);
 				return {
 					title: tokenTitle,
 					collateralFactorMantissa,
