@@ -41,15 +41,16 @@
 </template>
 
 <script>
-import ethcall from 'ethcall';
-import { ethers } from 'ethers';
+import { AbiCoder } from '@ethersproject/abi';
+import { InfuraProvider } from '@ethersproject/providers';
+import { Contract, Provider } from 'ethcall';
 
 import governorAbi from '../../abi/compound/governor.json';
 import Formatter from '../../utils/formatter.js';
 import Converter from '../../utils/converter.js';
 
 const infuraKey = '2c010c2fdb8b4ef1a7617571553fc982';
-const provider = new ethers.providers.InfuraProvider('mainnet', infuraKey);
+const provider = new InfuraProvider('mainnet', infuraKey);
 
 const governorAddress = '0xc0dA01a04C3f3E0be433606045bB7017A7323E38';
 
@@ -392,7 +393,7 @@ export default {
 				};
 			});
 
-			const abiCoder = new ethers.utils.AbiCoder();
+			const abiCoder = new AbiCoder();
 			const params = abiCoder.decode(inputs, rawCalldata);
 			return params;
 		},
@@ -401,18 +402,18 @@ export default {
 			this.rawProposals = await this._getProposals(proposalCount);
 		},
 		async _getProposalCount() {
-			const ethcallProvider = new ethcall.Provider();
+			const ethcallProvider = new Provider();
 			await ethcallProvider.init(provider);
-			const governor = new ethcall.Contract(governorAddress, governorAbi);
+			const governor = new Contract(governorAddress, governorAbi);
 			const proposalCountCall = governor.proposalCount();
 			const data = await ethcallProvider.all([proposalCountCall]);
 			const proposalCount = data[0].toNumber();
 			return proposalCount;
 		},
 		async _getProposals(proposalCount) {
-			const ethcallProvider = new ethcall.Provider();
+			const ethcallProvider = new Provider();
 			await ethcallProvider.init(provider);
-			const governor = new ethcall.Contract(governorAddress, governorAbi);
+			const governor = new Contract(governorAddress, governorAbi);
 			const calls = [];
 			for (let i = 1; i <= proposalCount; i++) {
 				const actionsCall = governor.getActions(i);

@@ -399,8 +399,9 @@
 </template>
 
 <script>
-import { ethers } from 'ethers';
-import ethcall from 'ethcall';
+import { InfuraProvider } from '@ethersproject/providers';
+import { formatBytes32String } from '@ethersproject/strings';
+import { Contract, Provider } from 'ethcall';
 
 import vatAbi from '../../abi/maker/vat.json';
 import jugAbi from '../../abi/maker/jug.json';
@@ -421,10 +422,11 @@ import Converter from '../../utils/converter.js';
 import EtherscanIcon from '../../components/EtherscanIcon.vue';
 
 const infuraKey = '2c010c2fdb8b4ef1a7617571553fc982';
-const provider = new ethers.providers.InfuraProvider('mainnet', infuraKey);
+const provider = new InfuraProvider('mainnet', infuraKey);
 
 const ilkIds = [
 	'ETH-A',
+	'ETH-B',
 	'USDC-A',
 	'USDC-B',
 	'TUSD-A',
@@ -449,6 +451,7 @@ const addresses = {
 	cat: '0xa5679C04fc3d9d8b0AaB1F0ab83555b301cA70Ea',
 	flip: {
 		'ETH-A': '0xF32836B9E1f47a0515c6Ec431592D5EbC276407f',
+		'ETH-B': '0xD499d71bE9e9E5D236A07ac562F7B6CeacCa624c',
 		'WBTC-A': '0x58CD24ac7322890382eE45A3E4F903a5B22Ee930',
 		'BAT-A': '0xF7C569B2B271354179AaCC9fF1e42390983110BA',
 		'KNC-A': '0x57B01F1B3C59e2C0bdfF3EC9563B71EEc99a3f2f',
@@ -472,17 +475,17 @@ const addresses = {
 	end: '0xaB14d3CE3F733CACB76eC2AbE7d2fcb00c99F3d5',
 };
 
-const vatContract = new ethcall.Contract(addresses.vat, vatAbi);
-const jugContract = new ethcall.Contract(addresses.jug, jugAbi);
-const spotContract = new ethcall.Contract(addresses.spot, spotAbi);
-const potContract = new ethcall.Contract(addresses.pot, potAbi);
-const catContract = new ethcall.Contract(addresses.cat, catAbi);
-const flapContract = new ethcall.Contract(addresses.flap, flapAbi);
-const flopContract = new ethcall.Contract(addresses.flop, flopAbi);
-const vowContract = new ethcall.Contract(addresses.vow, vowAbi);
-const pauseContract = new ethcall.Contract(addresses.pause, pauseAbi);
-const esmContract = new ethcall.Contract(addresses.esm, esmAbi);
-const endContract = new ethcall.Contract(addresses.end, endAbi);
+const vatContract = new Contract(addresses.vat, vatAbi);
+const jugContract = new Contract(addresses.jug, jugAbi);
+const spotContract = new Contract(addresses.spot, spotAbi);
+const potContract = new Contract(addresses.pot, potAbi);
+const catContract = new Contract(addresses.cat, catAbi);
+const flapContract = new Contract(addresses.flap, flapAbi);
+const flopContract = new Contract(addresses.flop, flopAbi);
+const vowContract = new Contract(addresses.vow, vowAbi);
+const pauseContract = new Contract(addresses.pause, pauseAbi);
+const esmContract = new Contract(addresses.esm, esmAbi);
+const endContract = new Contract(addresses.end, endAbi);
 
 export default {
 	components: {
@@ -550,7 +553,7 @@ export default {
 			return `https://etherscan.io/address/${contractAddress}`;
 		},
 		async _loadBase() {
-			const ethcallProvider = new ethcall.Provider();
+			const ethcallProvider = new Provider();
 			await ethcallProvider.init(provider);
 
 			const vatLineCall = vatContract.Line();
@@ -570,13 +573,11 @@ export default {
 			this.catBox = catBox;
 		},
 		async _loadCollaterals() {
-			const ethcallProvider = new ethcall.Provider();
+			const ethcallProvider = new Provider();
 			await ethcallProvider.init(provider);
 
 			const count = ilkIds.length;
-			const collateralIdBytes = ilkIds.map(id =>
-				ethers.utils.formatBytes32String(id)
-			);
+			const collateralIdBytes = ilkIds.map(id => formatBytes32String(id));
 			const jugIlkCalls = collateralIdBytes.map(ilk =>
 				jugContract.ilks(ilk)
 			);
@@ -609,12 +610,10 @@ export default {
 			});
 		},
 		async _loadCats() {
-			const ethcallProvider = new ethcall.Provider();
+			const ethcallProvider = new Provider();
 			await ethcallProvider.init(provider);
 
-			const collateralIdBytes = ilkIds.map(id =>
-				ethers.utils.formatBytes32String(id)
-			);
+			const collateralIdBytes = ilkIds.map(id => formatBytes32String(id));
 			const catIlkCalls = collateralIdBytes.map(ilk =>
 				catContract.ilks(ilk)
 			);
@@ -636,14 +635,14 @@ export default {
 			});
 		},
 		async _loadFlips() {
-			const ethcallProvider = new ethcall.Provider();
+			const ethcallProvider = new Provider();
 			await ethcallProvider.init(provider);
 
 			const flipIds = Object.keys(addresses.flip);
 			const count = flipIds.length;
 			const flipContracts = flipIds.map(flipId => {
 				const flipAddress = addresses.flip[flipId];
-				const flipContract = new ethcall.Contract(flipAddress, flipAbi);
+				const flipContract = new Contract(flipAddress, flipAbi);
 				return flipContract;
 			});
 			const begCalls = flipContracts.map(flipContract => {
@@ -678,7 +677,7 @@ export default {
 			});
 		},
 		async _loadFlapFlop() {
-			const ethcallProvider = new ethcall.Provider();
+			const ethcallProvider = new Provider();
 			await ethcallProvider.init(provider);
 
 			const flapBegCall = flapContract.beg();
@@ -717,7 +716,7 @@ export default {
 			this.flopPad = flopPad.toString();
 		},
 		async _loadVow() {
-			const ethcallProvider = new ethcall.Provider();
+			const ethcallProvider = new Provider();
 			await ethcallProvider.init(provider);
 
 			const humpCall = vowContract.hump();
@@ -748,7 +747,7 @@ export default {
 			this.wait = wait.toNumber();
 		},
 		async _loadMisc() {
-			const ethcallProvider = new ethcall.Provider();
+			const ethcallProvider = new Provider();
 			await ethcallProvider.init(provider);
 
 			const pauseDelayCall = pauseContract.delay();

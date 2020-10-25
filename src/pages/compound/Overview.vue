@@ -233,8 +233,8 @@
 </template>
 
 <script>
-import { ethers } from 'ethers';
-import ethcall from 'ethcall';
+import { InfuraProvider } from '@ethersproject/providers';
+import { Contract, Provider } from 'ethcall';
 
 import comptrollerAbi from '../../abi/compound/comptroller.json';
 import cTokenAbi from '../../abi/compound/cToken.json';
@@ -246,7 +246,7 @@ import Converter from '../../utils/converter.js';
 import EtherscanIcon from '../../components/EtherscanIcon.vue';
 
 const infuraKey = '2c010c2fdb8b4ef1a7617571553fc982';
-const provider = new ethers.providers.InfuraProvider('mainnet', infuraKey);
+const provider = new InfuraProvider('mainnet', infuraKey);
 const addresses = {
 	comptroller: '0x3d9819210A31b4961b30EF54bE2aeD79B9c9Cd3B',
 	comp: '0xc00e94Cb662C3520282E6f5717214004A7f26888',
@@ -321,15 +321,15 @@ export default {
 			return `https://etherscan.io/address/${contractAddress}`;
 		},
 		async _loadTokens() {
-			const ethcallProvider = new ethcall.Provider();
+			const ethcallProvider = new Provider();
 			await ethcallProvider.init(provider);
 			const calls = [];
-			const comptroller = new ethcall.Contract(addresses.comptroller, comptrollerAbi);
+			const comptroller = new Contract(addresses.comptroller, comptrollerAbi);
 			const tokenAddresses = addresses.tokens;
 			const tokens = Object.keys(tokenAddresses);
 			for (const token in tokenAddresses) {
 				const tokenAddress = tokenAddresses[token];
-				const cToken = new ethcall.Contract(tokenAddress, cTokenAbi);
+				const cToken = new Contract(tokenAddress, cTokenAbi);
 				const marketCall = comptroller.markets(tokenAddress);
 				const reserveFactorMantissaCall = cToken.reserveFactorMantissa();
 				const borrowCapCall = comptroller.borrowCaps(tokenAddress);
@@ -372,10 +372,10 @@ export default {
 			});
 		},
 		async _loadComptroller() {
-			const ethcallProvider = new ethcall.Provider();
+			const ethcallProvider = new Provider();
 			await ethcallProvider.init(provider);
 			
-			const comptroller = new ethcall.Contract(addresses.comptroller, comptrollerAbi);
+			const comptroller = new Contract(addresses.comptroller, comptrollerAbi);
 			const maxAssetsCall = comptroller.maxAssets();
 			const liquidationIncentiveMantissaCall = comptroller.liquidationIncentiveMantissa();
 			const closeFactorMantissaCall = comptroller.closeFactorMantissa();
@@ -413,9 +413,9 @@ export default {
 			this.oracle = oracle;
 		},
 		async _loadTimelock() {
-			const ethcallProvider = new ethcall.Provider();
+			const ethcallProvider = new Provider();
 			await ethcallProvider.init(provider);
-			const timelock = new ethcall.Contract(addresses.timelock, timelockAbi);
+			const timelock = new Contract(addresses.timelock, timelockAbi);
 			const delayCall = timelock.delay();
 			const gracePeriodCall = timelock.GRACE_PERIOD();
 			const adminCall = timelock.admin();
@@ -433,9 +433,9 @@ export default {
 			this.timelockAdmin = timelockAdmin;
 		},
 		async _loadGovernor() {
-			const ethcallProvider = new ethcall.Provider();
+			const ethcallProvider = new Provider();
 			await ethcallProvider.init(provider);
-			const governor = new ethcall.Contract(addresses.governor, governorAbi);
+			const governor = new Contract(addresses.governor, governorAbi);
 			const proposalMaxOperationsCall = governor.proposalMaxOperations();
 			const votingPeriodCall = governor.votingPeriod();
 			const proposalThresholdCall = governor.proposalThreshold();
