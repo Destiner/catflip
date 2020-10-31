@@ -10,22 +10,25 @@
 	</a>
 </template>
 
-<script>
-import etherscanLogo from '../../public/etherscan.svg';
+<script lang="ts">
+import { defineComponent } from 'vue';
 
-export default {
+// @ts-ignore
+import etherscanLogo from '@/assets/etherscan.svg';
+
+export default defineComponent({
 	props: {
 		link: {
 			type: String,
 			required: true,
 		},
 	},
-	computed: {
-		etherscanLogo() {
-			return etherscanLogo;
-		},
+	setup() {
+		return {
+			etherscanLogo,
+		};
 	},
-};
+});
 </script>
 
 <style scoped>

@@ -1,5 +1,5 @@
-import Vue from 'vue';
-import VueRouter from 'vue-router';
+import { createApp } from 'vue';
+import { createWebHistory, createRouter } from 'vue-router';
 
 import App from './App.vue';
 
@@ -8,8 +8,6 @@ import CompoundProposals from './pages/compound/Proposals.vue';
 import MakerOverview from './pages/maker/Overview.vue';
 import MakerChangelog from './pages/maker/Changelog.vue';
 import MakerVoting from './pages/maker/Voting.vue';
-
-Vue.use(VueRouter);
 
 const routes = [
 	{ path: '/', redirect: '/maker/' },
@@ -21,13 +19,19 @@ const routes = [
 	{ path: '/maker/voting', component: MakerVoting },
 ];
 
-const router = new VueRouter({
-	mode: 'history',
+const routerHistory = createWebHistory();
+const router = createRouter({
+	history: routerHistory,
 	routes,
 });
 
-new Vue({
+const app = createApp(App);
+
+app.use(router);
+
+app.mount('#app');
+
+export {
+	routerHistory,
 	router,
-	el: '#app',
-	render: h => h(App),
-});
+};

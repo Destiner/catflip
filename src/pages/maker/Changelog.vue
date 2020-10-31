@@ -40,11 +40,13 @@
 	</div>
 </template>
 
-<script>
-import Converter from '../../utils/converter.js';
-import Formatter from '../../utils/formatter.js';
+<script lang="ts">
+import { ref, computed, onMounted, defineComponent } from 'vue';
 
-import EtherscanIcon from '../../components/EtherscanIcon.vue';
+import Converter from '@/utils/converter';
+import Formatter from '@/utils/formatter';
+
+import EtherscanIcon from '@/components/EtherscanIcon.vue';
 
 const ilkIds = [
 	'ETH-A',
@@ -65,36 +67,39 @@ const ilkIds = [
 	'SAI',
 ];
 
-export default {
+export default defineComponent({
 	components: {
 		EtherscanIcon,
 	},
-	data() {
-		return {
-			changes: [],
-		};
-	},
-	computed: {
-		spells() {
+	setup() {
+		const changes = ref([]);
+
+		onMounted(() => {
+			_loadChanges();
+		});
+
+		const spells = computed(() => {
 			const values = {};
 			const timestamps = {};
 			const spellMap = {};
-			for (let change of this.changes) {
+			for (let change of changes.value) {
 				const { id, timestamp, param, value, txHash } = change;
 				timestamps[txHash] = timestamp;
 				if (!(txHash in spellMap)) {
+					// @ts-ignore
 					spellMap[txHash] = [];
 				}
-				const oldValue = this._getValue(param, values[param]);
-				const newValue = this._getValue(param, value);
+				const oldValue = _getValue(param, values[param]);
+				const newValue = _getValue(param, value);
 				if (oldValue == newValue) {
 					continue;
 				}
+				// @ts-ignore
 				spellMap[txHash].push({
 					id,
 					timestamp,
-					param: this._getParamName(param),
-					term: this._getTermName(param),
+					param: _getParamName(param),
+					term: _getTermName(param),
 					oldValue,
 					newValue,
 				});
@@ -112,24 +117,23 @@ export default {
 			});
 			spells.reverse();
 			return spells;
-		},
-	},
-	mounted() {
-		this._loadChanges();
-	},
-	methods: {
-		formatTimestamp(timestamp) {
+		});
+
+		function formatTimestamp(timestamp: number) {
 			const date = new Date(timestamp * 1000);
 			const options = { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' };
 			return date.toLocaleString('en-US', options);
-		},
-		formatHash(hash) {
+		}
+
+		function formatHash(hash: string) {
 			return `tx ${hash.substr(0, 6)}…${hash.substr(66 - 6)}`;
-		},
-		getEtherscanLink(txHash) {
+		}
+
+		function getEtherscanLink(txHash: string) {
 			return `https://etherscan.io/tx/${txHash}`;
-		},
-		async _loadChanges() {
+		}
+
+		async function _loadChanges() {
 			const url = 'https://api.thegraph.com/subgraphs/name/graphitetools/maker';
 			const query = `
 				query {
@@ -151,9 +155,10 @@ export default {
 			};
 			const response = await fetch(url, opts);
 			const json = await response.json();
-			this.changes = json.data.changes;
-		},
-		_getParamName(param) {
+			changes.value = json.data.changes;
+		}
+
+		function _getParamName(param: string) {
 			const paramMap = {
 				'Vat-Line': 'Ceiling',
 				'Jug-base': 'Base stability fee',
@@ -187,8 +192,9 @@ export default {
 			}
 			const paramName = paramMap[param];
 			return paramName;
-		},
-		_getTermName(param) {
+		}
+
+		function _getTermName(param: string) {
 			const termMap = {
 				'Vat-Line': 'Vat_Line',
 				'Jug-base': 'Jug_base',
@@ -222,71 +228,90 @@ export default {
 			}
 			const termName = termMap[param];
 			return termName;
-		},
-		_getValue(param, value) {
+		}
+
+		function _getValue(param: string, value: string) {
 			if (!value) {
 				return;
 			}
 			const formatFuncMap = {
-				'Vat-Line': this._formatDaiAmount,
-				'Jug-base': this._formatWadRate,
-				'Pot-dsr': this._formatFee,
-				'Cat-box': this._formatDaiAmount,
-				'Flap-beg': this._formatWadRate,
-				'Flap-tau': this._formatDuration,
-				'Flap-ttl': this._formatDuration,
-				'Flop-beg': this._formatWadRate,
-				'Flop-tau': this._formatDuration,
-				'Flop-ttl': this._formatDuration,
-				'Flop-pad': this._formatWadRate,
-				'Vow-hump': this._formatDaiAmount,
-				'Vow-bump': this._formatDaiAmount,
-				'Vow-sump': this._formatDaiAmount,
-				'Vow-dump': this._formatAmount,
-				'Vow-wait': this._formatDuration,
-				'Pause-delay': this._formatDuration,
+				'Vat-Line': _formatDaiAmount,
+				'Jug-base': _formatWadRate,
+				'Pot-dsr': _formatFee,
+				'Cat-box': _formatDaiAmount,
+				'Flap-beg': _formatWadRate,
+				'Flap-tau': _formatDuration,
+				'Flap-ttl': _formatDuration,
+				'Flop-beg': _formatWadRate,
+				'Flop-tau': _formatDuration,
+				'Flop-ttl': _formatDuration,
+				'Flop-pad': _formatWadRate,
+				'Vow-hump': _formatDaiAmount,
+				'Vow-bump': _formatDaiAmount,
+				'Vow-sump': _formatDaiAmount,
+				'Vow-dump': _formatAmount,
+				'Vow-wait': _formatDuration,
+				'Pause-delay': _formatDuration,
 			};
 			for (const ilk of ilkIds) {
-				formatFuncMap[`Vat-${ilk}-dust`] = this._formatDaiAmount;
-				formatFuncMap[`Vat-${ilk}-line`] = this._formatDaiAmount;
-				formatFuncMap[`Spot-${ilk}-mat`] = this._formatRatio;
-				formatFuncMap[`Jug-${ilk}-duty`] = this._formatFee;
-				formatFuncMap[`Cat-${ilk}-chop`] = this._formatWadRate;
-				formatFuncMap[`Cat-${ilk}-dunk`] = this._formatDaiAmount;
-				formatFuncMap[`Cat-${ilk}-lump`] = this._formatAmount;
-				formatFuncMap[`Flip-${ilk}-beg`] = this._formatWadRate;
-				formatFuncMap[`Flip-${ilk}-tau`] = this._formatDuration;
-				formatFuncMap[`Flip-${ilk}-ttl`] = this._formatDuration;
+				formatFuncMap[`Vat-${ilk}-dust`] = _formatDaiAmount;
+				formatFuncMap[`Vat-${ilk}-line`] = _formatDaiAmount;
+				formatFuncMap[`Spot-${ilk}-mat`] = _formatRatio;
+				formatFuncMap[`Jug-${ilk}-duty`] = _formatFee;
+				formatFuncMap[`Cat-${ilk}-chop`] = _formatWadRate;
+				formatFuncMap[`Cat-${ilk}-dunk`] = _formatDaiAmount;
+				formatFuncMap[`Cat-${ilk}-lump`] = _formatAmount;
+				formatFuncMap[`Flip-${ilk}-beg`] = _formatWadRate;
+				formatFuncMap[`Flip-${ilk}-tau`] = _formatDuration;
+				formatFuncMap[`Flip-${ilk}-ttl`] = _formatDuration;
 			}
-			const formatFunc = formatFuncMap[param] || this._noFormat;
+			const formatFunc = formatFuncMap[param] || _noFormat;
 			return formatFunc(value);
-		},
-		_noFormat(value) {
+		}
+
+		function _noFormat(value: string) {
 			return value;
-		},
-		_formatAmount(value) {
+		}
+
+		function _formatAmount(value: string) {
 			return Formatter.formatAmount(Converter.fromWad(value));
-		},
-		_formatDaiAmount(value) {
+		}
+
+		function _formatDaiAmount(value: string) {
+			// @ts-ignore
 			return `${ Formatter.formatAmount(Converter.fromWad(Converter.fromRay(value))) } DAI`;
-		},
-		_formatRatio(value) {
+		}
+
+		function _formatRatio(value: string) {
 			return Formatter.formatRatio(Converter.fromRay(value));
-		},
-		_formatWadRate(value) {
+		}
+
+		function _formatWadRate(value: string) {
 			return Formatter.formatRate(Converter.fromWad(value));
-		},
-		_formatRayRate(value) {
+		}
+
+		function _formatRayRate(value: string) {
 			return Formatter.formatRate(Converter.fromRay(value));
-		},
-		_formatFee(value) {
+		}
+
+		function _formatFee(value: string) {
 			return Formatter.formatFee(Converter.fromRay(value));
-		},
-		_formatDuration(value) {
+		}
+
+		function _formatDuration(value: number) {
 			return Formatter.formatDuration(value);
-		},
+		}
+
+		return {
+			changes,
+			spells,
+
+			formatTimestamp,
+			formatHash,
+			getEtherscanLink,
+		}
 	},
-};
+});
 </script>
 
 <style scoped>

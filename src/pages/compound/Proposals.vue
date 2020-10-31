@@ -40,14 +40,16 @@
 	</div>
 </template>
 
-<script>
-import { AbiCoder } from '@ethersproject/abi';
+<script lang="ts">
+import { ref, computed, onMounted, defineComponent } from 'vue';
+import { AbiCoder, Result } from '@ethersproject/abi';
 import { InfuraProvider } from '@ethersproject/providers';
 import { Contract, Provider } from 'ethcall';
+import BigNumber from 'bignumber.js';
 
-import governorAbi from '../../abi/compound/governor.json';
-import Formatter from '../../utils/formatter.js';
-import Converter from '../../utils/converter.js';
+import governorAbi from '@/abi/compound/governor.json';
+import Formatter from '@/utils/formatter';
+import Converter from '@/utils/converter';
 
 const infuraKey = '2c010c2fdb8b4ef1a7617571553fc982';
 const provider = new InfuraProvider('mainnet', infuraKey);
@@ -77,25 +79,27 @@ const TRANSFER = 'transfer(address,uint256)';
 
 const STATE_EXECUTED = 7;
 
-export default {
-	data() {
-		return {
-			rawProposals: [],
-		};
-	},
-	computed: {
-		proposals() {
-			const values = this._getInitialValues();
+export default defineComponent({
+	setup() {
+		const rawProposals = ref([]);
+
+		onMounted(() => {
+			_loadProposals();
+		});
+
+		const proposals = computed(() => {
+			const values = _getInitialValues();
 			const proposals = [];
-			for (const rawProposal of this.rawProposals) {
+			for (const rawProposal of rawProposals.value) {
 				const changes = [];
 				const { id, state, votes } = rawProposal;
+				// @ts-ignore
 				for (const rawChange of rawProposal.changes) {
 					const { target, signature, calldata: rawCalldata } = rawChange;
-					const calldata = this._parseCalldata(signature, rawCalldata);
-					const title = this._getTitle(target, signature, calldata);
-					const key = this._getKey(target, signature, calldata);
-					const newValue = this._getValue(signature, calldata);
+					const calldata = _parseCalldata(signature, rawCalldata);
+					const title = _getTitle(target, signature, calldata);
+					const key = _getKey(target, signature, calldata);
+					const newValue = _getValue(signature, calldata);
 					const oldValue = values[key];
 					const change = {
 						title,
@@ -118,13 +122,9 @@ export default {
 			}
 			proposals.reverse();
 			return proposals;
-		},
-	},
-	mounted() {
-		this._loadProposals();
-	},
-	methods: {
-		formatState(state) {
+		});
+
+		function formatState(state: number): string {
 			const states = [
 				'Pending',
 				'Active',
@@ -136,14 +136,17 @@ export default {
 				'Executed',
 			];
 			return states[state];
-		},
-		formatVotes(votes) {
+		}
+
+		function formatVotes(votes: string): string {
 			return Formatter.formatMultiplier(Converter.fromWad(votes), 0);
-		},
-		getEtherscanLink(txHash) {
+		}
+
+		function getEtherscanLink(txHash: string): string {
 			return `https://etherscan.io/tx/${txHash}`;
-		},
-		_getTitle(target, signature, calldata) {
+		}
+
+		function _getTitle(target: string, signature: string, calldata: Result): string {
 			if (signature === BECOME_UNITROLLER) {
 				return 'Accept Unitroller implementation';
 			}
@@ -164,37 +167,37 @@ export default {
 			}
 			if (signature === ADD_COMP_MARKETS) {
 				const marketString = calldata[0]
-					.map(marketAddress => this._getToken(marketAddress))
+					.map((marketAddress: string) => _getToken(marketAddress))
 					.join(',');
 				return `Enable COMP distribution for ${marketString} market`;
 			}
 			if (signature === DROP_COMP_MARKET) {
 				const marketAddress = calldata[0];
-				const market = this._getToken(marketAddress);
+				const market = _getToken(marketAddress);
 				return `Disable COMP for ${market}`;
 			}
 			if (signature === SUPPORT_MARKET_SIG) {
 				const marketAddress = calldata[0];
-				const market = this._getToken(marketAddress);
+				const market = _getToken(marketAddress);
 				return `Add ${market} market`;
 			}
 			if (signature === SET_INTEREST_RATE_MODEL) {
-				const market = this._getToken(target);
+				const market = _getToken(target);
 				return `${market}: interest rate model`;
 			}
 			if (signature === SET_RESERVE_FACTOR) {
-				const market = this._getToken(target);
+				const market = _getToken(target);
 				return `${market}: reserve factor`;
 			}
 			if (signature === SET_COLLATERAL_FACTOR) {
-				const market = this._getToken(calldata[0]);
+				const market = _getToken(calldata[0]);
 				return `${market}: collateral factor`;
 			}
 			if (signature === SET_MARKET_BORROW_CAPS) {
 				const capList = [];
 				for (let i = 0; i < calldata[0].length; i++) {
-					const market = this._getToken(calldata[0][i]);
-					const cap = this._formatAmount(calldata[1][i]);
+					const market = _getToken(calldata[0][i]);
+					const cap = _formatAmount(calldata[1][i].toString());
 					capList.push({
 						market,
 						cap,
@@ -206,7 +209,7 @@ export default {
 				return `Set borrow cap: ${capString}`;
 			}
 			if (signature === SET_MINT_PAUSED) {
-				const market = this._getToken(calldata[0]);
+				const market = _getToken(calldata[0]);
 				const paused = calldata[1];
 				if (paused) {
 					return `${market}: pause deposits`;
@@ -215,7 +218,7 @@ export default {
 				}
 			}
 			if (signature === SET_BORROW_PAUSED) {
-				const market = this._getToken(calldata[0]);
+				const market = _getToken(calldata[0]);
 				const paused = calldata[1];
 				if (paused) {
 					return `${market}: pause borrowing`;
@@ -224,18 +227,20 @@ export default {
 				}
 			}
 			if (signature === REDUCE_RESERVES) {
-				const market = this._getToken(target);
-				const amount = this._formatAmount(calldata[0]);
+				const market = _getToken(target);
+				const amount = _formatAmount(calldata[0].toString());
 				return `${market}: reduce reserves by ${amount}`;
 			}
 			if (signature === TRANSFER) {
-				const token = this._getToken(target);
-				const guy = this._formatAddress(calldata[0]);
-				const amount = this._formatAmount(calldata[1]);
+				const token = _getToken(target);
+				const guy = _formatAddress(calldata[0]);
+				const amount = _formatAmount(calldata[1].toString());
 				return `Send ${amount} ${token} to ${guy}`;
 			}
-		},
-		_getKey(target, signature, calldata) {
+			return '';
+		}
+
+		function _getKey(target: string, signature: string, calldata: Result): string {
 			if (signature === BECOME_UNITROLLER) {
 				return 'become_unitroller';
 			}
@@ -262,26 +267,26 @@ export default {
 			}
 			if (signature === SUPPORT_MARKET_SIG) {
 				const marketAddress = calldata[0];
-				const market = this._getToken(marketAddress);
+				const market = _getToken(marketAddress);
 				return `${market}_support_market`;
 			}
 			if (signature === SET_INTEREST_RATE_MODEL) {
-				const market = this._getToken(target);
+				const market = _getToken(target);
 				return `${market}_interest_rate_model`;
 			}
 			if (signature === SET_RESERVE_FACTOR) {
-				const market = this._getToken(target);
+				const market = _getToken(target);
 				return `${market}_reserve_factor`;
 			}
 			if (signature === SET_COLLATERAL_FACTOR) {
-				const market = this._getToken(calldata[0]);
+				const market = _getToken(calldata[0]);
 				return `${market}_collateral_factor`;
 			}
 			if (signature === SET_MARKET_BORROW_CAPS) {
 				return 'borrow_cap';
 			}
 			if (signature === SET_MINT_PAUSED) {
-				const market = this._getToken(calldata[0]);
+				const market = _getToken(calldata[0]);
 				const paused = calldata[1];
 				if (paused) {
 					return `${market}_mint_pause`;
@@ -290,7 +295,7 @@ export default {
 				}
 			}
 			if (signature === SET_BORROW_PAUSED) {
-				const market = this._getToken(calldata[0]);
+				const market = _getToken(calldata[0]);
 				const paused = calldata[1];
 				if (paused) {
 					return `${market}_borrow_pause`;
@@ -299,14 +304,16 @@ export default {
 				}
 			}
 			if (signature === REDUCE_RESERVES) {
-				const market = this._getToken(target);
+				const market = _getToken(target);
 				return `${market}_reduce_reserves`;
 			}
 			if (signature === TRANSFER) {
 				return 'transfer';
 			}
-		},
-		_getValue(signature, calldata) {
+			return '';
+		}
+
+		function _getValue(signature: string, calldata: Result): string {
 			if (signature === BECOME_UNITROLLER) {
 				return '';
 			}
@@ -315,18 +322,18 @@ export default {
 			}
 			if (signature === SET_ORACLE_SIG) {
 				const oracleAddress = calldata[0];
-				return this._formatAddress(oracleAddress);
+				return _formatAddress(oracleAddress);
 			}
 			if (signature === SET_PENDING_IMPLEMENTATION) {
 				const implementation = calldata[0];
-				return this._formatAddress(implementation);
+				return _formatAddress(implementation);
 			}
 			if (signature === SET_BORROW_CAP_GUARDIAN) {
 				const guardian = calldata[0];
-				return this._formatAddress(guardian);
+				return _formatAddress(guardian);
 			}
 			if (signature === SET_COMP_RATE) {
-				const rate = this._formatAmount(calldata[0]);
+				const rate = _formatAmount(calldata[0].toString());
 				return rate;
 			}
 			if (signature === ADD_COMP_MARKETS) {
@@ -340,14 +347,14 @@ export default {
 			}
 			if (signature === SET_INTEREST_RATE_MODEL) {
 				const interestRateModelAddress = calldata[0];
-				return this._formatAddress(interestRateModelAddress);
+				return _formatAddress(interestRateModelAddress);
 			}
 			if (signature === SET_RESERVE_FACTOR) {
-				const reserveFactor = this._formatRatio(calldata[0]);
+				const reserveFactor = _formatRatio(calldata[0].toString());
 				return reserveFactor;
 			}
 			if (signature === SET_COLLATERAL_FACTOR) {
-				const collateralFactor = this._formatRatio(calldata[1]);
+				const collateralFactor = _formatRatio(calldata[1].toString());
 				return collateralFactor;
 			}
 			if (signature === SET_MARKET_BORROW_CAPS) {
@@ -365,8 +372,10 @@ export default {
 			if (signature === TRANSFER) {
 				return '';
 			}
-		},
-		_getToken(address) {
+			return '';
+		}
+
+		function _getToken(address: string): string {
 			const tokens = {
 				cBAT: '0x6C8c6b02E7b2BE14d4fA6022Dfd6d75921D90E4E',
 				cCOMP: '0x70e36f6BF80a52b3B46b3aF8e106CC0ed743E8e4',
@@ -381,27 +390,27 @@ export default {
 				cZRX: '0xB3319f5D18Bc0D84dD1b4825Dcde5d5f7266d407',
 				DAI: '0x89d24A6b4CcB1B6fAA2625fE562bDD9a23260359',
 			};
-			return Object.keys(tokens).find(token => tokens[token] === address);
-		},
-		_parseCalldata(signature, rawCalldata) {
+			return Object.keys(tokens).find(token => tokens[token] === address) || '';
+		}
+
+		function _parseCalldata(signature: string, rawCalldata: any): Result {
 			const inputStartIndex = signature.indexOf('(') + 1;
 			const inputEndIndex = signature.lastIndexOf(')');
 			const inputString = signature.substring(inputStartIndex, inputEndIndex);
-			const inputs = inputString.split(',').map(type => {
-				return {
-					type,
-				};
-			});
+			const inputs = inputString.split(',');
 
 			const abiCoder = new AbiCoder();
 			const params = abiCoder.decode(inputs, rawCalldata);
 			return params;
-		},
-		async _loadProposals() {
-			const proposalCount = await this._getProposalCount();
-			this.rawProposals = await this._getProposals(proposalCount);
-		},
-		async _getProposalCount() {
+		}
+
+		async function _loadProposals() {
+			const proposalCount = await _getProposalCount();
+			// @ts-ignore
+			rawProposals.value = await _getProposals(proposalCount);
+		}
+
+		async function _getProposalCount(): Promise<number> {
 			const ethcallProvider = new Provider();
 			await ethcallProvider.init(provider);
 			const governor = new Contract(governorAddress, governorAbi);
@@ -409,8 +418,9 @@ export default {
 			const data = await ethcallProvider.all([proposalCountCall]);
 			const proposalCount = data[0].toNumber();
 			return proposalCount;
-		},
-		async _getProposals(proposalCount) {
+		}
+
+		async function _getProposals(proposalCount: number) {
 			const ethcallProvider = new Provider();
 			await ethcallProvider.init(provider);
 			const governor = new Contract(governorAddress, governorAbi);
@@ -456,37 +466,45 @@ export default {
 				proposals.push(proposal);
 			}
 			return proposals;
-		},
-		_formatAddress(value) {
+		}
+
+		function _formatAddress(value: string): string {
 			return Formatter.formatAddress(value);
-		},
-		_formatAmount(value) {
+		}
+
+		function _formatAmount(value: string): string {
 			return Formatter.formatAmount(Converter.fromWad(value), 3);
-		},
-		_formatRatio(value) {
+		}
+
+		function _formatRatio(value: string): string {
 			return Formatter.formatRatio(Converter.fromWad(value));
-		},
-		_formatWadRate(value) {
-			return Formatter.formatRate(Converter.fromWad(value));
-		},
-		_getInitialValues() {
+		}
+
+		function _getInitialValues() {
 			return {
-				cBAT_reserve_factor: this._formatRatio('100000000000000000'),
-				cDAI_interest_rate_model: this._formatAddress('0xec163986cc9a6593d6addcbff5509430d348030f'),
-				cREP_reserve_factor: this._formatRatio('100000000000000000'),
-				cSAI_collateral_factor: this._formatRatio('750000000000000000'),
-				cSAI_reserve_factor: this._formatRatio('500000000000000000'),
-				cUSDC_interest_rate_model: this._formatAddress('0x0c3f8df27e1a00b47653fde878d68d35f00714c0'),
-				cUSDT_interest_rate_model: this._formatAddress('0x6bc8fe27d0c7207733656595e73c0d5cf7afae36'),
-				cUSDT_reserve_factor: this._formatRatio('0'),
-				cWBTC_collateral_factor: this._formatRatio('0'),
-				cZRX_reserve_factor: this._formatRatio('100000000000000000'),
-				pending_implementation: this._formatAddress('0x97bd4cc841fc999194174cd1803c543247a014fe'),
-				price_oracle: this._formatAddress('0xda17fbeda95222f331cb1d252401f4b44f49f7a0'),
+				cBAT_reserve_factor: _formatRatio('100000000000000000'),
+				cDAI_interest_rate_model: _formatAddress('0xec163986cc9a6593d6addcbff5509430d348030f'),
+				cREP_reserve_factor: _formatRatio('100000000000000000'),
+				cSAI_collateral_factor: _formatRatio('750000000000000000'),
+				cSAI_reserve_factor: _formatRatio('500000000000000000'),
+				cUSDC_interest_rate_model: _formatAddress('0x0c3f8df27e1a00b47653fde878d68d35f00714c0'),
+				cUSDT_interest_rate_model: _formatAddress('0x6bc8fe27d0c7207733656595e73c0d5cf7afae36'),
+				cUSDT_reserve_factor: _formatRatio('0'),
+				cWBTC_collateral_factor: _formatRatio('0'),
+				cZRX_reserve_factor: _formatRatio('100000000000000000'),
+				pending_implementation: _formatAddress('0x97bd4cc841fc999194174cd1803c543247a014fe'),
+				price_oracle: _formatAddress('0xda17fbeda95222f331cb1d252401f4b44f49f7a0'),
 			};
-		},
+		}
+
+		return {
+			proposals,
+
+			formatState,
+			formatVotes,
+		};
 	},
-};
+});
 </script>
 
 <style scoped>

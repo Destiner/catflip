@@ -17,7 +17,7 @@
 					<th
 						v-for="spell in spells"
 						:key="spell.address"
-						:class="{ 'hat': isHat(spell.address) }"
+						:class="{ 'hat': spell.address === hat }"
 					>
 						<a
 							:href="getEtherscanLink(spell.address)"
@@ -61,43 +61,55 @@
 	</div>
 </template>
 
-<script>
+<script lang="ts">
+import { ref, computed, onMounted, defineComponent } from 'vue';
 import BigNumber from 'bignumber.js';
 
-import Formatter from '../../utils/formatter.js';
+import Formatter from '@/utils/formatter';
 
-export default {
-	data() {
-		return {
-			holderData: [],
-			spellData: [],
-		};
-	},
-	computed: {
-		spells() {
-			return this.spellData.map(data => { 
+export default defineComponent({
+	setup() {
+		onMounted(async () => {
+			const proxiesAndVoters = await _loadProxiesAndVoters();
+			// @ts-ignore
+			holderData.value = _mergeProxiesAndVoters(proxiesAndVoters);
+			spellData.value = await _loadSpells();
+		});
+
+		const holderData = ref([]);
+		const spellData = ref([]);
+
+		const spells = computed(() => {
+			return spellData.value.map((data: any) => { 
 				return {
 					address: data.id,
 					liftedWith: data.liftedWith,
 				};
 			});
-		},
-		hat() {
-			return this.spells[0].address;
-		},
-		votes() {
+		});
+
+		const hat = computed(() => {
+			return spells.value[0].address;
+		});
+
+		const votes = computed(() => {
 			const votes = {};
-			for (const voter of this.holderData) {
+			// @ts-ignore
+			for (const voter of holderData.value) {
+				// @ts-ignore
 				const voterAddress = voter.address;
 				votes[voterAddress] = {};
-				for (const spell of this.spells) {
+				// @ts-ignore
+				for (const spell of spells.value) {
 					const spellAddress = spell.address;
 					votes[voterAddress][spellAddress] = 0;
 				}
 			}
-			for (const data of this.spellData) {
+			// @ts-ignore
+			for (const data of spellData.value) {
 				const { id, lifted, liftedWith, timeLine } = data;
 				const holderData = {};
+				// @ts-ignore
 				for (const event of timeLine) {
 					const { id: eventId, locked, wad, sender, timestamp } = event;
 					const amount = locked || wad;
@@ -130,39 +142,34 @@ export default {
 				}
 			}
 			return votes;
-		},
-		votesLoaded() {
-			const holders = Object.keys(this.votes);
+		});
+
+		const votesLoaded = computed(() => {
+			const holders = Object.keys(votes.value);
 			if (holders.length == 0) {
 				return false;
 			}
 			const holder = holders[0];
-			const holderVotes = Object.keys(this.votes[holder]);
+			const holderVotes = Object.keys(votes.value[holder]);
 			if (holderVotes.length == 0) {
 				return false;
 			}
 			return true;
-		},
-	},
-	async mounted() {
-		const proxiesAndVoters = await this._loadProxiesAndVoters();
-		this.holderData = this._mergeProxiesAndVoters(proxiesAndVoters);
-		this.spellData = await this._loadSpells();
-	},
-	methods: {
-		isHat(spell) {
-			return this.hat == spell;
-		},
-		formatAmount(amount) {
+		});
+
+		function formatAmount(amount: number) {
 			return Formatter.formatAmount(amount);
-		},
-		formatSpell(spell) {
+		}
+
+		function formatSpell(spell: string) {
 			return Formatter.formatAddress(spell, 4);
-		},
-		formatVoter(voter) {
+		}
+
+		function formatVoter(voter: string) {
 			return Formatter.formatAddress(voter, 8);
-		},
-		formatVote(vote) {
+		}
+
+		function formatVote(vote: number) {
 			if (!vote || vote == 0) {
 				return '';
 			}
@@ -170,11 +177,13 @@ export default {
 				return '<1%';
 			}
 			return Formatter.formatRatio(vote);
-		},
-		getEtherscanLink(address) {
+		}
+
+		function getEtherscanLink(address: string) {
 			return `https://etherscan.io/address/${address}`;
-		},
-		async _loadProxiesAndVoters() {
+		}
+
+		async function _loadProxiesAndVoters() {
 			const query = `
 				{
 					voteProxies(
@@ -205,8 +214,9 @@ export default {
 			const json = await response.json();
 			const data = json.data;
 			return data;
-		},
-		async _loadSpells() {
+		}
+
+		async function _loadSpells() {
 			const query = `
 				{
 					spells(
@@ -215,7 +225,8 @@ export default {
 						orderDirection: desc,
 						where: {
 							lifted_not: null,
-						},
+						}
+
 					) {
 						id
 						casted
@@ -253,8 +264,9 @@ export default {
 			const json = await response.json();
 			const data = json.data.spells;
 			return data;
-		},
-		_mergeProxiesAndVoters(proxiesAndVoters) {
+		}
+
+		function _mergeProxiesAndVoters(proxiesAndVoters: any) {
 			const proxies = proxiesAndVoters.voteProxies;
 			const voters = proxiesAndVoters.addressVoters;
 			const holders = [];
@@ -283,9 +295,24 @@ export default {
 			});
 			const topHolders = holders.slice(0, 100);
 			return topHolders;
-		},
+		}
+
+		return {
+			holderData,
+			spellData,
+			spells,
+			hat,
+			votes,
+			votesLoaded,
+
+			getEtherscanLink,
+			formatSpell,
+			formatVoter,
+			formatAmount,
+			formatVote,
+		};
 	},
-};
+});
 </script>
 
 <style scoped>

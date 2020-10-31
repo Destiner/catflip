@@ -5,19 +5,19 @@ const WAD = TEN.pow(18);
 const RAY = TEN.pow(27);
 
 class Converter {
-	static fromWad(n) {
+	static fromWad(n: string): number {
 		const number = new BigNumber(n);
 		const convertedNumber = number.div(WAD).toNumber();
 		return convertedNumber;
 	}
 
-	static fromRay(n) {
+	static fromRay(n: string): number {
 		const number = new BigNumber(n);
 		const convertedNumber = number.div(RAY).toNumber();
 		return convertedNumber;
 	}
 
-	static fromBlockCount(n) {
+	static fromBlockCount(n: number): number {
 		return n * 15;
 	}
 }

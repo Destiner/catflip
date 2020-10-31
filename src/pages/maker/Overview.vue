@@ -15,7 +15,7 @@
 				<div class="stats">
 					<div class="stat">
 						<div class="value">
-							{{ formatDaiAmount(vatLine) }} DAI
+							{{ formatDaiAmount(state.vatLine) }} DAI
 						</div>
 						<div class="param">
 							<div>Ceiling</div>
@@ -26,7 +26,7 @@
 					</div>
 					<div class="stat">
 						<div class="value">
-							{{ formatWadRate(jugBase) }}
+							{{ formatWadRate(state.jugBase) }}
 						</div>
 						<div class="param">
 							<div>Base stability fee</div>
@@ -37,7 +37,7 @@
 					</div>
 					<div class="stat">
 						<div class="value">
-							{{ formatFee(potDsr) }}
+							{{ formatFee(state.potDsr) }}
 						</div>
 						<div class="param">
 							<div>Savings rate</div>
@@ -53,7 +53,7 @@
 				<h2>Collateral <span class="term">(Ilk)</span></h2>
 				<div class="cards">
 					<div
-						v-for="ilk in ilks"
+						v-for="ilk in state.ilks"
 						:key="ilk.id"
 						class="card"
 					>
@@ -106,7 +106,7 @@
 				<div class="stats">
 					<div class="stat">
 						<div class="value">
-							{{ formatDaiAmount(catBox) }} DAI
+							{{ formatDaiAmount(state.catBox) }} DAI
 						</div>
 						<div class="param">
 							<div>Total auction limit</div>
@@ -118,7 +118,7 @@
 				</div>
 				<div class="cards">
 					<div
-						v-for="cat in cats"
+						v-for="cat in state.cats"
 						:key="cat.id"
 						class="card"
 					>
@@ -149,7 +149,7 @@
 				<h2>Collateral auction <span class="term">(Flip)</span></h2>
 				<div class="cards">
 					<div
-						v-for="flip in flips"
+						v-for="flip in state.flips"
 						:key="flip.id"
 						class="card"
 					>
@@ -194,7 +194,7 @@
 				<div class="stats">
 					<div class="stat">
 						<div class="value">
-							{{ formatWadRate(flapBeg) }}
+							{{ formatWadRate(state.flapBeg) }}
 						</div>
 						<div class="param">
 							<div>Minimal bid increase</div>
@@ -205,7 +205,7 @@
 					</div>
 					<div class="stat">
 						<div class="value">
-							{{ formatDuration(flapTtl) }}
+							{{ formatDuration(state.flapTtl) }}
 						</div>
 						<div class="param">
 							<div>Bid duration</div>
@@ -216,7 +216,7 @@
 					</div>
 					<div class="stat">
 						<div class="value">
-							{{ formatDuration(flapTau) }}
+							{{ formatDuration(state.flapTau) }}
 						</div>
 						<div class="param">
 							<div>Auction duration</div>
@@ -238,7 +238,7 @@
 				<div class="stats">
 					<div class="stat">
 						<div class="value">
-							{{ formatWadRate(flopBeg) }}
+							{{ formatWadRate(state.flopBeg) }}
 						</div>
 						<div class="param">
 							<div>Minimal bid increase</div>
@@ -249,7 +249,7 @@
 					</div>
 					<div class="stat">
 						<div class="value">
-							{{ formatDuration(flopTtl) }}
+							{{ formatDuration(state.flopTtl) }}
 						</div>
 						<div class="param">
 							<div>Bid duration</div>
@@ -260,7 +260,7 @@
 					</div>
 					<div class="stat">
 						<div class="value">
-							{{ formatDuration(flopTau) }}
+							{{ formatDuration(state.flopTau) }}
 						</div>
 						<div class="param">
 							<div>Auction duration</div>
@@ -271,7 +271,7 @@
 					</div>
 					<div class="stat">
 						<div class="value">
-							{{ formatWadRate(flopPad) }}
+							{{ formatWadRate(state.flopPad) }}
 						</div>
 						<div class="param">
 							<div>Lot size increase</div>
@@ -293,7 +293,7 @@
 				<div class="stats">
 					<div class="stat">
 						<div class="value">
-							{{ formatDaiAmount(hump) }} DAI
+							{{ formatDaiAmount(state.hump) }} DAI
 						</div>
 						<div class="param">
 							<div>Surplus auction buffer</div>
@@ -304,7 +304,7 @@
 					</div>
 					<div class="stat">
 						<div class="value">
-							{{ formatDaiAmount(bump) }} DAI
+							{{ formatDaiAmount(state.bump) }} DAI
 						</div>
 						<div class="param">
 							<div>Surplus lot size</div>
@@ -315,7 +315,7 @@
 					</div>
 					<div class="stat">
 						<div class="value">
-							{{ formatDaiAmount(sump) }} DAI
+							{{ formatDaiAmount(state.sump) }} DAI
 						</div>
 						<div class="param">
 							<div>Debt auction bid size</div>
@@ -326,7 +326,7 @@
 					</div>
 					<div class="stat">
 						<div class="value">
-							{{ formatAmount(dump) }} MKR
+							{{ formatAmount(state.dump) }} MKR
 						</div>
 						<div class="param">
 							<div>Debt auction initial lot size</div>
@@ -337,7 +337,7 @@
 					</div>
 					<div class="stat">
 						<div class="value">
-							{{ formatDuration(wait) }}
+							{{ formatDuration(state.wait) }}
 						</div>
 						<div class="param">
 							<div>Debt auction delay</div>
@@ -361,7 +361,7 @@
 				<div class="stats">
 					<div class="stat">
 						<div class="value">
-							{{ formatDuration(pauseDelay) }}
+							{{ formatDuration(state.pauseDelay) }}
 						</div>
 						<div class="param">
 							<div>Timelock</div>
@@ -372,7 +372,7 @@
 					</div>
 					<div class="stat">
 						<div class="value">
-							{{ formatAmount(esmMin) }} MKR
+							{{ formatAmount(state.esmMin) }} MKR
 						</div>
 						<div class="param">
 							<div>ES amount</div>
@@ -383,7 +383,7 @@
 					</div>
 					<div class="stat">
 						<div class="value">
-							{{ formatDuration(endWait) }}
+							{{ formatDuration(state.endWait) }}
 						</div>
 						<div class="param">
 							<div>ES delay</div>
@@ -398,28 +398,29 @@
 	</div>
 </template>
 
-<script>
+<script lang="ts">
+import { reactive, onMounted, defineComponent } from 'vue';
 import { InfuraProvider } from '@ethersproject/providers';
 import { formatBytes32String } from '@ethersproject/strings';
 import { Contract, Provider } from 'ethcall';
 
-import vatAbi from '../../abi/maker/vat.json';
-import jugAbi from '../../abi/maker/jug.json';
-import spotAbi from '../../abi/maker/spot.json';
-import potAbi from '../../abi/maker/pot.json';
-import catAbi from '../../abi/maker/cat.json';
-import flipAbi from '../../abi/maker/flip.json';
-import flapAbi from '../../abi/maker/flap.json';
-import flopAbi from '../../abi/maker/flop.json';
-import vowAbi from '../../abi/maker/vow.json';
-import pauseAbi from '../../abi/maker/pause.json';
-import esmAbi from '../../abi/maker/esm.json';
-import endAbi from '../../abi/maker/end.json';
+import vatAbi from '@/abi/maker/vat.json';
+import jugAbi from '@/abi/maker/jug.json';
+import spotAbi from '@/abi/maker/spot.json';
+import potAbi from '@/abi/maker/pot.json';
+import catAbi from '@/abi/maker/cat.json';
+import flipAbi from '@/abi/maker/flip.json';
+import flapAbi from '@/abi/maker/flap.json';
+import flopAbi from '@/abi/maker/flop.json';
+import vowAbi from '@/abi/maker/vow.json';
+import pauseAbi from '@/abi/maker/pause.json';
+import esmAbi from '@/abi/maker/esm.json';
+import endAbi from '@/abi/maker/end.json';
 
-import Formatter from '../../utils/formatter.js';
-import Converter from '../../utils/converter.js';
+import Formatter from '@/utils/formatter';
+import Converter from '@/utils/converter';
 
-import EtherscanIcon from '../../components/EtherscanIcon.vue';
+import EtherscanIcon from '@/components/EtherscanIcon.vue';
 
 const infuraKey = '2c010c2fdb8b4ef1a7617571553fc982';
 const provider = new InfuraProvider('mainnet', infuraKey);
@@ -487,12 +488,12 @@ const pauseContract = new Contract(addresses.pause, pauseAbi);
 const esmContract = new Contract(addresses.esm, esmAbi);
 const endContract = new Contract(addresses.end, endAbi);
 
-export default {
+export default defineComponent({
 	components: {
 		EtherscanIcon,
 	},
-	data() {
-		return {
+	setup() {
+		const state = reactive({
 			vatLine: 0,
 			jugBase: 0,
 			potDsr: 1,
@@ -515,44 +516,53 @@ export default {
 			pauseDelay: 0,
 			esmMin: 0,
 			endWait: 0,
-		};
-	},
-	mounted() {
-		this._loadBase();
-		this._loadCollaterals();
-		this._loadCats();
-		this._loadFlips();
-		this._loadFlapFlop();
-		this._loadVow();
-		this._loadMisc();
-	},
-	methods: {
-		formatAmount(value) {
+		});
+
+		onMounted(() => {
+			_loadBase();
+			_loadCollaterals();
+			_loadCats();
+			_loadFlips();
+			_loadFlapFlop();
+			_loadVow();
+			_loadMisc();
+		});
+
+		function formatAmount(value: string) {
 			return Formatter.formatMultiplier(Converter.fromWad(value), 0);
-		},
-		formatDaiAmount(value) {
+		}
+
+		function formatDaiAmount(value: string) {
+			// @ts-ignore
 			return Formatter.formatMultiplier(Converter.fromWad(Converter.fromRay(value)), 0);
-		},
-		formatRatio(value) {
+		}
+
+		function formatRatio(value: string) {
 			return Formatter.formatRatio(Converter.fromRay(value));
-		},
-		formatRayRate(value) {
+		}
+
+		function formatRayRate(value: string) {
 			return Formatter.formatRate(Converter.fromRay(value));
-		},
-		formatWadRate(value) {
+		}
+
+		function formatWadRate(value: string) {
 			return Formatter.formatRate(Converter.fromWad(value));
-		},
-		formatFee(value) {
+		}
+
+		function formatFee(value: string) {
 			return Formatter.formatFee(Converter.fromRay(value));
-		},
-		formatDuration(value) {
+		}
+
+		function formatDuration(value: number) {
 			return Formatter.formatDuration(value);
-		},
-		getEtherscanLink(contract) {
+		}
+
+		function getEtherscanLink(contract: string) {
 			const contractAddress = addresses[contract];
 			return `https://etherscan.io/address/${contractAddress}`;
-		},
-		async _loadBase() {
+		}
+
+		async function _loadBase() {
 			const ethcallProvider = new Provider();
 			await ethcallProvider.init(provider);
 
@@ -567,12 +577,13 @@ export default {
 			const potDsr = data[2].toString();
 			const catBox = data[3].toString();
 
-			this.vatLine = vatLine;
-			this.jugBase = jugBase;
-			this.potDsr = potDsr;
-			this.catBox = catBox;
-		},
-		async _loadCollaterals() {
+			state.vatLine = vatLine;
+			state.jugBase = jugBase;
+			state.potDsr = potDsr;
+			state.catBox = catBox;
+		}
+
+		async function _loadCollaterals() {
 			const ethcallProvider = new Provider();
 			await ethcallProvider.init(provider);
 
@@ -591,7 +602,8 @@ export default {
 
 			const data = await ethcallProvider.all(ilkCalls);
 
-			this.ilks = ilkIds.map(id => {
+			// @ts-ignore
+			state.ilks = ilkIds.map(id => {
 				const index = ilkIds.indexOf(id);
 				const duty = data[index].duty.toString();
 				const line = data[count + index].line.toString();
@@ -608,8 +620,9 @@ export default {
 				};
 				return ilk;
 			});
-		},
-		async _loadCats() {
+		}
+
+		async function _loadCats() {
 			const ethcallProvider = new Provider();
 			await ethcallProvider.init(provider);
 
@@ -619,7 +632,8 @@ export default {
 			);
 
 			const data = await ethcallProvider.all(catIlkCalls);
-			this.cats = ilkIds.map(id => {
+			// @ts-ignore
+			state.cats = ilkIds.map(id => {
 				const index = ilkIds.indexOf(id);
 				const cat = data[index];
 				const chop = cat.chop.toString();
@@ -633,8 +647,9 @@ export default {
 				};
 				return flip;
 			});
-		},
-		async _loadFlips() {
+		}
+
+		async function _loadFlips() {
 			const ethcallProvider = new Provider();
 			await ethcallProvider.init(provider);
 
@@ -660,7 +675,8 @@ export default {
 			const flipCalls = begCalls.concat(ttlCalls).concat(tauCalls);
 
 			const data = await ethcallProvider.all(flipCalls);
-			this.flips = flipIds.map(id => {
+			// @ts-ignore
+			state.flips = flipIds.map(id => {
 				const index = flipIds.indexOf(id);
 				const beg = data[index].toString();
 				const ttl = data[count + index];
@@ -675,8 +691,9 @@ export default {
 				};
 				return flip;
 			});
-		},
-		async _loadFlapFlop() {
+		}
+
+		async function _loadFlapFlop() {
 			const ethcallProvider = new Provider();
 			await ethcallProvider.init(provider);
 
@@ -707,15 +724,16 @@ export default {
 			const flopTau = data[5];
 			const flopPad = data[6];
 
-			this.flapBeg = flapBeg.toString();
-			this.flapTtl = flapTtl;
-			this.flapTau = flapTau;
-			this.flopBeg = flopBeg.toString();
-			this.flopTtl = flopTtl;
-			this.flopTau = flopTau;
-			this.flopPad = flopPad.toString();
-		},
-		async _loadVow() {
+			state.flapBeg = flapBeg.toString();
+			state.flapTtl = flapTtl;
+			state.flapTau = flapTau;
+			state.flopBeg = flopBeg.toString();
+			state.flopTtl = flopTtl;
+			state.flopTau = flopTau;
+			state.flopPad = flopPad.toString();
+		}
+
+		async function _loadVow() {
 			const ethcallProvider = new Provider();
 			await ethcallProvider.init(provider);
 
@@ -740,13 +758,14 @@ export default {
 			const dump = data[3];
 			const wait = data[4];
 
-			this.hump = hump.toString();
-			this.bump = bump.toString();
-			this.sump = sump.toString();
-			this.dump = dump.toString();
-			this.wait = wait.toNumber();
-		},
-		async _loadMisc() {
+			state.hump = hump.toString();
+			state.bump = bump.toString();
+			state.sump = sump.toString();
+			state.dump = dump.toString();
+			state.wait = wait.toNumber();
+		}
+
+		async function _loadMisc() {
 			const ethcallProvider = new Provider();
 			await ethcallProvider.init(provider);
 
@@ -765,12 +784,25 @@ export default {
 			const esmMin = data[1];
 			const endWait = data[2];
 
-			this.pauseDelay = pauseDelay.toNumber();
-			this.esmMin = esmMin.toString();
-			this.endWait = endWait.toNumber();
-		},
+			state.pauseDelay = pauseDelay.toNumber();
+			state.esmMin = esmMin.toString();
+			state.endWait = endWait.toNumber();
+		}
+
+		return {
+			state,
+
+			formatAmount,
+			formatDaiAmount,
+			formatRatio,
+			formatRayRate,
+			formatWadRate,
+			formatFee,
+			formatDuration,
+			getEtherscanLink,
+		};
 	},
-};
+});
 </script>
 
 <style scoped>

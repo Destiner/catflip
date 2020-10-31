@@ -11,7 +11,7 @@
 				<div class="stats">
 					<div class="stat">
 						<div class="value">
-							{{ maxAssets }}
+							{{ state.maxAssets }}
 						</div>
 						<div class="param">
 							<div>Max assets</div>
@@ -19,7 +19,7 @@
 					</div>
 					<div class="stat">
 						<div class="value">
-							{{ formatWadRate(liquidationIncentiveMantissa) }}
+							{{ formatWadRate(state.liquidationIncentiveMantissa) }}
 						</div>
 						<div class="param">
 							<div>Liquidation incentive</div>
@@ -27,7 +27,7 @@
 					</div>
 					<div class="stat">
 						<div class="value">
-							{{ formatWadRatio(closeFactorMantissa) }}
+							{{ formatWadRatio(state.closeFactorMantissa) }}
 						</div>
 						<div class="param">
 							<div>Close factor</div>
@@ -35,7 +35,7 @@
 					</div>
 					<div class="stat">
 						<div class="value">
-							{{ formatAmount(compRate) }}
+							{{ formatAmount(state.compRate) }}
 						</div>
 						<div class="param">
 							<div>COMP rate</div>
@@ -43,7 +43,7 @@
 					</div>
 					<div class="stat">
 						<div class="value">
-							{{ formatAddress(comptrollerAdmin) }}
+							{{ formatAddress(state.comptrollerAdmin) }}
 						</div>
 						<div class="param">
 							<div>Admin</div>
@@ -51,7 +51,7 @@
 					</div>
 					<div class="stat">
 						<div class="value">
-							{{ formatAddress(pauseGuardian) }}
+							{{ formatAddress(state.pauseGuardian) }}
 						</div>
 						<div class="param">
 							<div>Pause guardian</div>
@@ -59,7 +59,7 @@
 					</div>
 					<div class="stat">
 						<div class="value">
-							{{ formatAddress(comptrollerImplementation) }}
+							{{ formatAddress(state.comptrollerImplementation) }}
 						</div>
 						<div class="param">
 							<div>Implementation</div>
@@ -67,7 +67,7 @@
 					</div>
 					<div class="stat">
 						<div class="value">
-							{{ formatAddress(oracle) }}
+							{{ formatAddress(state.oracle) }}
 						</div>
 						<div class="param">
 							<div>Oracle</div>
@@ -84,7 +84,7 @@
 				<div class="stats">
 					<div class="stat">
 						<div class="value">
-							{{ formatDuration(delay) }}
+							{{ formatDuration(state.delay) }}
 						</div>
 						<div class="param">
 							<div>Delay</div>
@@ -92,7 +92,7 @@
 					</div>
 					<div class="stat">
 						<div class="value">
-							{{ formatDuration(gracePeriod) }}
+							{{ formatDuration(state.gracePeriod) }}
 						</div>
 						<div class="param">
 							<div>Grace period</div>
@@ -100,7 +100,7 @@
 					</div>
 					<div class="stat">
 						<div class="value">
-							{{ formatAddress(timelockAdmin) }}
+							{{ formatAddress(state.timelockAdmin) }}
 						</div>
 						<div class="param">
 							<div>Timelock admin</div>
@@ -117,7 +117,7 @@
 				<div class="stats">
 					<div class="stat">
 						<div class="value">
-							{{ proposalMaxOperations }}
+							{{ state.proposalMaxOperations }}
 						</div>
 						<div class="param">
 							<div>Max operations in proposal</div>
@@ -125,7 +125,7 @@
 					</div>
 					<div class="stat">
 						<div class="value">
-							{{ formatBlockDuration(votingPeriod) }}
+							{{ formatBlockDuration(state.votingPeriod) }}
 						</div>
 						<div class="param">
 							<div>Voting period</div>
@@ -133,7 +133,7 @@
 					</div>
 					<div class="stat">
 						<div class="value">
-							{{ formatAmount(proposalThreshold) }}
+							{{ formatAmount(state.proposalThreshold) }}
 						</div>
 						<div class="param">
 							<div>Proposal threshold</div>
@@ -141,7 +141,7 @@
 					</div>
 					<div class="stat">
 						<div class="value">
-							{{ formatAmount(quorumVotes) }}
+							{{ formatAmount(state.quorumVotes) }}
 						</div>
 						<div class="param">
 							<div>Quorum votes</div>
@@ -154,7 +154,7 @@
 				<h2>cTokens</h2>
 				<div class="cards">
 					<div
-						v-for="token in tokens"
+						v-for="token in state.tokens"
 						:key="token.id"
 						class="card"
 					>
@@ -232,18 +232,19 @@
 	</div>
 </template>
 
-<script>
+<script lang="ts">
+import { reactive, onMounted, defineComponent } from 'vue';
 import { InfuraProvider } from '@ethersproject/providers';
 import { Contract, Provider } from 'ethcall';
 
-import comptrollerAbi from '../../abi/compound/comptroller.json';
-import cTokenAbi from '../../abi/compound/cToken.json';
-import governorAbi from '../../abi/compound/governor.json';
-import timelockAbi from '../../abi/compound/timelock.json';
-import Formatter from '../../utils/formatter.js';
-import Converter from '../../utils/converter.js';
+import comptrollerAbi from '@/abi/compound/comptroller.json';
+import cTokenAbi from '@/abi/compound/cToken.json';
+import governorAbi from '@/abi/compound/governor.json';
+import timelockAbi from '@/abi/compound/timelock.json';
+import Formatter from '@/utils/formatter';
+import Converter from '@/utils/converter';
 
-import EtherscanIcon from '../../components/EtherscanIcon.vue';
+import EtherscanIcon from '@/components/EtherscanIcon.vue';
 
 const infuraKey = '2c010c2fdb8b4ef1a7617571553fc982';
 const provider = new InfuraProvider('mainnet', infuraKey);
@@ -267,12 +268,12 @@ const addresses = {
 	},
 };
 
-export default {
+export default defineComponent({
 	components: {
 		EtherscanIcon,
 	},
-	data() {
-		return {
+	setup() {
+		const state = reactive({
 			tokens: [],
 			maxAssets: 0,
 			liquidationIncentiveMantissa: '0',
@@ -289,38 +290,45 @@ export default {
 			votingPeriod: 0,
 			proposalThreshold: '0',
 			quorumVotes: '0',
-		};
-	},
-	mounted() {
-		this._loadTokens();
-		this._loadComptroller();
-		this._loadTimelock();
-		this._loadGovernor();
-	},
-	methods: {
-		formatAmount(value) {
+		});
+
+		function formatAmount(value: string) {
 			return Formatter.formatMultiplier(Converter.fromWad(value));
-		},
-		formatWadRate(value) {
+		}
+
+		function formatWadRate(value: string) {
 			return Formatter.formatRate(Converter.fromWad(value));
-		},
-		formatWadRatio(value) {
+		}
+
+		function formatWadRatio(value: string) {
 			return Formatter.formatRatio(Converter.fromWad(value));
-		},
-		formatAddress(value) {
+		}
+
+		function formatAddress(value: string) {
 			return Formatter.formatAddress(value, 4);
-		},
-		formatDuration(value) {
+		}
+
+		function formatDuration(value: number) {
 			return Formatter.formatDuration(value);
-		},
-		formatBlockDuration(value) {
+		}
+
+		function formatBlockDuration(value: number) {
 			return Formatter.formatDuration(Converter.fromBlockCount(value));
-		},
-		getEtherscanLink(contract) {
+		}
+
+		function getEtherscanLink(contract: string) {
 			const contractAddress = addresses[contract];
 			return `https://etherscan.io/address/${contractAddress}`;
-		},
-		async _loadTokens() {
+		}
+
+		onMounted(() => {
+			loadTokens();
+			loadComptroller();
+			loadTimelock();
+			loadGovernor();
+		})
+
+		async function loadTokens() {
 			const ethcallProvider = new Provider();
 			await ethcallProvider.init(provider);
 			const calls = [];
@@ -346,7 +354,8 @@ export default {
 				calls.push(borrowGuardianPausedCall);
 			}
 			const data = await ethcallProvider.all(calls);
-			this.tokens = tokens.map(token => {
+			// @ts-ignore
+			state.tokens = tokens.map(token => {
 				const index = tokens.indexOf(token);
 				const tokenTitle = tokens[index];
 				const market = data[7 * index];
@@ -370,8 +379,9 @@ export default {
 					compEnabled,
 				};
 			});
-		},
-		async _loadComptroller() {
+		}
+
+		async function loadComptroller() {
 			const ethcallProvider = new Provider();
 			await ethcallProvider.init(provider);
 			
@@ -403,16 +413,17 @@ export default {
 			const pauseGuardian = data[5];
 			const comptrollerImplementation = data[6];
 			const oracle = data[7];
-			this.maxAssets = maxAssets;
-			this.liquidationIncentiveMantissa = liquidationIncentiveMantissa;
-			this.closeFactorMantissa = closeFactorMantissa;
-			this.compRate = compRate;
-			this.comptrollerAdmin = comptrollerAdmin;
-			this.pauseGuardian = pauseGuardian;
-			this.comptrollerImplementation = comptrollerImplementation;
-			this.oracle = oracle;
-		},
-		async _loadTimelock() {
+			state.maxAssets = maxAssets;
+			state.liquidationIncentiveMantissa = liquidationIncentiveMantissa;
+			state.closeFactorMantissa = closeFactorMantissa;
+			state.compRate = compRate;
+			state.comptrollerAdmin = comptrollerAdmin;
+			state.pauseGuardian = pauseGuardian;
+			state.comptrollerImplementation = comptrollerImplementation;
+			state.oracle = oracle;
+		}
+
+		async function loadTimelock() {
 			const ethcallProvider = new Provider();
 			await ethcallProvider.init(provider);
 			const timelock = new Contract(addresses.timelock, timelockAbi);
@@ -428,11 +439,12 @@ export default {
 			const delay = data[0].toNumber();
 			const gracePeriod = data[1].toNumber();
 			const timelockAdmin = data[2];
-			this.delay = delay;
-			this.gracePeriod = gracePeriod;
-			this.timelockAdmin = timelockAdmin;
-		},
-		async _loadGovernor() {
+			state.delay = delay;
+			state.gracePeriod = gracePeriod;
+			state.timelockAdmin = timelockAdmin;
+		}
+
+		async function loadGovernor() {
 			const ethcallProvider = new Provider();
 			await ethcallProvider.init(provider);
 			const governor = new Contract(addresses.governor, governorAbi);
@@ -451,13 +463,25 @@ export default {
 			const votingPeriod = data[1].toNumber();
 			const proposalThreshold = data[2].toString();
 			const quorumVotes = data[3].toString();
-			this.proposalMaxOperations = proposalMaxOperations;
-			this.votingPeriod = votingPeriod;
-			this.proposalThreshold = proposalThreshold;
-			this.quorumVotes = quorumVotes;
-		},
+			state.proposalMaxOperations = proposalMaxOperations;
+			state.votingPeriod = votingPeriod;
+			state.proposalThreshold = proposalThreshold;
+			state.quorumVotes = quorumVotes;
+		}
+
+		return {
+			state,
+
+			formatAmount,
+			formatWadRate,
+			formatWadRatio,
+			formatAddress,
+			formatDuration,
+			formatBlockDuration,
+			getEtherscanLink,
+		};
 	},
-};
+});
 </script>
 
 <style scoped>

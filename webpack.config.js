@@ -1,13 +1,14 @@
+const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-const VueLoaderPlugin = require('vue-loader/lib/plugin');
+const { VueLoaderPlugin } = require('vue-loader');
 
 const isDev = process.argv.some(v => v.includes('webpack-dev-server'));
 
 module.exports =
 {
 	// This is the "main" file which should include all other modules
-	entry: './src/main.js',
+	entry: './src/main.ts',
 	// Where should the compiled file go?
 	output:
 	{
@@ -18,24 +19,25 @@ module.exports =
 	devtool: isDev ? '': 'eval',
 	resolve: {
 		alias: {
-			vue: isDev ? 'vue/dist/vue' : 'vue/dist/vue.min',
-			ethers: isDev ? 'ethers/dist/ethers' : 'ethers/dist/ethers.min',
+			'@': path.resolve(__dirname, 'src'),
+			vue: '@vue/runtime-dom',
 		},
+		extensions: ['.ts', '.js', '.json'],
 	},
 	module:
 	{
 		rules:
 		[
 			{
-				test: /\.m?js$/,
-				exclude: /(node_modules|bower_components)/,
-				use:
-				{
-					loader: 'babel-loader',
-					options:
-					{
-						presets: ['@babel/preset-env'],
-					}
+				test: /\.vue$/,
+				loader: 'vue-loader',
+			},
+			{
+				test: /\.tsx?$/,
+				loader: 'ts-loader',
+				exclude: /node_modules/,
+				options: {
+					appendTsSuffixTo: [/\.vue$/],
 				},
 			},
 			{
@@ -43,39 +45,25 @@ module.exports =
 				use: ['style-loader', 'css-loader'],
 			},
 			{
-				test: /\.vue$/,
-				loader: 'vue-loader',
-			},
-			{
 				test: /\.(png|jpg|gif|svg)$/,
 				use: [
-				{
-					loader: 'file-loader',
-					options:
 					{
-						name: '[path][name].[ext]',
-					},
-				}],
+						loader: 'file-loader',
+						options:
+						{
+							name: '[path][name].[ext]',
+						},
+					}
+				],
 			},
-			{
-				test: /\.ico$/,
-				use: [
-				{
-					loader: 'file-loader',
-					options:
-					{
-						name: '[name].[ext]',
-					},
-				}],
-			},
-		]
+		],
 	},
 	plugins:
 	[
 		new CleanWebpackPlugin(),
-		new HtmlWebpackPlugin(
-		{
+		new HtmlWebpackPlugin({
 			template: 'public/index.html',
+			favicon: 'public/favicon.ico',
 		}),
 		new VueLoaderPlugin(),
 	],
@@ -91,6 +79,6 @@ module.exports =
 		},
 	},
 	devServer: {
-		historyApiFallback: true
-	}
+		historyApiFallback: true,
+	},
 };

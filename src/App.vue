@@ -1,70 +1,61 @@
 <template>
-	<div id="app">
-		<section id="nav">
-			<h1 id="app-title">
-				Catflip
-			</h1>
-			<div>
-				<div class="nav-section">
-					<h2>Maker</h2>
-					<div class="nav-links">
-						<router-link
-							:to="'/maker/'"
-						>
-							Overview
-						</router-link>
-						<router-link
-							:to="'/maker/changelog'"
-						>
-							Changelog
-						</router-link>
-						<router-link
-							:to="'/maker/voting'"
-						>
-							Voting
-						</router-link>
-					</div>
-				</div>
-				<div class="nav-section">
-					<h2>Compound</h2>
-					<div class="nav-links">
-						<router-link
-							:to="'/compound/'"
-						>
-							Overview
-						</router-link>
-						<router-link
-							:to="'/compound/proposals'"
-						>
-							Proposals
-						</router-link>
-					</div>
-				</div>
-				<div class="nav-section nav-section-secondary">
-					<h2>Links</h2>
-					<div class="nav-links">
-						<a
-							href="https://github.com/Destiner/catflip"
-							target="_blank"
-						>
-							Github
-						</a>
-					</div>
+	<section id="nav">
+		<h1 id="app-title">
+			Catflip
+		</h1>
+		<div>
+			<div class="nav-section">
+				<h2>Maker</h2>
+				<div class="nav-links">
+					<router-link
+						:to="'/maker/'"
+					>
+						Overview
+					</router-link>
+					<router-link
+						:to="'/maker/changelog'"
+					>
+						Changelog
+					</router-link>
+					<router-link
+						:to="'/maker/voting'"
+					>
+						Voting
+					</router-link>
 				</div>
 			</div>
-		</section>
-		<section id="content">
-			<router-view />
-		</section>
-	</div>
+			<div class="nav-section">
+				<h2>Compound</h2>
+				<div class="nav-links">
+					<router-link
+						:to="'/compound/'"
+					>
+						Overview
+					</router-link>
+					<router-link
+						:to="'/compound/proposals'"
+					>
+						Proposals
+					</router-link>
+				</div>
+			</div>
+			<div class="nav-section nav-section-secondary">
+				<h2>Links</h2>
+				<div class="nav-links">
+					<a
+						href="https://github.com/Destiner/catflip"
+						target="_blank"
+					>
+						Github
+					</a>
+				</div>
+			</div>
+		</div>
+	</section>
+	<section id="content">
+		<router-view />
+	</section>
 </template>
-
-<script>
-// eslint-disable-next-line no-unused-vars
-import favicon from '../public/favicon.ico';
-
-export default {};
-</script>
 
 <style>
 @import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
@@ -121,7 +112,7 @@ h2 {
 }
 
 #content {
-	width: calc(100% - 200px);
+	width: calc(100% - 224px);
 }
 
 @media all and (max-width: 768px) {
