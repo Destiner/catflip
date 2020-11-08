@@ -62,6 +62,7 @@ const BECOME_COMPTROLLER = '_become(address)';
 const SET_ORACLE_SIG = '_setPriceOracle(address)';
 const SET_PENDING_IMPLEMENTATION = '_setPendingImplementation(address)';
 const SET_BORROW_CAP_GUARDIAN = '_setBorrowCapGuardian(address)';
+const DELEGATE_COMP_LIKE = '_delegateCompLikeTo(address)';
 
 const SET_COMP_RATE = '_setCompRate(uint256)';
 const ADD_COMP_MARKETS = '_addCompMarkets(address[])';
@@ -163,6 +164,10 @@ export default defineComponent({
 			if (signature === SET_BORROW_CAP_GUARDIAN) {
 				return 'Borrow cap guardian';
 			}
+			if (signature === DELEGATE_COMP_LIKE) {
+				const market = _getToken(target);
+				return `${market}: delegate market voting power`;
+			}
 			if (signature === SET_COMP_RATE) {
 				return 'COMP rate';
 			}
@@ -257,6 +262,11 @@ export default defineComponent({
 			if (signature === SET_BORROW_CAP_GUARDIAN) {
 				return 'borrow_cap_guardian';
 			}
+			if (signature === DELEGATE_COMP_LIKE) {
+				const marketAddress = target;
+				const market = _getToken(marketAddress);
+				return `${market}_delegate_comp_like`;
+			}
 			if (signature === SET_COMP_RATE) {
 				return 'comp_rate';
 			}
@@ -332,6 +342,10 @@ export default defineComponent({
 			if (signature === SET_BORROW_CAP_GUARDIAN) {
 				const guardian = calldata[0];
 				return _formatAddress(guardian);
+			}
+			if (signature === DELEGATE_COMP_LIKE) {
+				const target = calldata[0];
+				return _formatAddress(target);
 			}
 			if (signature === SET_COMP_RATE) {
 				const rate = _formatAmount(calldata[0].toString());
