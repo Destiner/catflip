@@ -6,6 +6,7 @@
 				v-for="proposal in proposals"
 				:key="proposal.id"
 				class="proposal"
+				:class="{ failed: proposal.state !== STATE_EXECUTED }"
 			>
 				<div class="header">
 					<div>
@@ -473,7 +474,7 @@ export default defineComponent({
 		}
 
 		function _formatAmount(value: string): string {
-			return Formatter.formatAmount(Converter.fromWad(value), 3);
+			return Formatter.formatAmount(Converter.fromWad(value), 2);
 		}
 
 		function _formatRatio(value: string): string {
@@ -498,6 +499,8 @@ export default defineComponent({
 		}
 
 		return {
+			STATE_EXECUTED,
+
 			proposals,
 
 			formatState,
@@ -525,6 +528,10 @@ h1 {
 	border: 1px solid #dedede;
 	background: white;
 	margin-top: 1rem;
+}
+
+.proposal.failed {
+	opacity: 0.4;
 }
 
 .header {
