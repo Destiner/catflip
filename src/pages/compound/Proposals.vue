@@ -6,7 +6,7 @@
 				v-for="proposal in proposals"
 				:key="proposal.id"
 				class="proposal"
-				:class="{ failed: proposal.state !== STATE_EXECUTED }"
+				:class="{ failed: proposal.state !== STATE_EXECUTED && proposal.state !== STATE_ACTIVE }"
 			>
 				<div class="header">
 					<div>
@@ -79,6 +79,7 @@ const REDUCE_RESERVES = '_reduceReserves(uint256)';
 
 const TRANSFER = 'transfer(address,uint256)';
 
+const STATE_ACTIVE = 1;
 const STATE_EXECUTED = 7;
 
 export default defineComponent({
@@ -513,6 +514,7 @@ export default defineComponent({
 		}
 
 		return {
+			STATE_ACTIVE,
 			STATE_EXECUTED,
 
 			proposals,
