@@ -20,7 +20,6 @@ module.exports =
 	resolve: {
 		alias: {
 			'@': path.resolve(__dirname, 'src'),
-			vue: '@vue/runtime-dom',
 		},
 		extensions: ['.ts', '.js', '.json'],
 	},
