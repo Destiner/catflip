@@ -6,7 +6,7 @@
 				v-for="proposal in proposals"
 				:key="proposal.id"
 				class="proposal"
-				:class="{ failed: proposal.state !== STATE_EXECUTED && proposal.state !== STATE_ACTIVE }"
+				:class="{ failed: isFailed(proposal.state) }"
 			>
 				<div class="header">
 					<div>
@@ -79,7 +79,9 @@ const REDUCE_RESERVES = '_reduceReserves(uint256)';
 
 const TRANSFER = 'transfer(address,uint256)';
 
-const STATE_ACTIVE = 1;
+const STATE_CANCELLED = 2;
+const STATE_DEFEATED = 3;
+const STATE_EXPIRED = 6;
 const STATE_EXECUTED = 7;
 
 export default defineComponent({
@@ -147,6 +149,12 @@ export default defineComponent({
 
 		function getEtherscanLink(txHash: string): string {
 			return `https://etherscan.io/tx/${txHash}`;
+		}
+
+		function isFailed(state: number): boolean {
+			return state === STATE_CANCELLED ||
+				state === STATE_DEFEATED ||
+				state === STATE_EXPIRED;
 		}
 
 		function _getTitle(target: string, signature: string, calldata: Result): string {
@@ -514,8 +522,7 @@ export default defineComponent({
 		}
 
 		return {
-			STATE_ACTIVE,
-			STATE_EXECUTED,
+			isFailed,
 
 			proposals,
 
