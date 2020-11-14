@@ -326,7 +326,7 @@ export default defineComponent({
 			loadComptroller();
 			loadTimelock();
 			loadGovernor();
-		})
+		});
 
 		async function loadTokens() {
 			const ethcallProvider = new Provider();

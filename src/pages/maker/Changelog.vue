@@ -292,10 +292,6 @@ export default defineComponent({
 			return Formatter.formatRate(Converter.fromWad(value));
 		}
 
-		function _formatRayRate(value: string) {
-			return Formatter.formatRate(Converter.fromRay(value));
-		}
-
 		function _formatFee(value: string) {
 			return Formatter.formatFee(Converter.fromRay(value));
 		}
@@ -311,7 +307,7 @@ export default defineComponent({
 			formatTimestamp,
 			formatHash,
 			getEtherscanLink,
-		}
+		};
 	},
 });
 </script>

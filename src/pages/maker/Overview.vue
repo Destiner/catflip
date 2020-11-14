@@ -594,13 +594,13 @@ export default defineComponent({
 			const count = ilkIds.length;
 			const collateralIdBytes = ilkIds.map(id => formatBytes32String(id));
 			const jugIlkCalls = collateralIdBytes.map(ilk =>
-				jugContract.ilks(ilk)
+				jugContract.ilks(ilk),
 			);
 			const vatIlkCalls = collateralIdBytes.map(ilk =>
-				vatContract.ilks(ilk)
+				vatContract.ilks(ilk),
 			);
 			const spotIlkCalls = collateralIdBytes.map(ilk =>
-				spotContract.ilks(ilk)
+				spotContract.ilks(ilk),
 			);
 			const ilkCalls = jugIlkCalls.concat(vatIlkCalls).concat(spotIlkCalls);
 
@@ -632,7 +632,7 @@ export default defineComponent({
 
 			const collateralIdBytes = ilkIds.map(id => formatBytes32String(id));
 			const catIlkCalls = collateralIdBytes.map(ilk =>
-				catContract.ilks(ilk)
+				catContract.ilks(ilk),
 			);
 
 			const data = await ethcallProvider.all(catIlkCalls);

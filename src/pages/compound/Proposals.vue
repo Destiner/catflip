@@ -147,10 +147,6 @@ export default defineComponent({
 			return Formatter.formatMultiplier(Converter.fromWad(votes), 0);
 		}
 
-		function getEtherscanLink(txHash: string): string {
-			return `https://etherscan.io/tx/${txHash}`;
-		}
-
 		function isFailed(state: number): boolean {
 			return state === STATE_CANCELLED ||
 				state === STATE_DEFEATED ||
