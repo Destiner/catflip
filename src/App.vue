@@ -82,11 +82,13 @@ h2 {
 }
 
 #nav {
+	height: 100%;
 	width: 192px;
-	background: #000638;
-	padding: 1rem;
-	color: #d6daea;
+	padding: 16px;
+	position: fixed;
 	font-size: 14px;
+	color: #d6daea;
+	background: #000638;
 }
 
 .nav-section {
@@ -112,6 +114,7 @@ h2 {
 }
 
 #content {
+	margin-left: 224px;
 	width: calc(100% - 224px);
 }
 
@@ -121,11 +124,14 @@ h2 {
 	}
 
 	#nav {
+		height: initial;
 		width: 100%;
+		position: initial;
 		box-sizing: border-box;
 	}
 
 	#content {
+		margin-left: 0;
 		width: 100%;
 	}
 
@@ -137,17 +143,21 @@ h2 {
 		margin-top: 0;
 	}
 
+	.nav-section > h2 {
+		margin-top: 8px;
+	}
+
 	.nav-section-secondary {
 		display: none;
 	}
 
 	.nav-links {
 		flex-direction: row;
-		justify-content: space-between;
 	}
 
 	.nav-links > a {
 		margin-top: 0;
+		margin-left: 16px;
 	}
 }
 </style>
