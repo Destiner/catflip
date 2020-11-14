@@ -67,17 +67,6 @@ module.exports =
 		}),
 		new VueLoaderPlugin(),
 	],
-	optimization: {
-		splitChunks: {
-			cacheGroups: {
-				vendor: {
-					test: /[\\/]node_modules[\\/]/,
-					name: 'vendors',
-					chunks: 'all',
-				},
-			},
-		},
-	},
 	devServer: {
 		historyApiFallback: true,
 	},
