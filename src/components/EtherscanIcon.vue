@@ -13,7 +13,6 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 
-// @ts-ignore
 import etherscanLogo from '@/assets/etherscan.svg';
 
 export default defineComponent({
