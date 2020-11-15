@@ -13,9 +13,9 @@
 						Overview
 					</router-link>
 					<router-link
-						:to="'/maker/changelog'"
+						:to="'/maker/spells'"
 					>
-						Changelog
+						Spells (changelog)
 					</router-link>
 					<router-link
 						:to="'/maker/voting'"

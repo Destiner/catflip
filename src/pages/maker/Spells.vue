@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<h1>Changelog</h1>
+		<h1>Spells (changelog)</h1>
 		<div id="spells">
 			<div
 				v-for="spell in spells"
