@@ -1,136 +1,131 @@
 {
-	"compound": {
-		"0x9aa835bc7b8ce13b9b0c9764a52fbf71ac62ccf1": {
-			"name": "a16z"
-		},
-		"0xed409c9ff60f3020abf9012bcd45fc294f5608ff": {
-			"name": "Polychain Capital"
-		},
-		"0x6626593c237f530d15ae9980a95ef938ac15c35c": {
-			"name": "Gauntlet"
-		},
-		"0xa1b61405791170833070c0ea61ed28728a840241": {
-			"name": "Paradigm"
-		},
-		"0xac5720d6ee2d7872b88914c9c5fa9bf38e72faf6": {
-			"name": "Robert Leshner"
-		},
-		"0x8169522c2c57883e8ef80c498aab7820da539806": {
-			"name": "Geoffrey Hayes"
-		},
-		"0x7e4a8391c728fed9069b2962699ab416628b19fa": {
-			"name": "Dharma"
-		},
-		"0x54a37d93e57c5da659f508069cf65a381b61e189": {
-			"name": "blck"
-		},
-		"0xe5a52921901c58971ba60725651dc28bde98beb9": {
-			"name": "ParaFi Capital"
-		},
-		"0x1d29756e8f7b091ce6c11a35980de79c7eda5d1f": {
-			"name": "InstaDApp"
-		},
-		"0x5d8908afee1df9f7f0830105f8be828f97ce9e68": {
-			"name": "Argent"
-		},
-		"0x50495480cce225c8476e90466d8615a9e6a5e004": {
-			"name": "Dragonfly Capital"
-		},
-		"0xd061ba96195923e49e619bc1c758568fe47a1fb1": {
-			"name": "IDEO CoLab Ventures"
-		},
-		"0x2fd6181541bebe30d17cf3a5d9f40ebcecbdba43": {
-			"name": "Kyber Network"
-		},
-		"0x879d430d8eba1de4cf1bad4e20da5e559c030f11": {
-			"name": "Jayson Hobby"
-		},
-		"0xe3c9ece23316b6b06142fa0ca915f02c323c6b21": {
-			"name": "Dakeshi"
-		},
-		"0x0a09cd09b0107bb98a83f211704f036eca94b92e": {
-			"name": "PoolTogether"
-		},
-		"0xe5b5cf0e5d044c3e984b910dbc89b19186d24b03": {
-			"name": "Pantera Capital"
-		},
-		"0x7f89077b122afaaf6ab50aa12e9cb46bb9a058c4": {
-			"name": "Max Wolff"
-		},
-		"0xfdaae0c5a7a56c8265b9f86cf8cd934a494e3733": {
-			"name": "Ryan Adams"
-		},
-		"0x5b97680e165b4dbf5c45f4ff4241e85f418c66c2": {
-			"name": "Kain | Synthetix"
-		},
-		"0xcfae402f6ced5a476554235b5026c005c85c135a": {
-			"name": "DeFi Rate"
-		},
-		"0xb0325dbe7fa891436e83a094f9f12848c78e449b": {
-			"name": "Calvin Liu"
-		},
-		"0x18c8f1222083997405f2e482338a4650ac02e1d6": {
-			"name": "Jared Flatow"
-		},
-		"0xa8c6f6e2dfbdededd157a5363d38d7d074d83985": {
-			"name": "ConsenSys"
-		},
-		"0x2b384212edc04ae8bb41738d05ba20e33277bf33": {
-			"name": "Arr00"
-		},
-		"0x8d07d225a769b7af3a923481e1fdf49180e6a265": {
-			"name": "MonetSupply"
-		},
-		"0xc3aae58ab81663872dd36d73613eb295b167f546": {
-			"name": "TennisBowling"
-		},
-		"0xb8a61ce672971ed30af21c923e2d86ac3e2e6406": {
-			"name": "Paul Veradittakit"
-		},
-		"0x55e936c55ac259bf6269f461c0ed1fb293baa157": {
-			"name": "RAC"
-		},
-		"0xfc04833ca66b7d6b4f540d4c2544228f64a25ac2": {
-			"name": "Nick Martitsch"
-		},
-		"0x8fe1a0b56c62f79a7bd8b45fe08b0e03c4af572d": {
-			"name": "New Form Capital"
-		},
-		"0xf25f26a42adcb153b1966a4bf5df6d0c9e27197f": {
-			"name": "a16z"
-		},
-		"0xbbd13ca6aace2a8eccbde88bc7849c3c6e4e172e": {
-			"name": "Ric Burton"
-		},
-		"0x87887cf0e37d937f989ab76b99e4f4682da044c4": {
-			"name": "Opyn"
-		},
-		"0x3e0cf03f718520f30300266dcf4db50ba12d3331": {
-			"name": "Crypto Plaza"
-		},
-		"0x98ea2d8438f70ce876c2db26fc494cfed10b4cd7": {
-			"name": "PoolTogether"
-		},
-		"0x2ac73bfaa9bd3a0f64370a9801b0bda5972ff542": {
-			"name": "Can Not Lose"
-		},
-		"0x9695cfaa368718dd6790a6f57b633d83f565893e": {
-			"name": "Alameda Research"
-		},
-		"0x8703028934b24b47496ad84afd635ea7938487be": {
-			"name": "Jacob"
-		},
-		"0x7de05261d0b952a19de6a9ffc4f77bab447aa044": {
-			"name": "Luke Youngblood"
-		},
-		"0xbe1f4dc51e89cf3f72cc4039bb0104eb96f85733": {
-			"name": "1inch.exchange"
-		},
-		"0x3429ac6efffe28d870667cf3a963017666b6f481": {
-			"name": "Robert Leshner (Test Wallet)"
-		},
-		"0xaf7eaf66b5f1fa23158784fb4c17dba90727afad": {
-			"name": "Zerion"
-		}
+	"0x0a09cd09b0107bb98a83f211704f036eca94b92e": {
+		"name": "PoolTogether"
+	},
+	"0x18c8f1222083997405f2e482338a4650ac02e1d6": {
+		"name": "Jared Flatow"
+	},
+	"0x1d29756e8f7b091ce6c11a35980de79c7eda5d1f": {
+		"name": "InstaDApp"
+	},
+	"0x2ac73bfaa9bd3a0f64370a9801b0bda5972ff542": {
+		"name": "Can Not Lose"
+	},
+	"0x2b384212edc04ae8bb41738d05ba20e33277bf33": {
+		"name": "Arr00"
+	},
+	"0x2fd6181541bebe30d17cf3a5d9f40ebcecbdba43": {
+		"name": "Kyber Network"
+	},
+	"0x3e0cf03f718520f30300266dcf4db50ba12d3331": {
+		"name": "Crypto Plaza"
+	},
+	"0x50495480cce225c8476e90466d8615a9e6a5e004": {
+		"name": "Dragonfly Capital"
+	},
+	"0x54a37d93e57c5da659f508069cf65a381b61e189": {
+		"name": "blck"
+	},
+	"0x55e936c55ac259bf6269f461c0ed1fb293baa157": {
+		"name": "RAC"
+	},
+	"0x5b97680e165b4dbf5c45f4ff4241e85f418c66c2": {
+		"name": "Kain | Synthetix"
+	},
+	"0x5d8908afee1df9f7f0830105f8be828f97ce9e68": {
+		"name": "Argent"
+	},
+	"0x6626593c237f530d15ae9980a95ef938ac15c35c": {
+		"name": "Gauntlet"
+	},
+	"0x7de05261d0b952a19de6a9ffc4f77bab447aa044": {
+		"name": "Luke Youngblood"
+	},
+	"0x7e4a8391c728fed9069b2962699ab416628b19fa": {
+		"name": "Dharma"
+	},
+	"0x7f89077b122afaaf6ab50aa12e9cb46bb9a058c4": {
+		"name": "Max Wolff"
+	},
+	"0x8169522c2c57883e8ef80c498aab7820da539806": {
+		"name": "Geoffrey Hayes"
+	},
+	"0x8703028934b24b47496ad84afd635ea7938487be": {
+		"name": "Jacob"
+	},
+	"0x87887cf0e37d937f989ab76b99e4f4682da044c4": {
+		"name": "Opyn"
+	},
+	"0x879d430d8eba1de4cf1bad4e20da5e559c030f11": {
+		"name": "Jayson Hobby"
+	},
+	"0x8d07d225a769b7af3a923481e1fdf49180e6a265": {
+		"name": "MonetSupply"
+	},
+	"0x8fe1a0b56c62f79a7bd8b45fe08b0e03c4af572d": {
+		"name": "New Form Capital"
+	},
+	"0x9695cfaa368718dd6790a6f57b633d83f565893e": {
+		"name": "Alameda Research"
+	},
+	"0x98ea2d8438f70ce876c2db26fc494cfed10b4cd7": {
+		"name": "PoolTogether"
+	},
+	"0x9aa835bc7b8ce13b9b0c9764a52fbf71ac62ccf1": {
+		"name": "a16z"
+	},
+	"0xa1b61405791170833070c0ea61ed28728a840241": {
+		"name": "Paradigm"
+	},
+	"0xa8c6f6e2dfbdededd157a5363d38d7d074d83985": {
+		"name": "ConsenSys"
+	},
+	"0xac5720d6ee2d7872b88914c9c5fa9bf38e72faf6": {
+		"name": "Robert Leshner"
+	},
+	"0xaf7eaf66b5f1fa23158784fb4c17dba90727afad": {
+		"name": "Zerion"
+	},
+	"0xb0325dbe7fa891436e83a094f9f12848c78e449b": {
+		"name": "Calvin Liu"
+	},
+	"0xb8a61ce672971ed30af21c923e2d86ac3e2e6406": {
+		"name": "Paul Veradittakit"
+	},
+	"0xbbd13ca6aace2a8eccbde88bc7849c3c6e4e172e": {
+		"name": "Ric Burton"
+	},
+	"0xbe1f4dc51e89cf3f72cc4039bb0104eb96f85733": {
+		"name": "1inch.exchange"
+	},
+	"0xc3aae58ab81663872dd36d73613eb295b167f546": {
+		"name": "TennisBowling"
+	},
+	"0xcfae402f6ced5a476554235b5026c005c85c135a": {
+		"name": "DeFi Rate"
+	},
+	"0xd061ba96195923e49e619bc1c758568fe47a1fb1": {
+		"name": "IDEO CoLab Ventures"
+	},
+	"0xe3c9ece23316b6b06142fa0ca915f02c323c6b21": {
+		"name": "Dakeshi"
+	},
+	"0xe5a52921901c58971ba60725651dc28bde98beb9": {
+		"name": "ParaFi Capital"
+	},
+	"0xe5b5cf0e5d044c3e984b910dbc89b19186d24b03": {
+		"name": "Pantera Capital"
+	},
+	"0xed409c9ff60f3020abf9012bcd45fc294f5608ff": {
+		"name": "Polychain Capital"
+	},
+	"0xf25f26a42adcb153b1966a4bf5df6d0c9e27197f": {
+		"name": "a16z"
+	},
+	"0xfc04833ca66b7d6b4f540d4c2544228f64a25ac2": {
+		"name": "Nick Martitsch"
+	},
+	"0xfdaae0c5a7a56c8265b9f86cf8cd934a494e3733": {
+		"name": "Ryan Adams"
 	}
 }
