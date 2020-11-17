@@ -1,9 +1,11 @@
 <template>
 	<div>
 		<h1>Proposals</h1>
-		<div id="proposals">
+		<div class="proposal-wrapper">
+			<LoadingIndicator v-if="proposals.length === 0" />
 			<div
 				v-for="proposal in proposals"
+				v-else
 				:key="proposal.id"
 				class="proposal"
 				:class="{ failed: isFailed(proposal.state) }"
@@ -51,6 +53,8 @@ import governorAbi from '@/abi/compound/governor.json';
 import Formatter from '@/utils/formatter';
 import Converter from '@/utils/converter';
 
+import LoadingIndicator from '@/components/LoadingIndicator.vue';
+
 const infuraKey = '2c010c2fdb8b4ef1a7617571553fc982';
 const provider = new InfuraProvider('mainnet', infuraKey);
 
@@ -84,6 +88,9 @@ const STATE_EXPIRED = 6;
 const STATE_EXECUTED = 7;
 
 export default defineComponent({
+	components: {
+		LoadingIndicator,
+	},
 	setup() {
 		const rawProposals = ref([]);
 
@@ -534,7 +541,7 @@ h1 {
 	margin-top: 1rem;
 }
 
-#proposals {
+.proposal-wrapper {
 	display: flex;
 	flex-direction: column;
 	align-items: center;

@@ -1,8 +1,12 @@
 <template>
 	<div>
 		<h1>Accounts</h1>
-		<div id="accounts-wrapper">
-			<div id="accounts">
+		<div class="accounts-wrapper">
+			<LoadingIndicator v-if="accounts.length === 0" />
+			<div
+				v-else
+				class="accounts"
+			>
 				<div
 					v-for="account in accounts"
 					:key="account.address"
@@ -41,6 +45,7 @@ import Formatter from '@/utils/formatter';
 import accountMeta from '@/accounts.json';
 
 import ExternalLink from '@/components/ExternalLink.vue';
+import LoadingIndicator from '@/components/LoadingIndicator.vue';
 
 interface SubgraphRow {
 	id: string;
@@ -65,6 +70,7 @@ interface Account {
 export default defineComponent({
 	components: {
 		ExternalLink,
+		LoadingIndicator,
 	},
 	setup() {
 		const delegates: Ref<SubgraphAccount[]> = ref([]);
@@ -146,14 +152,14 @@ h1 {
 	margin-top: 1rem;
 }
 
-#accounts-wrapper {
+.accounts-wrapper {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	margin: 1rem 0;
 }
 
-#accounts {
+.accounts {
 	width: 80%;
 	border: 1px solid var(--color-border);
 	background: var(--color-background-card);

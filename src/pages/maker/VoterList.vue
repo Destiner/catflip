@@ -1,8 +1,12 @@
 <template>
 	<div>
 		<h1>Voters</h1>
-		<div id="voters-wrapper">
-			<div id="voters">
+		<div class="voters-wrapper">
+			<LoadingIndicator v-if="voters.length === 0" />
+			<div
+				v-else
+				class="voters"
+			>
 				<div
 					v-for="voter in voters"
 					:key="voter.address"
@@ -40,6 +44,7 @@ import Formatter from '@/utils/formatter';
 import accountMeta from '@/accounts.json';
 
 import ExternalLink from '@/components/ExternalLink.vue';
+import LoadingIndicator from '@/components/LoadingIndicator.vue';
 
 interface VoterData {
 	id: string;
@@ -60,6 +65,7 @@ interface Voter {
 export default defineComponent({
 	components: {
 		ExternalLink,
+		LoadingIndicator,
 	},
 	setup() {
 		const voters: Ref<Voter[]> = ref([]);
@@ -164,14 +170,14 @@ h1 {
 	margin-top: 1rem;
 }
 
-#voters-wrapper {
+.voters-wrapper {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	margin: 1rem 0;
 }
 
-#voters {
+.voters {
 	width: 80%;
 	border: 1px solid var(--color-border);
 	background: var(--color-background-card);

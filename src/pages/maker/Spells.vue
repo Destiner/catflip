@@ -1,9 +1,11 @@
 <template>
 	<div>
 		<h1>Spells (changelog)</h1>
-		<div id="spells">
+		<div class="spell-wrapper">
+			<LoadingIndicator v-if="spells.length === 0" />
 			<div
 				v-for="spell in spells"
+				v-else
 				:key="spell.address"
 				class="spell"
 			>
@@ -66,6 +68,7 @@ import Converter from '@/utils/converter';
 import Formatter from '@/utils/formatter';
 
 import ExternalLink from '@/components/ExternalLink.vue';
+import LoadingIndicator from '@/components/LoadingIndicator.vue';
 
 const ilkIds = [
 	'ETH-A',
@@ -135,6 +138,7 @@ interface SpellChange {
 export default defineComponent({
 	components: {
 		ExternalLink,
+		LoadingIndicator,
 	},
 	setup() {
 		const changes: Ref<Change[]> = ref([]);
@@ -459,7 +463,7 @@ h1 {
 	margin-top: 1rem;
 }
 
-#spells {
+.spell-wrapper {
 	display: flex;
 	flex-direction: column;
 	align-items: center;

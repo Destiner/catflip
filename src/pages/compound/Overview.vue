@@ -8,7 +8,11 @@
 					Comptroller
 					<ExternalLink :link="getEtherscanLink('comptroller')" />
 				</h2>
-				<div class="stats">
+				<LoadingIndicator v-if="!state.maxAssets" />
+				<div
+					v-else
+					class="stats"
+				>
 					<div class="stat">
 						<div class="value">
 							{{ state.maxAssets }}
@@ -81,7 +85,11 @@
 					Timelock
 					<ExternalLink :link="getEtherscanLink('timelock')" />
 				</h2>
-				<div class="stats">
+				<LoadingIndicator v-if="!state.timelockAdmin" />
+				<div
+					v-else
+					class="stats"
+				>
 					<div class="stat">
 						<div class="value">
 							{{ formatDuration(state.delay) }}
@@ -114,7 +122,11 @@
 					Governor
 					<ExternalLink :link="getEtherscanLink('governor')" />
 				</h2>
-				<div class="stats">
+				<LoadingIndicator v-if="!state.proposalMaxOperations" />
+				<div
+					v-else
+					class="stats"
+				>
 					<div class="stat">
 						<div class="value">
 							{{ state.proposalMaxOperations }}
@@ -152,7 +164,11 @@
 
 			<div class="section">
 				<h2>cTokens</h2>
-				<div class="cards">
+				<LoadingIndicator v-if="state.tokens.length === 0" />
+				<div
+					v-else
+					class="cards"
+				>
 					<div
 						v-for="token in state.tokens"
 						:key="token.id"
@@ -245,6 +261,7 @@ import Formatter from '@/utils/formatter';
 import Converter from '@/utils/converter';
 
 import ExternalLink from '@/components/ExternalLink.vue';
+import LoadingIndicator from '@/components/LoadingIndicator.vue';
 
 const infuraKey = '2c010c2fdb8b4ef1a7617571553fc982';
 const provider = new InfuraProvider('mainnet', infuraKey);
@@ -271,6 +288,7 @@ const addresses = {
 export default defineComponent({
 	components: {
 		ExternalLink,
+		LoadingIndicator,
 	},
 	setup() {
 		const state = reactive({

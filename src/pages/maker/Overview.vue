@@ -12,7 +12,11 @@
 						Spot <ExternalLink :link="getEtherscanLink('spot')" />)
 					</span>
 				</h2>
-				<div class="stats">
+				<LoadingIndicator v-if="!state.vatLine" />
+				<div
+					v-else
+					class="stats"
+				>
 					<div class="stat">
 						<div class="value">
 							{{ formatDaiAmount(state.vatLine) }} DAI
@@ -51,7 +55,11 @@
 
 			<div class="section">
 				<h2>Collateral <span class="term">(Ilk)</span></h2>
-				<div class="cards">
+				<LoadingIndicator v-if="state.ilks.length === 0" />
+				<div
+					v-else
+					class="cards"
+				>
 					<div
 						v-for="ilk in state.ilks"
 						:key="ilk.id"
@@ -103,51 +111,58 @@
 						(Cat <ExternalLink :link="getEtherscanLink('cat')" />)
 					</span>
 				</h2>
-				<div class="stats">
-					<div class="stat">
-						<div class="value">
-							{{ formatDaiAmount(state.catBox) }} DAI
-						</div>
-						<div class="param">
-							<div>Total auction limit</div>
-							<div class="term">
-								Cat_box
+				<LoadingIndicator v-if="state.cats.length === 0 && !state.catBox" />
+				<template v-else>
+					<div class="stats">
+						<div class="stat">
+							<div class="value">
+								{{ formatDaiAmount(state.catBox) }} DAI
+							</div>
+							<div class="param">
+								<div>Total auction limit</div>
+								<div class="term">
+									Cat_box
+								</div>
 							</div>
 						</div>
 					</div>
-				</div>
-				<div class="cards">
-					<div
-						v-for="cat in state.cats"
-						:key="cat.id"
-						class="card"
-					>
-						<div class="card-header">
-							<span>{{ cat.asset }}</span>
-						</div>
-						<div class="row">
-							<div class="row-label">
-								Penalty <span class="term">(chop)</span>
+					<div class="cards">
+						<div
+							v-for="cat in state.cats"
+							:key="cat.id"
+							class="card"
+						>
+							<div class="card-header">
+								<span>{{ cat.asset }}</span>
 							</div>
-							<div class="row-number">
-								{{ formatWadRate(cat.chop) }}
+							<div class="row">
+								<div class="row-label">
+									Penalty <span class="term">(chop)</span>
+								</div>
+								<div class="row-number">
+									{{ formatWadRate(cat.chop) }}
+								</div>
 							</div>
-						</div>
-						<div class="row">
-							<div class="row-label">
-								Auction size <span class="term">(dunk)</span>
-							</div>
-							<div class="row-number">
-								{{ formatDaiAmount(cat.dunk) }} DAI
+							<div class="row">
+								<div class="row-label">
+									Auction size <span class="term">(dunk)</span>
+								</div>
+								<div class="row-number">
+									{{ formatDaiAmount(cat.dunk) }} DAI
+								</div>
 							</div>
 						</div>
 					</div>
-				</div>
+				</template>
 			</div>
 
 			<div class="section">
 				<h2>Collateral auction <span class="term">(Flip)</span></h2>
-				<div class="cards">
+				<LoadingIndicator v-if="state.flips.length === 0" />
+				<div
+					v-else
+					class="cards"
+				>
 					<div
 						v-for="flip in state.flips"
 						:key="flip.id"
@@ -191,7 +206,11 @@
 						(Flap <ExternalLink :link="getEtherscanLink('flap')" />)
 					</span>
 				</h2>
-				<div class="stats">
+				<LoadingIndicator v-if="!state.flapTau" />
+				<div
+					v-else
+					class="stats"
+				>
 					<div class="stat">
 						<div class="value">
 							{{ formatWadRate(state.flapBeg) }}
@@ -235,7 +254,11 @@
 						(Flop <ExternalLink :link="getEtherscanLink('flop')" />)
 					</span>
 				</h2>
-				<div class="stats">
+				<LoadingIndicator v-if="!state.flopTau" />
+				<div
+					v-else
+					class="stats"
+				>
 					<div class="stat">
 						<div class="value">
 							{{ formatWadRate(state.flopBeg) }}
@@ -290,7 +313,11 @@
 						(Vow <ExternalLink :link="getEtherscanLink('vow')" />)
 					</span>
 				</h2>
-				<div class="stats">
+				<LoadingIndicator v-if="!state.wait" />
+				<div
+					v-else
+					class="stats"
+				>
 					<div class="stat">
 						<div class="value">
 							{{ formatDaiAmount(state.hump) }} DAI
@@ -358,7 +385,11 @@
 						End <ExternalLink :link="getEtherscanLink('end')" />)
 					</span>
 				</h2>
-				<div class="stats">
+				<LoadingIndicator v-if="!state.esmMin" />
+				<div
+					v-else
+					class="stats"
+				>
 					<div class="stat">
 						<div class="value">
 							{{ formatDuration(state.pauseDelay) }}
@@ -421,6 +452,7 @@ import Formatter from '@/utils/formatter';
 import Converter from '@/utils/converter';
 
 import ExternalLink from '@/components/ExternalLink.vue';
+import LoadingIndicator from '@/components/LoadingIndicator.vue';
 
 const infuraKey = '2c010c2fdb8b4ef1a7617571553fc982';
 const provider = new InfuraProvider('mainnet', infuraKey);
@@ -495,6 +527,7 @@ const endContract = new Contract(addresses.end, endAbi);
 export default defineComponent({
 	components: {
 		ExternalLink,
+		LoadingIndicator,
 	},
 	setup() {
 		const state = reactive({
