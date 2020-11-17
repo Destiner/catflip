@@ -494,9 +494,9 @@ h1 {
 
 .spell-status {
 	padding: 2px 4px;
-	color: var(--color-text-primary-inverted);
+	color: var(--color-text-secondary);
 	font-size: 14px;
-	background: var(--color-brand);
+	border: 1px solid var(--color-text-secondary);
 }
 
 .spell-title {
