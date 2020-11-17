@@ -5,7 +5,15 @@
 		</h1>
 		<div>
 			<div class="nav-section">
-				<h2>Maker</h2>
+				<div class="nav-header">
+					<img
+						:src="makerIcon"
+						class="nav-icon"
+					>
+					<h2 class="nav-title">
+						Maker
+					</h2>
+				</div>
 				<div class="nav-links">
 					<router-link
 						class="nav-link"
@@ -28,7 +36,15 @@
 				</div>
 			</div>
 			<div class="nav-section">
-				<h2>Compound</h2>
+				<div class="nav-header">
+					<img
+						:src="compoundIcon"
+						class="nav-icon"
+					>
+					<h2 class="nav-title">
+						Compound
+					</h2>
+				</div>
 				<div class="nav-links">
 					<router-link
 						class="nav-link"
@@ -45,7 +61,11 @@
 				</div>
 			</div>
 			<div class="nav-section nav-section-secondary">
-				<h2>Links</h2>
+				<div class="nav-header">
+					<h2 class="nav-title">
+						Links
+					</h2>
+				</div>
 				<div class="nav-links">
 					<a
 						href="https://github.com/Destiner/catflip"
@@ -62,6 +82,22 @@
 		<router-view />
 	</section>
 </template>
+
+<script>
+import { defineComponent } from 'vue';
+
+import compoundIcon from '@/assets/compound.svg';
+import makerIcon from '@/assets/maker.svg';
+
+export default defineComponent({
+	setup() {
+		return {
+			compoundIcon,
+			makerIcon,
+		};
+	},
+});
+</script>
 
 <style>
 @import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
@@ -113,11 +149,22 @@ h2 {
 	margin-top: 1rem;
 }
 
-.nav-section > h2 {
-	font-size: 14px;
+.nav-header {
 	margin: 2rem 0 0 0;
+	display: flex;
 	color: var(--color-text-secondary-inverted);
 	text-transform: uppercase;
+}
+
+.nav-title {
+	margin: 0;
+	font-size: 14px;
+}
+
+.nav-icon {
+	width: 16px;
+	height: 16px;
+	margin-right: 8px;
 }
 
 .nav-links {
