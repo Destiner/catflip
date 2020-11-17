@@ -18,9 +18,9 @@
 						Spells (changelog)
 					</router-link>
 					<router-link
-						:to="'/maker/voting'"
+						:to="'/maker/voters'"
 					>
-						Voting
+						Voters
 					</router-link>
 				</div>
 			</div>

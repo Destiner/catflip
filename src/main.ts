@@ -8,7 +8,7 @@ import CompoundProposals from './pages/compound/Proposals.vue';
 import CompoundAccountList from './pages/compound/AccountList.vue';
 import MakerOverview from './pages/maker/Overview.vue';
 import MakerSpells from './pages/maker/Spells.vue';
-import MakerVoting from './pages/maker/Voting.vue';
+import MakerVoterList from './pages/maker/VoterList.vue';
 
 const routes = [
 	{ path: '/', redirect: '/maker/' },
@@ -19,7 +19,7 @@ const routes = [
 	{ path: '/maker/', component: MakerOverview },
 	{ path: '/maker/changelog', redirect: '/maker/spells' },
 	{ path: '/maker/spells', component: MakerSpells },
-	{ path: '/maker/voting', component: MakerVoting },
+	{ path: '/maker/voters', component: MakerVoterList },
 ];
 
 const routerHistory = createWebHistory();
