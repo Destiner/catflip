@@ -1,4 +1,7 @@
 {
+	"0x05e793ce0c6027323ac150f6d45c2344d28b6019": {
+		"name": "a16z"
+	},
 	"0x0a09cd09b0107bb98a83f211704f036eca94b92e": {
 		"name": "PoolTogether"
 	},
@@ -34,6 +37,9 @@
 	},
 	"0x5d8908afee1df9f7f0830105f8be828f97ce9e68": {
 		"name": "Argent"
+	},
+	"0x65b0bf8ee4947edd2a500d74e50a3d757dc79de0": {
+		"name": "Nexo"
 	},
 	"0x6626593c237f530d15ae9980a95ef938ac15c35c": {
 		"name": "Gauntlet"
