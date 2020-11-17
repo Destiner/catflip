@@ -504,8 +504,8 @@ h2 {
 
 .section {
 	width: 90%;
-	background: white;
-	border: 1px solid #dedede;
+	background: var(--color-background-card);
+	border: 1px solid var(--color-border);
 	margin-top: 1rem;
 }
 
@@ -532,7 +532,7 @@ h2 {
 }
 
 .term {
-	color: #818da4;
+	color: var(--color-text-secondary);
 }
 
 .cards {
@@ -544,7 +544,7 @@ h2 {
 
 .card {
 	width: 240px;
-	border: 1px solid #dedede;
+	border: 1px solid var(--color-border);
 	padding: 0.25em 0.5em;
 	margin: 0.25em;
 }

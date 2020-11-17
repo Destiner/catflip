@@ -468,14 +468,14 @@ h1 {
 
 .spell {
 	width: 80%;
-	border: 1px solid #dedede;
-	background: white;
+	border: 1px solid var(--color-border);
+	background: var(--color-background-card);
 	margin-top: 1rem;
 }
 
 .spell-header {
 	padding: 8px;
-	border-bottom: 1px solid #eceff1;
+	border-bottom: 1px solid var(--color-card-row);
 }
 
 .spell-header-primary {
@@ -490,9 +490,9 @@ h1 {
 
 .spell-status {
 	padding: 2px 4px;
-	color: white;
+	color: var(--color-text-primary-inverted);
 	font-size: 14px;
-	background: #818da4;
+	background: var(--color-brand);
 }
 
 .spell-title {
@@ -511,7 +511,7 @@ h1 {
 .spell-header-secondary {
 	margin-top: 4px;
 	font-size: 14px;
-	color: #818da4;
+	color: var(--color-text-secondary);
 }
 
 .change {
@@ -522,11 +522,11 @@ h1 {
 }
 
 .change:nth-child(even) {
-	background: #eceff1;
+	background: var(--color-card-row);
 }
 
 .term {
-	color: #818da4;
+	color: var(--color-text-secondary);
 }
 
 @media all and (max-width: 768px) {

@@ -155,8 +155,8 @@ h1 {
 
 #accounts {
 	width: 80%;
-	border: 1px solid #dedede;
-	background: white;
+	border: 1px solid var(--color-border);
+	background: var(--color-background-card);
 	margin-top: 1rem;
 }
 
@@ -167,7 +167,7 @@ h1 {
 }
 
 .account:nth-child(2n) {
-	background: #eceff1;
+	background: var(--color-card-row);
 }
 
 .account-meta {
@@ -179,7 +179,7 @@ h1 {
 }
 
 .account-address {
-	color: #818da4;
+	color: var(--color-text-secondary);
 }
 
 .account-link {

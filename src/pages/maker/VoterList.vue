@@ -173,8 +173,8 @@ h1 {
 
 #voters {
 	width: 80%;
-	border: 1px solid #dedede;
-	background: white;
+	border: 1px solid var(--color-border);
+	background: var(--color-background-card);
 	margin-top: 1rem;
 }
 
@@ -185,7 +185,7 @@ h1 {
 }
 
 .voter:nth-child(2n) {
-	background: #eceff1;
+	background: var(--color-card-row);
 }
 
 .voter-meta {
@@ -197,7 +197,7 @@ h1 {
 }
 
 .voter-address {
-	color: #818da4;
+	color: var(--color-text-secondary);
 }
 
 .voter-link {

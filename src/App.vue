@@ -60,11 +60,23 @@
 <style>
 @import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
 
+:root {
+	--color-brand: #000638;
+	--color-background: #f7f8fc;
+	--color-background-card: white;
+	--color-card-row: #eceff1;
+	--color-border: #dedede;
+	--color-text-primary: #3a4359;
+	--color-text-secondary: #818da4;
+	--color-text-primary-inverted: #d6daea;
+	--color-text-secondary-inverted: #818da4;
+}
+
 body {
 	margin: 0;
 	font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
-	background: #f7f8fc;
-	color: #3a4359;
+	background: var(--color-background);
+	color: var(--color-text-primary);
 }
 
 h1 {
@@ -87,8 +99,8 @@ h2 {
 	padding: 16px;
 	position: fixed;
 	font-size: 14px;
-	color: #d6daea;
-	background: #000638;
+	color: var(--color-text-primary-inverted);
+	background: var(--color-brand);
 }
 
 .nav-section {
@@ -98,7 +110,7 @@ h2 {
 .nav-section > h2 {
 	font-size: 14px;
 	margin: 2rem 0 0 0;
-	color: #818da4;
+	color: var(--color-text-secondary-inverted);
 	text-transform: uppercase;
 }
 
@@ -110,7 +122,7 @@ h2 {
 .nav-links > a {
 	margin-top: 1rem;
 	text-decoration: none;
-	color: #d6daea;
+	color: var(--color-text-primary-inverted);
 }
 
 #content {

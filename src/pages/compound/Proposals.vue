@@ -46,7 +46,6 @@ import { ref, computed, onMounted, defineComponent } from 'vue';
 import { AbiCoder, Result } from '@ethersproject/abi';
 import { InfuraProvider } from '@ethersproject/providers';
 import { Contract, Provider } from 'ethcall';
-import BigNumber from 'bignumber.js';
 
 import governorAbi from '@/abi/compound/governor.json';
 import Formatter from '@/utils/formatter';
@@ -544,8 +543,8 @@ h1 {
 
 .proposal {
 	width: 80%;
-	border: 1px solid #dedede;
-	background: white;
+	border: 1px solid var(--color-border);
+	background: var(--color-background-card);
 	margin-top: 1rem;
 }
 
@@ -572,7 +571,7 @@ h1 {
 }
 
 .change:nth-child(even) {
-	background: #eceff1;
+	background: var(--color-card-row);
 }
 
 @media all and (max-width: 768px) {
