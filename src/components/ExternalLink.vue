@@ -4,7 +4,7 @@
 		target="_blank"
 	>
 		<img
-			:src="etherscanLogo"
+			:src="externalIcon"
 			class="logo"
 		>
 	</a>
@@ -13,7 +13,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 
-import etherscanLogo from '@/assets/etherscan.svg';
+import externalIcon from '@/assets/externalLink.svg';
 
 export default defineComponent({
 	props: {
@@ -24,7 +24,7 @@ export default defineComponent({
 	},
 	setup() {
 		return {
-			etherscanLogo,
+			externalIcon,
 		};
 	},
 });

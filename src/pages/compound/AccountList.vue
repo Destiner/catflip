@@ -18,7 +18,7 @@
 						<div class="account-address">
 							{{ formatAddress(account.address) }}
 						</div>
-						<EtherscanIcon
+						<ExternalLink
 							class="account-link"
 							:link="getEtherscanLink(account.address)"
 						/>
@@ -40,7 +40,7 @@ import Converter from '@/utils/converter';
 import Formatter from '@/utils/formatter';
 import accountMeta from '@/accounts.json';
 
-import EtherscanIcon from '@/components/EtherscanIcon.vue';
+import ExternalLink from '@/components/ExternalLink.vue';
 
 interface SubgraphRow {
 	id: string;
@@ -64,7 +64,7 @@ interface Account {
 
 export default defineComponent({
 	components: {
-		EtherscanIcon,
+		ExternalLink,
 	},
 	setup() {
 		const delegates: Ref<SubgraphAccount[]> = ref([]);

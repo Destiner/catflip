@@ -19,7 +19,7 @@
 						</div>
 						<div class="spell-address">
 							{{ formatAddress(spell.address) }}
-							<EtherscanIcon
+							<ExternalLink
 								v-if="spell.address"
 								:link="getEtherscanLink(spell.address)"
 							/>
@@ -65,7 +65,7 @@ import { Ref, ComputedRef, ref, computed, onMounted, defineComponent } from 'vue
 import Converter from '@/utils/converter';
 import Formatter from '@/utils/formatter';
 
-import EtherscanIcon from '@/components/EtherscanIcon.vue';
+import ExternalLink from '@/components/ExternalLink.vue';
 
 const ilkIds = [
 	'ETH-A',
@@ -134,7 +134,7 @@ interface SpellChange {
 
 export default defineComponent({
 	components: {
-		EtherscanIcon,
+		ExternalLink,
 	},
 	setup() {
 		const changes: Ref<Change[]> = ref([]);

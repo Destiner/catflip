@@ -6,10 +6,10 @@
 				<h2>
 					Basic
 					<span class="term">
-						(Vat <EtherscanIcon :link="getEtherscanLink('vat')" />,
-						Jug <EtherscanIcon :link="getEtherscanLink('jug')" />,
-						Pot <EtherscanIcon :link="getEtherscanLink('pot')" />,
-						Spot <EtherscanIcon :link="getEtherscanLink('spot')" />)
+						(Vat <ExternalLink :link="getEtherscanLink('vat')" />,
+						Jug <ExternalLink :link="getEtherscanLink('jug')" />,
+						Pot <ExternalLink :link="getEtherscanLink('pot')" />,
+						Spot <ExternalLink :link="getEtherscanLink('spot')" />)
 					</span>
 				</h2>
 				<div class="stats">
@@ -100,7 +100,7 @@
 				<h2>
 					Liquidation
 					<span class="term">
-						(Cat <EtherscanIcon :link="getEtherscanLink('cat')" />)
+						(Cat <ExternalLink :link="getEtherscanLink('cat')" />)
 					</span>
 				</h2>
 				<div class="stats">
@@ -188,7 +188,7 @@
 				<h2>
 					Surplus auction
 					<span class="term">
-						(Flap <EtherscanIcon :link="getEtherscanLink('flap')" />)
+						(Flap <ExternalLink :link="getEtherscanLink('flap')" />)
 					</span>
 				</h2>
 				<div class="stats">
@@ -232,7 +232,7 @@
 				<h2>
 					Debt auction
 					<span class="term">
-						(Flop <EtherscanIcon :link="getEtherscanLink('flop')" />)
+						(Flop <ExternalLink :link="getEtherscanLink('flop')" />)
 					</span>
 				</h2>
 				<div class="stats">
@@ -287,7 +287,7 @@
 				<h2>
 					Accounting
 					<span class="term">
-						(Vow <EtherscanIcon :link="getEtherscanLink('vow')" />)
+						(Vow <ExternalLink :link="getEtherscanLink('vow')" />)
 					</span>
 				</h2>
 				<div class="stats">
@@ -353,9 +353,9 @@
 				<h2>
 					Misc
 					<span class="term">
-						(Pause <EtherscanIcon :link="getEtherscanLink('pause')" />,
-						ESM <EtherscanIcon :link="getEtherscanLink('esm')" />,
-						End <EtherscanIcon :link="getEtherscanLink('end')" />)
+						(Pause <ExternalLink :link="getEtherscanLink('pause')" />,
+						ESM <ExternalLink :link="getEtherscanLink('esm')" />,
+						End <ExternalLink :link="getEtherscanLink('end')" />)
 					</span>
 				</h2>
 				<div class="stats">
@@ -420,7 +420,7 @@ import endAbi from '@/abi/maker/end.json';
 import Formatter from '@/utils/formatter';
 import Converter from '@/utils/converter';
 
-import EtherscanIcon from '@/components/EtherscanIcon.vue';
+import ExternalLink from '@/components/ExternalLink.vue';
 
 const infuraKey = '2c010c2fdb8b4ef1a7617571553fc982';
 const provider = new InfuraProvider('mainnet', infuraKey);
@@ -494,7 +494,7 @@ const endContract = new Contract(addresses.end, endAbi);
 
 export default defineComponent({
 	components: {
-		EtherscanIcon,
+		ExternalLink,
 	},
 	setup() {
 		const state = reactive({

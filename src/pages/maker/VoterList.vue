@@ -18,7 +18,7 @@
 						<div class="voter-address">
 							{{ formatAddress(voter.address) }}
 						</div>
-						<EtherscanIcon
+						<ExternalLink
 							class="voter-link"
 							:link="getEtherscanLink(voter.address)"
 						/>
@@ -39,7 +39,7 @@ import BigNumber from 'bignumber.js';
 import Formatter from '@/utils/formatter';
 import accountMeta from '@/accounts.json';
 
-import EtherscanIcon from '@/components/EtherscanIcon.vue';
+import ExternalLink from '@/components/ExternalLink.vue';
 
 interface VoterData {
 	id: string;
@@ -59,7 +59,7 @@ interface Voter {
 
 export default defineComponent({
 	components: {
-		EtherscanIcon,
+		ExternalLink,
 	},
 	setup() {
 		const voters: Ref<Voter[]> = ref([]);

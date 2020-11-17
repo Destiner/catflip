@@ -6,7 +6,7 @@
 			<div class="section">
 				<h2>
 					Comptroller
-					<EtherscanIcon :link="getEtherscanLink('comptroller')" />
+					<ExternalLink :link="getEtherscanLink('comptroller')" />
 				</h2>
 				<div class="stats">
 					<div class="stat">
@@ -79,7 +79,7 @@
 			<div class="section">
 				<h2>
 					Timelock
-					<EtherscanIcon :link="getEtherscanLink('timelock')" />
+					<ExternalLink :link="getEtherscanLink('timelock')" />
 				</h2>
 				<div class="stats">
 					<div class="stat">
@@ -112,7 +112,7 @@
 			<div class="section">
 				<h2>
 					Governor
-					<EtherscanIcon :link="getEtherscanLink('governor')" />
+					<ExternalLink :link="getEtherscanLink('governor')" />
 				</h2>
 				<div class="stats">
 					<div class="stat">
@@ -244,7 +244,7 @@ import timelockAbi from '@/abi/compound/timelock.json';
 import Formatter from '@/utils/formatter';
 import Converter from '@/utils/converter';
 
-import EtherscanIcon from '@/components/EtherscanIcon.vue';
+import ExternalLink from '@/components/ExternalLink.vue';
 
 const infuraKey = '2c010c2fdb8b4ef1a7617571553fc982';
 const provider = new InfuraProvider('mainnet', infuraKey);
@@ -270,7 +270,7 @@ const addresses = {
 
 export default defineComponent({
 	components: {
-		EtherscanIcon,
+		ExternalLink,
 	},
 	setup() {
 		const state = reactive({
