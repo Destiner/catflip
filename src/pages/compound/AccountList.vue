@@ -141,48 +141,48 @@ export default defineComponent({
 </script>
 
 <style scoped>
-	h1 {
-		text-align: center;
-		margin-top: 1rem;
-	}
+h1 {
+	text-align: center;
+	margin-top: 1rem;
+}
 
-	#accounts-wrapper {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		margin: 1rem 0;
-	}
+#accounts-wrapper {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	margin: 1rem 0;
+}
 
-	#accounts {
-		width: 80%;
-		border: 1px solid #dedede;
-		background: white;
-		margin-top: 1rem;
-	}
+#accounts {
+	width: 80%;
+	border: 1px solid #dedede;
+	background: white;
+	margin-top: 1rem;
+}
 
-	.account {
-		padding: 0.5rem;
-		display: flex;
-		justify-content: space-between;
-	}
+.account {
+	padding: 0.5rem;
+	display: flex;
+	justify-content: space-between;
+}
 
-	.account:nth-child(2n) {
-		background: #eceff1;
-	}
+.account:nth-child(2n) {
+	background: #eceff1;
+}
 
-	.account-meta {
-		display: flex;
-	}
+.account-meta {
+	display: flex;
+}
 
-	.account-name {
-		margin-right: 8px;
-	}
+.account-name {
+	margin-right: 8px;
+}
 
-	.account-address {
-		color: #818da4;
-	}
+.account-address {
+	color: #818da4;
+}
 
-	.account-link {
-		margin-left: 4px;
-	}
+.account-link {
+	margin-left: 4px;
+}
 </style>
