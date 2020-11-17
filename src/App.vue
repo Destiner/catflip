@@ -8,16 +8,19 @@
 				<h2>Maker</h2>
 				<div class="nav-links">
 					<router-link
+						class="nav-link"
 						:to="'/maker/'"
 					>
 						Overview
 					</router-link>
 					<router-link
+						class="nav-link"
 						:to="'/maker/spells'"
 					>
 						Spells (changelog)
 					</router-link>
 					<router-link
+						class="nav-link"
 						:to="'/maker/voters'"
 					>
 						Voters
@@ -28,11 +31,13 @@
 				<h2>Compound</h2>
 				<div class="nav-links">
 					<router-link
+						class="nav-link"
 						:to="'/compound/'"
 					>
 						Overview
 					</router-link>
 					<router-link
+						class="nav-link"
 						:to="'/compound/proposals'"
 					>
 						Proposals
@@ -45,6 +50,7 @@
 					<a
 						href="https://github.com/Destiner/catflip"
 						target="_blank"
+						class="nav-link"
 					>
 						Github
 					</a>
@@ -119,9 +125,18 @@ h2 {
 	flex-direction: column;
 }
 
-.nav-links > a {
+.nav-link {
 	margin-top: 1rem;
 	text-decoration: none;
+	color: var(--color-text-secondary-inverted);
+}
+
+.nav-link:hover {
+	color: var(--color-text-primary-inverted);
+}
+
+.router-link-active {
+	font-weight: bold;
 	color: var(--color-text-primary-inverted);
 }
 
