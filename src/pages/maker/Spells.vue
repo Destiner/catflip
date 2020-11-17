@@ -4,19 +4,38 @@
 		<div id="spells">
 			<div
 				v-for="spell in spells"
-				:key="spell.txHash"
+				:key="spell.address"
 				class="spell"
 			>
-				<div class="header">
-					<div>
-						{{ formatTimestamp(spell.timestamp) }}
+				<div class="spell-header">
+					<div class="spell-header-primary">
+						<div class="spell-metadata">
+							<div class="spell-status">
+								{{ formatStatus(spell.status) }}
+							</div>
+							<div class="spell-title">
+								{{ spell.title }}
+							</div>
+						</div>
+						<div class="spell-address">
+							{{ formatAddress(spell.address) }}
+							<EtherscanIcon
+								v-if="spell.address"
+								:link="getEtherscanLink(spell.address)"
+							/>
+						</div>
 					</div>
-					<div>
-						{{ formatHash(spell.txHash) }}
-						<EtherscanIcon :link="getEtherscanLink(spell.txHash)" />
+					<div class="spell-header-secondary">
+						Created at {{ formatTimestamp(spell.created) }}
+						<span v-if="spell.casted">
+							, casted at {{ formatTimestamp(spell.casted) }}
+						</span>
 					</div>
 				</div>
-				<div class="changes">
+				<div
+					v-if="spell.changes.length > 0"
+					class="changes"
+				>
 					<div
 						v-for="change in spell.changes"
 						:key="change.id"
@@ -41,7 +60,7 @@
 </template>
 
 <script lang="ts">
-import { ref, computed, onMounted, defineComponent } from 'vue';
+import { Ref, ComputedRef, ref, computed, onMounted, defineComponent } from 'vue';
 
 import Converter from '@/utils/converter';
 import Formatter from '@/utils/formatter';
@@ -69,37 +88,86 @@ const ilkIds = [
 	'SAI',
 ];
 
+enum Status {
+	Hat,
+	Passed,
+	Pending,
+	Skipped,
+}
+
+interface Change {
+	id: string;
+	param: string;
+	value: string;
+	timestamp: number;
+	txHash: string;
+}
+
+interface SubgraphSpell {
+	id: string;
+	timestamp: string;
+	casted: string | null;
+	liftedWith: string | null;
+}
+
+interface SpellMetadata {
+	source: string;
+	title: string;
+}
+
+interface Spell {
+	status: Status;
+	address: string;
+	title: string;
+	created: string;
+	casted: string | null;
+	changes: SpellChange[];
+}
+
+interface SpellChange {
+	id: string;
+	param: string;
+	term: string;
+	oldValue: string | null;
+	newValue: string;
+}
+
 export default defineComponent({
 	components: {
 		EtherscanIcon,
 	},
 	setup() {
-		const changes = ref([]);
+		const changes: Ref<Change[]> = ref([]);
+		const subgraphSpells: Ref<SubgraphSpell[]> = ref([]);
+		const spellMetadata: Ref<SpellMetadata[]> = ref([]);
 
-		onMounted(() => {
-			_loadChanges();
+		onMounted(async () => {
+			changes.value = await _fetchChanges();
+			subgraphSpells.value = await _fetchSubgraphSpells();
+			spellMetadata.value = await _fetchSpellMetadata();
 		});
 
-		const spells = computed(() => {
+		const spells: ComputedRef<Spell[]> = computed(() => {
+			if (changes.value.length === 0 ||
+				subgraphSpells.value.length === 0 ||
+				spellMetadata.value.length === 0) {
+				return [];
+			}
+
 			const values = {};
-			const timestamps = {};
-			const spellMap = {};
+			const spellMap: Record<number, SpellChange[]> = {};
 			for (let change of changes.value) {
-				const { id, timestamp, param, value, txHash } = change;
-				timestamps[txHash] = timestamp;
-				if (!(txHash in spellMap)) {
-					// @ts-ignore
-					spellMap[txHash] = [];
+				const { id, timestamp, param, value } = change;
+				if (!(timestamp in spellMap)) {
+					spellMap[timestamp] = [];
 				}
 				const oldValue = _getValue(param, values[param]);
 				const newValue = _getValue(param, value);
 				if (oldValue == newValue) {
 					continue;
 				}
-				// @ts-ignore
-				spellMap[txHash].push({
+				spellMap[timestamp].push({
 					id,
-					timestamp,
 					param: _getParamName(param),
 					term: _getTermName(param),
 					oldValue,
@@ -107,35 +175,77 @@ export default defineComponent({
 				});
 				values[param] = value;
 			}
-			const txHashes = Object.keys(spellMap);
-			const spells = txHashes.map(txHash => {
-				const timestamp = timestamps[txHash];
-				const changes = spellMap[txHash];
+			const metadataMap: Record<string, SpellMetadata> = {};
+			for (const metadata of spellMetadata.value) {
+				const address = metadata.source.toLowerCase();
+				metadataMap[address] = metadata;
+			}
+
+			const latestSpell = subgraphSpells.value[0];
+			const latestPassedSpell = subgraphSpells.value.filter(spell => spell.casted)[0];
+			const spells = subgraphSpells.value.map(subgraphSpell => {
+				const { id: address, timestamp: created, casted } = subgraphSpell;
+				const status = _getSpellStatus(address, latestSpell, latestPassedSpell, casted);
+				const title = metadataMap[address]
+					? metadataMap[address].title
+					: 'Spell';
+				const changes = spellMap[casted || ''] || [];
 				return {
-					timestamp,
-					txHash,
+					status,
+					address,
+					title,
+					created,
+					casted,
 					changes,
 				};
 			});
-			spells.reverse();
 			return spells;
 		});
 
-		function formatTimestamp(timestamp: number) {
+		function formatStatus(status: Status): string {
+			if (status === Status.Hat) {
+				return 'Hat';
+			}
+			if (status === Status.Passed) {
+				return 'Passed';
+			}
+			if (status === Status.Pending) {
+				return 'Pending';
+			}
+			if (status === Status.Skipped) {
+				return 'Skipped';
+			}
+			return '';
+		}
+
+		function formatTimestamp(timestampString: string) {
+			const timestamp = parseInt(timestampString);
 			const date = new Date(timestamp * 1000);
 			const options = { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' };
 			return date.toLocaleString('en-US', options);
 		}
 
-		function formatHash(hash: string) {
-			return `tx ${hash.substr(0, 6)}…${hash.substr(66 - 6)}`;
+		function formatAddress(address: string) {
+			return Formatter.formatAddress(address);
 		}
 
 		function getEtherscanLink(txHash: string) {
-			return `https://etherscan.io/tx/${txHash}`;
+			return `https://etherscan.io/address/${txHash}`;
 		}
 
-		async function _loadChanges() {
+		function _getSpellStatus(address: string, latestSpell: SubgraphSpell, latestPassedSpell: SubgraphSpell, casted: string | null) {
+			if (address === latestPassedSpell.id) {
+				return Status.Hat;
+			} else if (casted) {
+				return Status.Passed;
+			} else if (address === latestSpell.id) {
+				return Status.Pending;
+			} else {
+				return Status.Skipped;
+			}
+		}
+
+		async function _fetchChanges() {
 			const url = 'https://api.thegraph.com/subgraphs/name/graphitetools/maker';
 			const query = `
 				query {
@@ -157,11 +267,43 @@ export default defineComponent({
 			};
 			const response = await fetch(url, opts);
 			const json = await response.json();
-			changes.value = json.data.changes;
+			return json.data.changes as Change[];
+		}
+
+		async function _fetchSubgraphSpells() {
+			const url = 'https://api.thegraph.com/subgraphs/name/protofire/makerdao-governance';
+			const query = `
+				query {
+					spells(
+						first: 1000,
+						orderBy: timestamp,
+						orderDirection: desc,
+					) {
+						id
+						timestamp
+						casted
+						liftedWith
+					}
+				}`;
+			const opts = {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({ query }),
+			};
+			const response = await fetch(url, opts);
+			const json = await response.json();
+			return json.data.spells as SubgraphSpell[];
+		}
+
+		async function _fetchSpellMetadata() {
+			const metadataUrl = 'https://cms-gov.makerfoundation.com/content/all-spells?network=mainnet';
+			const response = await fetch(metadataUrl);
+			const json = await response.json();
+			return json as SpellMetadata[];
 		}
 
 		function _getParamName(param: string) {
-			const paramMap = {
+			const paramMap: Record<string, string> = {
 				'Vat-Line': 'Ceiling',
 				'Jug-base': 'Base stability fee',
 				'Pot-dsr': 'Savings rate',
@@ -192,12 +334,11 @@ export default defineComponent({
 				paramMap[`Flip-${ilk}-tau`] = `${ilk} auction duration`;
 				paramMap[`Flip-${ilk}-ttl`] = `${ilk} auction bid duration`;
 			}
-			const paramName = paramMap[param];
-			return paramName;
+			return paramMap[param];
 		}
 
 		function _getTermName(param: string) {
-			const termMap = {
+			const termMap: Record<string, string> = {
 				'Vat-Line': 'Vat_Line',
 				'Jug-base': 'Jug_base',
 				'Pot-dsr': 'Pot_dsr',
@@ -228,8 +369,7 @@ export default defineComponent({
 				termMap[`Flip-${ilk}-tau`] = `Flip[${ilk}]_tau`;
 				termMap[`Flip-${ilk}-ttl`] = `Flip[${ilk}]_ttl`;
 			}
-			const termName = termMap[param];
-			return termName;
+			return termMap[param];
 		}
 
 		function _getValue(param: string, value: string) {
@@ -304,8 +444,9 @@ export default defineComponent({
 			changes,
 			spells,
 
+			formatStatus,
 			formatTimestamp,
-			formatHash,
+			formatAddress,
 			getEtherscanLink,
 		};
 	},
@@ -332,15 +473,45 @@ h1 {
 	margin-top: 1rem;
 }
 
-.header {
-	display: flex;
-	justify-content: space-between;
-	font-size: 18px;
-	padding: 0.5rem 0.5rem 0 0.5rem;
+.spell-header {
+	padding: 8px;
+	border-bottom: 1px solid #eceff1;
 }
 
-.changes {
-	margin-top: 1rem;
+.spell-header-primary {
+	display: flex;
+	justify-content: space-between;
+}
+
+.spell-metadata {
+	display: flex;
+	align-items: center;
+}
+
+.spell-status {
+	padding: 2px 4px;
+	color: white;
+	font-size: 14px;
+	background: #818da4;
+}
+
+.spell-title {
+	margin-left: 8px;
+}
+
+.spell-address {
+	display: flex;
+	align-items: center;
+}
+
+.spell-address > a {
+	margin-left: 4px;
+}
+
+.spell-header-secondary {
+	margin-top: 4px;
+	font-size: 14px;
+	color: #818da4;
 }
 
 .change {
