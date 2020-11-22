@@ -14,11 +14,15 @@
     "stylelint": "stylelint \"src/**/*.vue\""
   },
   "dependencies": {
+    "@apollo/client": "^3.2.7",
     "@ethersproject/abi": "^5.0.7",
     "@ethersproject/providers": "^5.0.14",
     "@ethersproject/strings": "^5.0.5",
+    "@vue/apollo-composable": "^4.0.0-alpha.12",
     "bignumber.js": "^9.0.0",
     "ethcall": "^3.0.0",
+    "graphql": "^15.4.0",
+    "graphql-tag": "^2.11.0",
     "vue": "^3.0.2",
     "vue-router": "^4.0.0-rc.1"
   },
