@@ -76,7 +76,7 @@ export default defineComponent({
 				}
 			}
 		`, {}, {
-			clientId: 'compoundGovernance',
+			clientId: 'CompoundGovernance',
 		});
 
 		const accounts = useResult(delegates, [], (data) => data.delegates.map(delegate => {

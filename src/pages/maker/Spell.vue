@@ -118,7 +118,7 @@ export default defineComponent({
 		`, {
 			address,
 		}, {
-			clientId: 'makerGovernance',
+			clientId: 'MakerGovernance',
 		});
 
 		const subgraphSpell = useResult(subgraphSpellResponse, null, data => data.spell);
@@ -147,7 +147,7 @@ export default defineComponent({
 		`, {
 			address,
 		}, {
-			clientId: 'makerGovernance',
+			clientId: 'MakerGovernance',
 		});
 
 		const voteTimeline = useResult(subgraphTimelineResponse, [] as TimelineItem[], data => data.spell.timeline);

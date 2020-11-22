@@ -150,7 +150,7 @@ export default defineComponent({
 				}
 			}
 		`, {}, {
-			clientId: 'makerGovernance',
+			clientId: 'MakerGovernance',
 		});
 
 		const subgraphSpells = useResult(subgraphSpellsResponse, [] as SubgraphSpell[], data => data.spells);
@@ -169,7 +169,7 @@ export default defineComponent({
 				}
 			}
 		`, {}, {
-			clientId: 'maker',
+			clientId: 'Maker',
 		});
 
 		const changes = useResult(changesResponse, [] as Change[], data => data.changes);

@@ -1,8 +1,8 @@
-import { ApolloClient, createHttpLink, InMemoryCache } from '@apollo/client/core';
 import { ApolloClients } from '@vue/apollo-composable';
 import { createApp, provide, h } from 'vue';
 import { createWebHistory, createRouter } from 'vue-router';
 
+import clients from './apollo';
 import App from './App.vue';
 
 import CompoundOverview from './pages/compound/Overview.vue';
@@ -13,27 +13,6 @@ import MakerOverview from './pages/maker/Overview.vue';
 import MakerSpellList from './pages/maker/SpellList.vue';
 import MakerSpell from './pages/maker/Spell.vue';
 import MakerVoterList from './pages/maker/VoterList.vue';
-
-const compoundGovernanceClient = new ApolloClient({
-	link: createHttpLink({
-		uri: 'https://api.thegraph.com/subgraphs/name/protofire/compound-governance',
-	}),
-	cache: new InMemoryCache(),
-});
-
-const makerClient = new ApolloClient({
-	link: createHttpLink({
-		uri: 'https://api.thegraph.com/subgraphs/name/graphitetools/maker',
-	}),
-	cache: new InMemoryCache(),
-});
-
-const makerGovernanceClient = new ApolloClient({
-	link: createHttpLink({
-		uri: 'https://api.thegraph.com/subgraphs/name/protofire/makerdao-governance',
-	}),
-	cache: new InMemoryCache(),
-});
 
 const routes = [
 	{ path: '/', redirect: '/maker/' },
@@ -56,11 +35,7 @@ const router = createRouter({
 
 const app = createApp({
 	setup () {
-		provide(ApolloClients, {
-			compoundGovernance: compoundGovernanceClient,
-			maker: makerClient,
-			makerGovernance: makerGovernanceClient,
-		});
+		provide(ApolloClients, clients);
 	},
 	render: () => h(App),
 });

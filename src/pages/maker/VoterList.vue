@@ -90,7 +90,7 @@ export default defineComponent({
 				}
 			}
 		`, {}, {
-			clientId: 'makerGovernance',
+			clientId: 'MakerGovernance',
 		});
 
 		const voters = useResult(proxyVoterData, [] as Voter[], data => {
