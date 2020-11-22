@@ -126,6 +126,10 @@ h1 {
 	margin: 0;
 }
 
+h2 {
+	font-size: 20px;
+}
+
 h1,
 h2 {
 	font-weight: normal;

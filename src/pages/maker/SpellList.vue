@@ -66,6 +66,7 @@ import { Ref, ComputedRef, ref, computed, onMounted, defineComponent } from 'vue
 
 import Converter from '@/utils/converter';
 import Formatter from '@/utils/formatter';
+import { Status, SpellMetadata, SubgraphSpell, formatStatus } from '@/utils/spell';
 
 import ExternalLink from '@/components/ExternalLink.vue';
 import LoadingIndicator from '@/components/LoadingIndicator.vue';
@@ -91,31 +92,12 @@ const ilkIds = [
 	'SAI',
 ];
 
-enum Status {
-	Hat,
-	Passed,
-	Pending,
-	Skipped,
-}
-
 interface Change {
 	id: string;
 	param: string;
 	value: string;
 	timestamp: number;
 	txHash: string;
-}
-
-interface SubgraphSpell {
-	id: string;
-	timestamp: string;
-	casted: string | null;
-	liftedWith: string | null;
-}
-
-interface SpellMetadata {
-	source: string;
-	title: string;
 }
 
 interface Spell {
@@ -188,8 +170,8 @@ export default defineComponent({
 			const latestSpell = subgraphSpells.value[0];
 			const latestPassedSpell = subgraphSpells.value.filter(spell => spell.casted)[0];
 			const spells = subgraphSpells.value.map(subgraphSpell => {
-				const { id: address, timestamp: created, casted } = subgraphSpell;
-				const status = _getSpellStatus(address, latestSpell, latestPassedSpell, casted);
+				const { id: address, timestamp: created, lifted, casted } = subgraphSpell;
+				const status = _getSpellStatus(address, latestSpell, latestPassedSpell, lifted);
 				const title = metadataMap[address]
 					? metadataMap[address].title
 					: 'Spell';
@@ -206,22 +188,6 @@ export default defineComponent({
 			return spells;
 		});
 
-		function formatStatus(status: Status): string {
-			if (status === Status.Hat) {
-				return 'Hat';
-			}
-			if (status === Status.Passed) {
-				return 'Passed';
-			}
-			if (status === Status.Pending) {
-				return 'Pending';
-			}
-			if (status === Status.Skipped) {
-				return 'Skipped';
-			}
-			return '';
-		}
-
 		function formatTimestamp(timestampString: string) {
 			const timestamp = parseInt(timestampString);
 			const date = new Date(timestamp * 1000);
@@ -237,10 +203,10 @@ export default defineComponent({
 			return `https://etherscan.io/address/${txHash}`;
 		}
 
-		function _getSpellStatus(address: string, latestSpell: SubgraphSpell, latestPassedSpell: SubgraphSpell, casted: string | null) {
+		function _getSpellStatus(address: string, latestSpell: SubgraphSpell, latestPassedSpell: SubgraphSpell, lifted: string | null) {
 			if (address === latestPassedSpell.id) {
 				return Status.Hat;
-			} else if (casted) {
+			} else if (lifted) {
 				return Status.Passed;
 			} else if (address === latestSpell.id) {
 				return Status.Pending;
@@ -286,6 +252,7 @@ export default defineComponent({
 						id
 						timestamp
 						casted
+						lifted
 						liftedWith
 					}
 				}`;
