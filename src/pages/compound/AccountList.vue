@@ -2,7 +2,7 @@
 	<div>
 		<h1>Accounts</h1>
 		<div class="accounts-wrapper">
-			<LoadingIndicator v-if="accounts.length === 0" />
+			<LoadingIndicator v-if="loading" />
 			<div
 				v-else
 				class="accounts"
@@ -38,7 +38,9 @@
 
 <script lang="ts">
 import BigNumber from 'bignumber.js';
-import { Ref, ComputedRef, defineComponent, ref, computed, onMounted } from 'vue';
+import gql from 'graphql-tag';
+import { defineComponent } from 'vue';
+import { useQuery, useResult } from '@vue/apollo-composable';
 
 import Converter from '@/utils/converter';
 import Formatter from '@/utils/formatter';
@@ -56,40 +58,36 @@ interface SubgraphResponse {
 	delegates: SubgraphRow[];
 }
 
-interface SubgraphAccount {
-	address: string;
-	votes: BigNumber;
-}
-
-interface Account {
-	address: string;
-	name: string;
-	votes: BigNumber;
-}
-
 export default defineComponent({
 	components: {
 		ExternalLink,
 		LoadingIndicator,
 	},
 	setup() {
-		const delegates: Ref<SubgraphAccount[]> = ref([]);
-
-		const accounts: ComputedRef<Account[]> = computed(() => {
-			return delegates.value.map(delegate => {
-				const meta = accountMeta[delegate.address];
-				const name = meta ? meta.name : '';
-				return {
-					address: delegate.address,
-					name,
-					votes: delegate.votes,
-				};
-			});
+		const { result: delegates, loading } = useQuery<SubgraphResponse>(gql`
+			query getDelegates {
+				delegates(
+					first: 100,
+					orderBy: delegatedVotesRaw,
+					orderDirection: desc,
+				) {
+					id
+					delegatedVotesRaw
+				}
+			}
+		`, {}, {
+			clientId: 'compoundGovernance',
 		});
 
-		onMounted(async () => {
-			delegates.value = await fetchDelegates();
-		});
+		const accounts = useResult(delegates, [], (data) => data.delegates.map(delegate => {
+			const meta = accountMeta[delegate.id];
+			const name = meta ? meta.name : '';
+			return {
+				address: delegate.id,
+				name,
+				votes: new BigNumber(delegate.delegatedVotesRaw),
+			};
+		}));
 
 		function formatCompAmount(value: BigNumber) {
 			return Formatter.formatMultiplier(Converter.fromWad(value.toString()), 0);
@@ -103,39 +101,8 @@ export default defineComponent({
 			return `https://etherscan.io/address/${txHash}`;
 		}
 
-		async function fetchDelegates() {
-			const COUNT = 100;
-			const query = `
-				{
-					delegates(
-						first: ${COUNT},
-						orderBy: delegatedVotesRaw,
-						orderDirection: desc,
-					) {
-						id
-						delegatedVotesRaw
-					}
-				}
-			`;
-			const url = 'https://api.thegraph.com/subgraphs/name/protofire/compound-governance';
-			const opts = {
-				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify({ query }),
-			};
-			const response = await fetch(url, opts);
-			const json = await response.json();
-			const data = json.data as SubgraphResponse;
-			const delegates = data.delegates.map(row => {
-				return {
-					address: row.id,
-					votes: new BigNumber(row.delegatedVotesRaw),
-				};
-			});
-			return delegates;
-		}
-
 		return {
+			loading,
 			accounts,
 
 			formatCompAmount,

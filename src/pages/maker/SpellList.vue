@@ -62,11 +62,13 @@
 </template>
 
 <script lang="ts">
+import gql from 'graphql-tag';
 import { Ref, ComputedRef, ref, computed, onMounted, defineComponent } from 'vue';
+import { useQuery, useResult } from '@vue/apollo-composable';
 
 import Converter from '@/utils/converter';
 import Formatter from '@/utils/formatter';
-import { Status, SpellMetadata, SubgraphSpell, formatStatus } from '@/utils/spell';
+import { Status, SpellMetadata, SubgraphSpellsResponse, SubgraphSpell, formatStatus } from '@/utils/spell';
 
 import ExternalLink from '@/components/ExternalLink.vue';
 import LoadingIndicator from '@/components/LoadingIndicator.vue';
@@ -91,6 +93,10 @@ const ilkIds = [
 	'YFI-A',
 	'SAI',
 ];
+
+interface ChangesResponse {
+	changes: Change[];
+}
 
 interface Change {
 	id: string;
@@ -123,15 +129,50 @@ export default defineComponent({
 		LoadingIndicator,
 	},
 	setup() {
-		const changes: Ref<Change[]> = ref([]);
-		const subgraphSpells: Ref<SubgraphSpell[]> = ref([]);
 		const spellMetadata: Ref<SpellMetadata[]> = ref([]);
 
 		onMounted(async () => {
-			changes.value = await _fetchChanges();
-			subgraphSpells.value = await _fetchSubgraphSpells();
 			spellMetadata.value = await _fetchSpellMetadata();
 		});
+
+		const { result: subgraphSpellsResponse } = useQuery<SubgraphSpellsResponse>(gql`
+			query getSpells {
+				spells(
+					first: 1000,
+					orderBy: timestamp,
+					orderDirection: desc,
+				) {
+					id
+					timestamp
+					casted
+					lifted
+					liftedWith
+				}
+			}
+		`, {}, {
+			clientId: 'makerGovernance',
+		});
+
+		const subgraphSpells = useResult(subgraphSpellsResponse, [] as SubgraphSpell[], data => data.spells);
+
+		const { result: changesResponse } = useQuery<ChangesResponse>(gql`
+			query getSpells {
+				changes(
+					first: 1000,
+					orderBy: timestamp,
+				) {
+					id
+					param
+					value
+					timestamp
+					txHash
+				}
+			}
+		`, {}, {
+			clientId: 'maker',
+		});
+
+		const changes = useResult(changesResponse, [] as Change[], data => data.changes);
 
 		const spells: ComputedRef<Spell[]> = computed(() => {
 			if (changes.value.length === 0 ||
@@ -213,57 +254,6 @@ export default defineComponent({
 			} else {
 				return Status.Skipped;
 			}
-		}
-
-		async function _fetchChanges() {
-			const url = 'https://api.thegraph.com/subgraphs/name/graphitetools/maker';
-			const query = `
-				query {
-					changes(
-						first: 1000,
-						orderBy: timestamp,
-					) {
-						id
-						param
-						value
-						timestamp
-						txHash
-					}
-				}`;
-			const opts = {
-				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify({ query }),
-			};
-			const response = await fetch(url, opts);
-			const json = await response.json();
-			return json.data.changes as Change[];
-		}
-
-		async function _fetchSubgraphSpells() {
-			const url = 'https://api.thegraph.com/subgraphs/name/protofire/makerdao-governance';
-			const query = `
-				query {
-					spells(
-						first: 1000,
-						orderBy: timestamp,
-						orderDirection: desc,
-					) {
-						id
-						timestamp
-						casted
-						lifted
-						liftedWith
-					}
-				}`;
-			const opts = {
-				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify({ query }),
-			};
-			const response = await fetch(url, opts);
-			const json = await response.json();
-			return json.data.spells as SubgraphSpell[];
 		}
 
 		async function _fetchSpellMetadata() {

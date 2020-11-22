@@ -37,8 +37,10 @@
 </template>
 
 <script lang="ts">
-import { Ref, defineComponent, ref, onMounted } from 'vue';
 import BigNumber from 'bignumber.js';
+import gql from 'graphql-tag';
+import { defineComponent } from 'vue';
+import { useQuery, useResult } from '@vue/apollo-composable';
 
 import Formatter from '@/utils/formatter';
 import accountMeta from '@/accounts.json';
@@ -68,59 +70,31 @@ export default defineComponent({
 		LoadingIndicator,
 	},
 	setup() {
-		const voters: Ref<Voter[]> = ref([]);
-
-		onMounted(async () => {
-			const proxiesAndVoters = await _loadProxiesAndVoters();
-			voters.value = _mergeProxiesAndVoters(proxiesAndVoters);
+		const { result: proxyVoterData } = useQuery<ProxyVoterData>(gql`
+			query getProxyVoterData {
+				voteProxies(
+					first: 100,
+					orderBy: locked,
+					orderDirection: desc,
+				) {
+					id
+					locked
+				}
+				addressVoters(
+					first: 100,
+					orderBy: locked,
+					orderDirection: desc,
+				) {
+					id
+					locked
+				}
+			}
+		`, {}, {
+			clientId: 'makerGovernance',
 		});
 
-		function formatAddress(address: string) {
-			return Formatter.formatAddress(address);
-		}
-
-		function formatMkrAmount(value: BigNumber) {
-			return Formatter.formatMultiplier(value.toNumber(), 2);
-		}
-
-		function getEtherscanLink(address: string) {
-			return `https://etherscan.io/address/${address}`;
-		}
-
-		async function _loadProxiesAndVoters() {
-			const query = `
-				{
-					voteProxies(
-						first: 100,
-						orderBy: locked,
-						orderDirection: desc,
-					) {
-						id
-						locked
-					}
-					addressVoters(
-						first: 100,
-						orderBy: locked,
-						orderDirection: desc,
-					) {
-						id
-						locked
-					}
-				}
-			`;
-			const url = 'https://api.thegraph.com/subgraphs/name/protofire/makerdao-governance';
-			const opts = {
-				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify({ query }),
-			};
-			const response = await fetch(url, opts);
-			const json = await response.json();
-			return json.data as ProxyVoterData;
-		}
-
-		function _mergeProxiesAndVoters(proxyVoterData: ProxyVoterData) {
-			const { voteProxies, addressVoters } = proxyVoterData;
+		const voters = useResult(proxyVoterData, [] as Voter[], data => {
+			const { voteProxies, addressVoters } = data;
 			const voters = [];
 			for (const proxy of voteProxies) {
 				const meta = accountMeta[proxy.id];
@@ -151,6 +125,18 @@ export default defineComponent({
 			});
 			const topVoters = voters.slice(0, 100);
 			return topVoters;
+		});
+
+		function formatAddress(address: string) {
+			return Formatter.formatAddress(address);
+		}
+
+		function formatMkrAmount(value: BigNumber) {
+			return Formatter.formatMultiplier(value.toNumber(), 2);
+		}
+
+		function getEtherscanLink(address: string) {
+			return `https://etherscan.io/address/${address}`;
 		}
 
 		return {

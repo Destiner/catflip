@@ -11,6 +11,14 @@ export interface SpellMetadata {
 	about: string;
 }
 
+export interface SubgraphSpellResponse {
+	spell: SubgraphSpell;
+}
+
+export interface SubgraphSpellsResponse {
+	spells: SubgraphSpell[];
+}
+
 export interface SubgraphSpell {
 	id: string;
 	timestamp: string;

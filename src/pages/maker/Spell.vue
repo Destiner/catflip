@@ -49,11 +49,12 @@
 </template>
 
 <script lang="ts">
-import BigNumber from 'bignumber.js';
+import gql from 'graphql-tag';
 import { Ref, defineComponent, ref, computed, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
+import { useQuery, useResult } from '@vue/apollo-composable';
 
-import { SpellMetadata, SubgraphSpell } from '@/utils/spell';
+import { SpellMetadata, SubgraphSpellResponse } from '@/utils/spell';
 
 import ExternalLink from '@/components/ExternalLink.vue';
 
@@ -63,6 +64,12 @@ enum EventType {
 	Create,
 	Lift,
 	Cast,
+}
+
+interface TimelineResponse {
+	spell: {
+		timeline: TimelineItem[];
+	};
 }
 
 interface TimelineItem {
@@ -89,22 +96,65 @@ export default defineComponent({
 		const route = useRoute();
 
 		const spellMetadata: Ref<SpellMetadata[]> = ref([]);
-		const subgraphSpell: Ref<SubgraphSpell | null> = ref(null);
-		const voteTimeline: Ref<TimelineItem[]> = ref([]);
 
 		onMounted(async () => {
 			spellMetadata.value = await _fetchSpellMetadata();
-			subgraphSpell.value = await _fetchSubgraphSpell(address.value);
-			voteTimeline.value = await _fetchTimeline(address.value);
 		});
-
-		const spell = computed(() => spellMetadata.value
-			.find(metadata => metadata.source.toLowerCase() === address.value),
-		);
 
 		const address = computed(() => {
 			return route.params.address as string;
 		});
+
+		const { result: subgraphSpellResponse } = useQuery<SubgraphSpellResponse>(gql`
+			query getSpell {
+				spell(id: $address) {
+					id
+					timestamp
+					casted
+					lifted
+					liftedWith
+				}
+			}
+		`, {
+			address,
+		}, {
+			clientId: 'makerGovernance',
+		});
+
+		const subgraphSpell = useResult(subgraphSpellResponse, null, data => data.spell);
+
+		const { result: subgraphTimelineResponse } = useQuery<TimelineResponse>(gql`
+			query getSpellTimeline {
+				spell(id: $address) {
+					timeLine(first: 1000) {
+						...on AddAction {
+							id
+							locked
+							sender
+							timestamp
+							transactionHash
+						}
+						...on RemoveAction {
+							id
+							locked
+							sender
+							timestamp
+							transactionHash
+						}
+					}
+				}
+			}
+		`, {
+			address,
+		}, {
+			clientId: 'makerGovernance',
+		});
+
+		const voteTimeline = useResult(subgraphTimelineResponse, [] as TimelineItem[], data => data.spell.timeline);
+
+		const spell = computed(() => spellMetadata.value
+			.find(metadata => metadata.source.toLowerCase() === address.value),
+		);
 
 		const votes = computed(() => {
 			if (!voteTimeline.value) {
@@ -219,62 +269,6 @@ export default defineComponent({
 			const response = await fetch(metadataUrl);
 			const json = await response.json();
 			return json as SpellMetadata[];
-		}
-
-		async function _fetchSubgraphSpell(address: string) {
-			const url = 'https://api.thegraph.com/subgraphs/name/protofire/makerdao-governance';
-			const query = `
-				query {
-					spell(id: "${address}") {
-						id
-						timestamp
-						casted
-						lifted
-						liftedWith
-					}
-				}`;
-			const opts = {
-				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify({ query }),
-			};
-			const response = await fetch(url, opts);
-			const json = await response.json();
-			return json.data.spell as SubgraphSpell;
-		}
-
-		async function _fetchTimeline(address: string) {
-			const url = 'https://api.thegraph.com/subgraphs/name/protofire/makerdao-governance';
-			const query = `
-				query {
-					spell(id: "${address}") {
-						timeLine(first: 1000) {
-							id
-							...on AddAction {
-								id
-								locked
-								sender
-								timestamp
-								transactionHash
-							}
-							...on RemoveAction {
-								id
-								locked
-								sender
-								timestamp
-								transactionHash
-							}
-						}
-					}
-				}`;
-			const opts = {
-				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify({ query }),
-			};
-			const response = await fetch(url, opts);
-			const json = await response.json();
-			return json.data.spell.timeLine as TimelineItem[];
 		}
 
 		return {
