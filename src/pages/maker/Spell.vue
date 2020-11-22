@@ -49,11 +49,11 @@
 </template>
 
 <script lang="ts">
-import gql from 'graphql-tag';
 import { Ref, defineComponent, ref, computed, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import { useQuery, useResult } from '@vue/apollo-composable';
 
+import { Maker } from '@/queries';
 import { SpellMetadata, SubgraphSpellResponse } from '@/utils/spell';
 
 import ExternalLink from '@/components/ExternalLink.vue';
@@ -105,17 +105,7 @@ export default defineComponent({
 			return route.params.address as string;
 		});
 
-		const { result: subgraphSpellResponse } = useQuery<SubgraphSpellResponse>(gql`
-			query getSpell {
-				spell(id: $address) {
-					id
-					timestamp
-					casted
-					lifted
-					liftedWith
-				}
-			}
-		`, {
+		const { result: subgraphSpellResponse } = useQuery<SubgraphSpellResponse>(Maker.GET_SPELL, {
 			address,
 		}, {
 			clientId: 'MakerGovernance',
@@ -123,28 +113,7 @@ export default defineComponent({
 
 		const subgraphSpell = useResult(subgraphSpellResponse, null, data => data.spell);
 
-		const { result: subgraphTimelineResponse } = useQuery<TimelineResponse>(gql`
-			query getSpellTimeline {
-				spell(id: $address) {
-					timeLine(first: 1000) {
-						...on AddAction {
-							id
-							locked
-							sender
-							timestamp
-							transactionHash
-						}
-						...on RemoveAction {
-							id
-							locked
-							sender
-							timestamp
-							transactionHash
-						}
-					}
-				}
-			}
-		`, {
+		const { result: subgraphTimelineResponse } = useQuery<TimelineResponse>(Maker.GET_SPELL_TIMELINE, {
 			address,
 		}, {
 			clientId: 'MakerGovernance',

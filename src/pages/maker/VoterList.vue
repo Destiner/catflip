@@ -38,10 +38,10 @@
 
 <script lang="ts">
 import BigNumber from 'bignumber.js';
-import gql from 'graphql-tag';
 import { defineComponent } from 'vue';
 import { useQuery, useResult } from '@vue/apollo-composable';
 
+import { Maker } from '@/queries';
 import Formatter from '@/utils/formatter';
 import accountMeta from '@/accounts.json';
 
@@ -70,26 +70,7 @@ export default defineComponent({
 		LoadingIndicator,
 	},
 	setup() {
-		const { result: proxyVoterData } = useQuery<ProxyVoterData>(gql`
-			query getProxyVoterData {
-				voteProxies(
-					first: 100,
-					orderBy: locked,
-					orderDirection: desc,
-				) {
-					id
-					locked
-				}
-				addressVoters(
-					first: 100,
-					orderBy: locked,
-					orderDirection: desc,
-				) {
-					id
-					locked
-				}
-			}
-		`, {}, {
+		const { result: proxyVoterData } = useQuery<ProxyVoterData>(Maker.GET_PROXY_VOTER_DATA, {}, {
 			clientId: 'MakerGovernance',
 		});
 

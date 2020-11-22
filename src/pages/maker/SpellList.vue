@@ -62,10 +62,10 @@
 </template>
 
 <script lang="ts">
-import gql from 'graphql-tag';
 import { Ref, ComputedRef, ref, computed, onMounted, defineComponent } from 'vue';
 import { useQuery, useResult } from '@vue/apollo-composable';
 
+import { Maker } from '@/queries';
 import Converter from '@/utils/converter';
 import Formatter from '@/utils/formatter';
 import { Status, SpellMetadata, SubgraphSpellsResponse, SubgraphSpell, formatStatus } from '@/utils/spell';
@@ -135,40 +135,13 @@ export default defineComponent({
 			spellMetadata.value = await _fetchSpellMetadata();
 		});
 
-		const { result: subgraphSpellsResponse } = useQuery<SubgraphSpellsResponse>(gql`
-			query getSpells {
-				spells(
-					first: 1000,
-					orderBy: timestamp,
-					orderDirection: desc,
-				) {
-					id
-					timestamp
-					casted
-					lifted
-					liftedWith
-				}
-			}
-		`, {}, {
+		const { result: subgraphSpellsResponse } = useQuery<SubgraphSpellsResponse>(Maker.GET_SPELLS, {}, {
 			clientId: 'MakerGovernance',
 		});
 
 		const subgraphSpells = useResult(subgraphSpellsResponse, [] as SubgraphSpell[], data => data.spells);
 
-		const { result: changesResponse } = useQuery<ChangesResponse>(gql`
-			query getSpells {
-				changes(
-					first: 1000,
-					orderBy: timestamp,
-				) {
-					id
-					param
-					value
-					timestamp
-					txHash
-				}
-			}
-		`, {}, {
+		const { result: changesResponse } = useQuery<ChangesResponse>(Maker.GET_CHANGES, {}, {
 			clientId: 'Maker',
 		});
 

@@ -38,10 +38,10 @@
 
 <script lang="ts">
 import BigNumber from 'bignumber.js';
-import gql from 'graphql-tag';
 import { defineComponent } from 'vue';
 import { useQuery, useResult } from '@vue/apollo-composable';
 
+import { Compound } from '@/queries';
 import Converter from '@/utils/converter';
 import Formatter from '@/utils/formatter';
 import accountMeta from '@/accounts.json';
@@ -64,18 +64,7 @@ export default defineComponent({
 		LoadingIndicator,
 	},
 	setup() {
-		const { result: delegates, loading } = useQuery<SubgraphResponse>(gql`
-			query getDelegates {
-				delegates(
-					first: 100,
-					orderBy: delegatedVotesRaw,
-					orderDirection: desc,
-				) {
-					id
-					delegatedVotesRaw
-				}
-			}
-		`, {}, {
+		const { result: delegates, loading } = useQuery<SubgraphResponse>(Compound.GET_DELEGATES, {}, {
 			clientId: 'CompoundGovernance',
 		});
 
