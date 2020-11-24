@@ -91,6 +91,7 @@ const ilkIds = [
 	'LINK-A',
 	'BAL-A',
 	'YFI-A',
+	'GUSD-A',
 	'SAI',
 ];
 
