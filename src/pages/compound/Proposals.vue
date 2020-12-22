@@ -64,8 +64,10 @@ const BECOME_UNITROLLER = '_become(address,uint256,address[],address[])';
 const BECOME_COMPTROLLER = '_become(address)';
 const SET_ORACLE_SIG = '_setPriceOracle(address)';
 const SET_PENDING_IMPLEMENTATION = '_setPendingImplementation(address)';
+const SET_IMPLEMENTATION = '_setImplementation(address,bool,bytes)';
 const SET_BORROW_CAP_GUARDIAN = '_setBorrowCapGuardian(address)';
 const DELEGATE_COMP_LIKE = '_delegateCompLikeTo(address)';
+const GRANT_COMP = '_grantComp(address,uint256)';
 
 const SET_COMP_RATE = '_setCompRate(uint256)';
 const ADD_COMP_MARKETS = '_addCompMarkets(address[])';
@@ -81,6 +83,7 @@ const SET_BORROW_PAUSED = '_setBorrowPaused(address,bool)';
 const REDUCE_RESERVES = '_reduceReserves(uint256)';
 
 const TRANSFER = 'transfer(address,uint256)';
+const APPROVE = 'approve(address,uint256)';
 
 const STATE_CANCELLED = 2;
 const STATE_DEFEATED = 3;
@@ -172,12 +175,21 @@ export default defineComponent({
 			if (signature === SET_PENDING_IMPLEMENTATION) {
 				return 'Comptroller implementation';
 			}
+			if (signature === SET_IMPLEMENTATION) {
+				const market = _getToken(target);
+				return `${market}: implementation`;
+			}
 			if (signature === SET_BORROW_CAP_GUARDIAN) {
 				return 'Borrow cap guardian';
 			}
 			if (signature === DELEGATE_COMP_LIKE) {
 				const market = _getToken(target);
 				return `${market}: delegate market voting power`;
+			}
+			if (signature === GRANT_COMP) {
+				const guy = _formatAddress(calldata[0]);
+				const amount = _formatAmount(calldata[1].toString());
+				return `Grant ${amount} COMP to ${guy}`;
 			}
 			if (signature === SET_COMP_RATE) {
 				return 'COMP rate';
@@ -254,7 +266,13 @@ export default defineComponent({
 				const amount = _formatAmount(calldata[1].toString());
 				return `Send ${amount} ${token} to ${guy}`;
 			}
-			return '';
+			if (signature === APPROVE) {
+				const token = _getToken(target);
+				const guy = _formatAddress(calldata[0]);
+				const amount = _formatAmount(calldata[1].toString());
+				return `Approve ${amount} ${token} to ${guy}`;
+			}
+			return `${target}.${signature}`;
 		}
 
 		function _getKey(target: string, signature: string, calldata: Result): string {
@@ -270,6 +288,10 @@ export default defineComponent({
 			if (signature === SET_PENDING_IMPLEMENTATION) {
 				return 'pending_implementation';
 			}
+			if (signature === SET_IMPLEMENTATION) {
+				const market = _getToken(target);
+				return `${market}_implementation`;
+			}
 			if (signature === SET_BORROW_CAP_GUARDIAN) {
 				return 'borrow_cap_guardian';
 			}
@@ -277,6 +299,9 @@ export default defineComponent({
 				const marketAddress = target;
 				const market = _getToken(marketAddress);
 				return `${market}_delegate_comp_like`;
+			}
+			if (signature === GRANT_COMP) {
+				return 'grant_comp';
 			}
 			if (signature === SET_COMP_RATE) {
 				return 'comp_rate';
@@ -332,7 +357,10 @@ export default defineComponent({
 			if (signature === TRANSFER) {
 				return 'transfer';
 			}
-			return '';
+			if (signature === APPROVE) {
+				return 'approve';
+			}
+			return signature;
 		}
 
 		function _getValue(signature: string, calldata: Result): string {
@@ -350,6 +378,10 @@ export default defineComponent({
 				const implementation = calldata[0];
 				return _formatAddress(implementation);
 			}
+			if (signature === SET_IMPLEMENTATION) {
+				const implementation = calldata[0];
+				return _formatAddress(implementation);
+			}
 			if (signature === SET_BORROW_CAP_GUARDIAN) {
 				const guardian = calldata[0];
 				return _formatAddress(guardian);
@@ -357,6 +389,9 @@ export default defineComponent({
 			if (signature === DELEGATE_COMP_LIKE) {
 				const target = calldata[0];
 				return _formatAddress(target);
+			}
+			if (signature === GRANT_COMP) {
+				return '';
 			}
 			if (signature === SET_COMP_RATE) {
 				const rate = _formatAmount(calldata[0].toString());
@@ -396,6 +431,9 @@ export default defineComponent({
 				return '';
 			}
 			if (signature === TRANSFER) {
+				return '';
+			}
+			if (signature === APPROVE) {
 				return '';
 			}
 			return '';
