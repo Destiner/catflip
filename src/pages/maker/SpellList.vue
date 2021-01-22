@@ -182,9 +182,26 @@ export default defineComponent({
 				metadataMap[address] = metadata;
 			}
 
+			const newSpellChanges = changes.value.filter(change => change.timestamp > 1607349675);
+			const newSpellTransactions = [...new Set(newSpellChanges.map(change => change.txHash))];
+			const newSpells = newSpellTransactions.map(txHash => {
+				const sc = changes.value.filter(change => change.txHash === txHash);
+				const timestamp = sc[0].timestamp;
+				const spellChanges = spellMap[timestamp || ''] || [];
+				return {
+					status: Status.Pending,
+					address: '',
+					title: '',
+					created: timestamp.toString(),
+					casted: timestamp.toString(),
+					changes: spellChanges,
+				};
+			});
+			newSpells.reverse();
+
 			const latestSpell = subgraphSpells.value[0];
 			const latestPassedSpell = subgraphSpells.value.filter(spell => spell.casted)[0];
-			const spells = subgraphSpells.value.map(subgraphSpell => {
+			const metadataSpells = subgraphSpells.value.map(subgraphSpell => {
 				const { id: address, timestamp: created, lifted, casted } = subgraphSpell;
 				const status = _getSpellStatus(address, latestSpell, latestPassedSpell, lifted);
 				const title = metadataMap[address]
@@ -200,6 +217,8 @@ export default defineComponent({
 					changes,
 				};
 			});
+
+			const spells = [...newSpells, ...metadataSpells];
 			return spells;
 		});
 
