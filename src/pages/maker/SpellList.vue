@@ -92,6 +92,10 @@ const ilkIds = [
 	'BAL-A',
 	'YFI-A',
 	'GUSD-A',
+	'RENBTC-A',
+	'UNI-A',
+	'AAVE-A',
+	'UNIV2DAIETH-A',
 	'SAI',
 ];
 
