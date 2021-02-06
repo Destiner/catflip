@@ -78,6 +78,14 @@
 						</div>
 						<div class="row">
 							<div class="row-label">
+								Ceiling Utilization
+							</div>
+							<div class="row-number">
+								{{ formatRatio(ilk.Art * ilk.rate / ilk.line) }}
+							</div>
+						</div>
+						<div class="row">
+							<div class="row-label">
 								Min. per Vault <span class="term">(Vat_dust)</span>
 							</div>
 							<div class="row-number">
