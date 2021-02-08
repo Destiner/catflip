@@ -81,7 +81,7 @@
 								Ceiling Utilization
 							</div>
 							<div class="row-number">
-								{{ formatRatio(ilk.Art * ilk.rate / ilk.line) }}
+								{{ formatRatio(getUtilization(ilk.asset, ilk.art, ilk.rate, ilk.line)) }}
 							</div>
 						</div>
 						<div class="row">
@@ -105,7 +105,7 @@
 								Col. ratio <span class="term">(Spot_mat)</span>
 							</div>
 							<div class="row-number">
-								{{ formatRatio(ilk.mat) }}
+								{{ formatRayRatio(ilk.mat) }}
 							</div>
 						</div>
 					</div>
@@ -442,6 +442,7 @@ import { reactive, onMounted, defineComponent } from 'vue';
 import { InfuraProvider } from '@ethersproject/providers';
 import { formatBytes32String } from '@ethersproject/strings';
 import { Contract, Provider } from 'ethcall';
+import BigNumber from 'bignumber.js';
 
 import vatAbi from '@/abi/maker/vat.json';
 import jugAbi from '@/abi/maker/jug.json';
@@ -583,6 +584,11 @@ export default defineComponent({
 			_loadMisc();
 		});
 
+		function getUtilization(asset: string, art: string, rate: string, line: string) {
+			const artNumber = new BigNumber(art);
+			return artNumber.times(rate).div(line).toNumber();
+		}
+
 		function formatAmount(value: string) {
 			return Formatter.formatMultiplier(Converter.fromWad(value), 0);
 		}
@@ -592,7 +598,11 @@ export default defineComponent({
 			return Formatter.formatMultiplier(Converter.fromWad(Converter.fromRay(value)), 0);
 		}
 
-		function formatRatio(value: string) {
+		function formatRatio(value: number) {
+			return Formatter.formatRatio(value);
+		}
+
+		function formatRayRatio(value: string) {
 			return Formatter.formatRatio(Converter.fromRay(value));
 		}
 
@@ -661,13 +671,17 @@ export default defineComponent({
 			state.ilks = ilkIds.map(id => {
 				const index = ilkIds.indexOf(id);
 				const duty = data[index].duty.toString();
+				const art = data[count + index].Art.toString();
 				const line = data[count + index].line.toString();
+				const rate = data[count + index].rate.toString();
 				const dust = data[count + index].dust.toString();
 				const mat = data[2 * count + index].mat.toString();
 
 				const ilk = {
 					id: `ilk-${id}`,
 					asset: id,
+					art,
+					rate,
 					duty,
 					line,
 					dust,
@@ -846,10 +860,12 @@ export default defineComponent({
 
 		return {
 			state,
+			getUtilization,
 
 			formatAmount,
 			formatDaiAmount,
 			formatRatio,
+			formatRayRatio,
 			formatRayRate,
 			formatWadRate,
 			formatFee,
